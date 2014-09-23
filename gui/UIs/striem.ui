@@ -350,16 +350,16 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QPushButton" name="hideTextButton">
+           <widget class="QPushButton" name="showTextButton">
             <property name="text">
-             <string>HideText</string>
+             <string>ShowText</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="showTextButton">
+           <widget class="QPushButton" name="hideTextButton">
             <property name="text">
-             <string>ShowText</string>
+             <string>HideText</string>
             </property>
            </widget>
           </item>
@@ -409,13 +409,7 @@
        </property>
        <item>
         <widget class="QProgressBar" name="streamstatusMeter">
-         <property name="value">
-          <number>0</number>
-         </property>
          <property name="textVisible">
-          <bool>false</bool>
-         </property>
-         <property name="invertedAppearance">
           <bool>false</bool>
          </property>
         </widget>
