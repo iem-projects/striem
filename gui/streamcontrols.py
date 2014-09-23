@@ -31,7 +31,18 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
     def setupConnections(self):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
+        self.gainSlider .valueChanged.connect(self.gainValue  .setValue)
+        self.gainValue  .valueChanged.connect(self.gainSlider .setValue)
+        self.delaySlider.valueChanged.connect(self.delayValue .setValue)
+        self.delayValue .valueChanged.connect(self.delaySlider.setValue)
 
+        self.gainValue .valueChanged.connect(self._setGain)
+        self.delayValue.valueChanged.connect(self._setDelay)
+
+    def _setGain(self, value):
+        print("gain: %d[dB]" % (value))
+    def _setDelay(self, value):
+        print("delay: %d[ms]" % (value))
 
     def accept(self, ok=True):
         self.hide()
@@ -39,8 +50,6 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
             self.closefunction(ok)
     def reject(self):
         self.accept(False)
-
-
 
 ######################################################################
 if __name__ == '__main__':
