@@ -53,6 +53,8 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
     def _fontChanged(self, id, face, size):
         desc=str(face)+ " " + str(size)
         print("font['%s']: %s" %( id, desc))
+    def _fontPos(self, id, x, y):
+        print("font['%s']: %f/%f" %( id, x,y))
 
     def _fontPieceChanged(self, value):
         fnt=self.piece_font.currentFont().family()
@@ -66,7 +68,18 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
         fnt=self.interpreter_font.currentFont().family()
         sze=self.interpreter_fontSize.value()
         self._fontChanged("interpreter", fnt, sze)
-
+    def _fontPieceSize(self, value):
+        x=self.piece_posX.value()
+        y=self.piece_posY.value()
+        self._fontPos("piece", x, y)
+    def _fontComposerSize(self, value):
+        x=self.composer_posX.value()
+        y=self.composer_posY.value()
+        self._fontPos("composer", x, y)
+    def _fontInterpreterSize(self, value):
+        x=self.interpreter_posX.value()
+        y=self.interpreter_posY.value()
+        self._fontPos("interpreter", x, y)
 
 
     def accept(self, ok=True):
