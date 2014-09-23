@@ -22,8 +22,8 @@ from PySide import QtGui
 import striem_ui
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
-    def __init__(self, guiparent=None):
-        super(striem, self).__init__(guiparent)
+    def __init__(self):
+        super(striem, self).__init__()
         self.setupUi(self)
 
 
