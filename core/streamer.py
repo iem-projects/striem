@@ -30,20 +30,16 @@ import configuration
 class streamer:
     def __init__(self):
         self.cfgbak=configuration.configuration()
-        self.cfgbak.dump()
         self.cfg=configuration.configuration(self.cfgbak)
-        self.cfg.dump()
     def teardown(self):
         self.cfg.save()
         pass
 
     def apply(self):
         self.cfgbak=configuration.configuration(self.cfg)
-        self.cfgbak.dump()
 
     def revert(self):
         self.cfg=configuration.configuration(self.cfgbak)
-        self.cfg.dump()
 
         self.changeGain(self.cfg.get("audio", "gain"))
         self.changeDelay(self.cfg.get("audio", "delay"))
@@ -75,7 +71,6 @@ class streamer:
 
     def getGain(self):
         v= self.cfg.get("audio", "gain")
-        self.cfg.dump()
         return v
 
 
