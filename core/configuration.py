@@ -61,15 +61,31 @@ class configuration:
         'text.Y'   : float
     }
     def __init__(self, filename=None):
-        configfiles=[os.path.join(path, "striem.conf") for path in _configpaths]
-        self.filename=configfiles[1]
-
-        if filename is not None:
-            configfiles+=[filename]
+        print("configuration: %s <- %s" % (self, filename))
+        self._cfg = ConfigParser.ConfigParser()
+        self.filename=None
+        if isinstance(filename, configuration):
+            print("config2Config")
+            filename.copyTo(self)
+        else:
+            print("file2Config")
+            configfiles=[os.path.join(path, "striem.conf") for path in _configpaths]
+            if filename is not None:
+                configfiles+=[filename]
+            self.load(configfiles)
+        print("bye")
+    def load(self, configfiles=[]):
+        if configfiles:
+            if len(configfiles)>1:
+                self.filename=configfiles[1]
+            else:
+                self.filename=configfiles[0]
         self._cfg = ConfigParser.ConfigParser()
         files=self._cfg.read(configfiles)
         if files:
             self.filename=files[-1]
+
+
 
     def save(self, filename=None):
         if filename is None:
@@ -77,6 +93,7 @@ class configuration:
         if filename is None:
             return False
         with open(filename, 'wb') as configfile:
+            self.filename=filename
             self._cfg.write(configfile)
         return True
     def get(self, section, option):
@@ -89,7 +106,22 @@ class configuration:
         self._cfg.set(section, option, value)
 
 
+    def copyTo(self, target):
+        import StringIO
+        cfgstring=StringIO.StringIO()
+        self._cfg.write(cfgstring)
+        cfgstring.seek(0)
 
+        target.filename=None
+        target._cfg=ConfigParser.ConfigParser()
+        target._cfg.readfp(cfgstring)
+
+    def dump(self):
+        for s in self._cfg.sections():
+            print("[%s]" % (s))
+            for (k,v) in self._cfg.items(s):
+                print("%s: %s" % (k,v))
+            print("")
 
 
 ######################################################################
@@ -106,4 +138,9 @@ if __name__ == '__main__':
     showConf(config, "audio", "gain")
     showConf(config, "piece", "text.face")
     config.set("stream", "URL", "http://youtube.com")
+    config.dump()
     config.save("/tmp/striem.cfg")
+
+    cfg2=configuration(config)
+    cfg2.dump()
+    cfg2.save("/tmp/striem2.cfg")
