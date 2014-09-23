@@ -284,10 +284,6 @@
               </widget>
              </item>
             </layout>
-            <zorder>titleEdit</zorder>
-            <zorder>composerEdit</zorder>
-            <zorder>interpretEdit</zorder>
-            <zorder>uiFrame</zorder>
            </widget>
           </item>
          </layout>
@@ -399,8 +395,9 @@
     <property name="title">
      <string>Stream</string>
     </property>
-    <addaction name="actionStreamPrefs"/>
+    <addaction name="actionStreamControls"/>
     <addaction name="actionStreamStart"/>
+    <addaction name="actionStreamPrefs"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuStream"/>
@@ -421,7 +418,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Start</string>
@@ -435,6 +432,11 @@
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionStreamControls">
+   <property name="text">
+    <string>Controls</string>
    </property>
   </action>
  </widget>
