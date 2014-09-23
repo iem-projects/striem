@@ -98,12 +98,13 @@ class configuration:
         return True
     def get(self, section, option):
         v=self._cfg.get(section, option)
+
         if option in configuration._typefuns:
             return configuration._typefuns[option](v)
         return v
     def set(self, section, option, value):
         v=str(value)
-        self._cfg.set(section, option, value)
+        self._cfg.set(section, option, v)
 
 
     def copyTo(self, target):
