@@ -46,6 +46,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def exit(self):
         print("Bye bye")
+        import sys
         sys.exit()
 
     def stream(self, on):
