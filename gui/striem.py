@@ -31,7 +31,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
         self.setupUi(self)
         self.setupConnections()
-
+    def closeEvent(self, event):
+        # ignore Alt-F4 and window-close events
+        event.ignore()
     def setupConnections(self):
         self.actionQuit.activated.connect(self.exit)
         self.actionStreamStart.toggled.connect(self.stream)
