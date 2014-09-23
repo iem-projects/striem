@@ -39,10 +39,35 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
         self.gainValue .valueChanged.connect(self._setGain)
         self.delayValue.valueChanged.connect(self._setDelay)
 
+        self.piece_font.currentFontChanged.connect(self._fontPieceChanged)
+        self.piece_fontSize.valueChanged.connect(self._fontPieceChanged)
+        self.composer_font.currentFontChanged.connect(self._fontComposerChanged)
+        self.composer_fontSize.valueChanged.connect(self._fontComposerChanged)
+        self.interpreter_font.currentFontChanged.connect(self._fontInterpreterChanged)
+        self.interpreter_fontSize.valueChanged.connect(self._fontInterpreterChanged)
+
     def _setGain(self, value):
         print("gain: %d[dB]" % (value))
     def _setDelay(self, value):
         print("delay: %d[ms]" % (value))
+    def _fontChanged(self, id, face, size):
+        desc=str(face)+ " " + str(size)
+        print("font['%s']: %s" %( id, desc))
+
+    def _fontPieceChanged(self, value):
+        fnt=self.piece_font.currentFont().family()
+        sze=self.piece_fontSize.value()
+        self._fontChanged("piece", fnt, sze)
+    def _fontComposerChanged(self, value):
+        fnt=self.composer_font.currentFont().family()
+        sze=self.composer_fontSize.value()
+        self._fontChanged("composer", fnt, sze)
+    def _fontInterpreterChanged(self, value):
+        fnt=self.interpreter_font.currentFont().family()
+        sze=self.interpreter_fontSize.value()
+        self._fontChanged("interpreter", fnt, sze)
+
+
 
     def accept(self, ok=True):
         self.hide()
