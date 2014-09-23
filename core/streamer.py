@@ -49,7 +49,7 @@ class streamer:
             size=self.cfg.get(id, "text.size")
             x=self.cfg.get(id, "text.X")
             y=self.cfg.get(id, "text.Y")
-            self.changeText(id, face, size)
+            self.changeTextFont(id, face, size)
             self.changeTextPosition(id, x, y)
 
 
@@ -59,7 +59,7 @@ class streamer:
     def changeDelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)
-    def changeText(self, id, face, size):
+    def changeTextFont(self, id, face, size):
         desc=str(face)+ " " + str(size)
         self.cfg.set(id, "text.face", face)
         self.cfg.set(id, "text.size", size)
@@ -72,15 +72,13 @@ class streamer:
     def getGain(self):
         v= self.cfg.get("audio", "gain")
         return v
-
-
     def getDelay(self):
         return self.cfg.get("audio", "delay")
-    def getTextt(self):
+    def getTextFont(self, id):
         face=self.cfg.get(id, "text.face")
         size=self.cfg.get(id, "text.size")
         return (face, size)
-    def getTextPosition(self):
+    def getTextPosition(self, id):
         face=self.cfg.get(id, "text.X")
         size=self.cfg.get(id, "text.Y")
         return (face, size)
