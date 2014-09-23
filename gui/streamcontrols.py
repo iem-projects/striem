@@ -24,6 +24,13 @@ import streamcontrols_ui
 class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
     def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streamcontrols, self).__init__(guiparent)
+        self.streamer=streamer
+        if self.streamer:
+            self._setGain     = self.__setGain
+            self._setDelay    = self.__setDelay
+            self._fontChanged = self.__fontChanged
+            self._fontPos     = self.__fontPos
+
         self.closefunction=closefunction
         self.setupUi(self)
         self.setupConnections()
@@ -56,13 +63,21 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
 
     def _setGain(self, value):
         print("gain: %d[dB]" % (value))
+    def __setGain(self, value):
+        self.streamer.changeGain(value)
     def _setDelay(self, value):
         print("delay: %d[ms]" % (value))
+    def __setDelay(self, value):
+        self.streamer.changeDelay(value)
     def _fontChanged(self, id, face, size):
         desc=str(face)+ " " + str(size)
         print("font['%s']: %s" %( id, desc))
+    def __fontChanged(self, id, face, size):
+        self.streamer.changeTextFont(id, face, size)
     def _fontPos(self, id, x, y):
         print("font['%s']: %f/%f" %( id, x,y))
+    def __fontPos(self, id, x, y):
+        self.streamer.changeTextPosition(id, x, y)
 
     def _fontPieceChanged(self, value):
         fnt=self.piece_font.currentFont().family()
@@ -90,7 +105,39 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
         self._fontPos("interpreter", x, y)
 
 
+    def updateValues(self):
+        if not self.streamer:
+            return false
+        oldstate = self.blockSignals(True)
+        self.gainValue.setValue(self.streamer.getGain())
+        self.delayValue.setValue(self.streamer.getDelay())
+        for (id, _font, _size, _x, _y) in [
+                ("piece", self.piece_font, self.piece_fontSize,self.piece_posX, self.piece_posY),
+                ("composer", self.composer_font, self.composer_fontSize, self.composer_posX, self.composer_posY),
+                ("interpreter", self.interpreter_font, self.interpreter_fontSize, self.interpreter_posX, self.interpreter_posY)
+        ]:
+
+            (face,size)=self.streamer.getTextFont(id)
+            (x,y)=self.streamer.getTextPosition(id)
+            font=QtGui.QFont(face)
+            _font.setCurrentFont(font)
+            _size.setValue(size)
+            _x.setValue(x)
+            _y.setValue(y)
+
+
+        self.blockSignals(oldstate)
+        return True
+
     def accept(self, ok=True):
+        if self.streamer:
+            if ok:
+                self.streamer.apply()
+            else:
+                self.streamer.revert()
+
+        self.updateValues()
+
         self.hide()
         if self.closefunction is not None:
             self.closefunction(ok)
