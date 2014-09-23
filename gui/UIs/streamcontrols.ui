@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Stream Controls</string>
+   <string>IEM Stream Controls</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
