@@ -29,17 +29,63 @@ import configuration
 
 class streamer:
     def __init__(self):
-        self.cfg=configuration.configuration()
-        pass
+        self.cfgbak=configuration.configuration()
+        self.cfgbak.dump()
+        self.cfg=configuration.configuration(self.cfgbak)
+        self.cfg.dump()
     def teardown(self):
         self.cfg.save()
         pass
 
+    def apply(self):
+        self.cfgbak=configuration.configuration(self.cfg)
+        self.cfgbak.dump()
+
+    def revert(self):
+        self.cfg=configuration.configuration(self.cfgbak)
+        self.cfg.dump()
+
+        self.changeGain(self.cfg.get("audio", "gain"))
+        self.changeDelay(self.cfg.get("audio", "delay"))
+
+        for id in [ "piece", "composer", "interpreter" ]:
+            face=self.cfg.get(id, "text.face")
+            size=self.cfg.get(id, "text.size")
+            x=self.cfg.get(id, "text.X")
+            y=self.cfg.get(id, "text.Y")
+            self.changeText(id, face, size)
+            self.changeTextPosition(id, x, y)
+
+
     def changeGain(self, value):
-        pass
+        print("gain: %s" % (value))
+        self.cfg.set("audio", "gain", value)
     def changeDelay(self, value):
-        pass
-    def changeFont(self, id, desc):
-        pass
-    def changeFontPosition(self, x, y):
-        pass
+        print("delay: %s" % (value))
+        self.cfg.set("audio", "delay", value)
+    def changeText(self, id, face, size):
+        desc=str(face)+ " " + str(size)
+        self.cfg.set(id, "text.face", face)
+        self.cfg.set(id, "text.size", size)
+        print("Font['%s']: %s" %( id, desc))
+    def changeTextPosition(self, id, x, y):
+        self.cfg.set(id, "text.X", x)
+        self.cfg.set(id, "text.Y", y)
+        print("Font['%s']: %f/%f" %( id, x,y))
+
+    def getGain(self):
+        v= self.cfg.get("audio", "gain")
+        self.cfg.dump()
+        return v
+
+
+    def getDelay(self):
+        return self.cfg.get("audio", "delay")
+    def getTextt(self):
+        face=self.cfg.get(id, "text.face")
+        size=self.cfg.get(id, "text.size")
+        return (face, size)
+    def getTextPosition(self):
+        face=self.cfg.get(id, "text.X")
+        size=self.cfg.get(id, "text.Y")
+        return (face, size)
