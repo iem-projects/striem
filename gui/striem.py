@@ -19,12 +19,32 @@
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide import QtGui
+import streamcontrols
+
 import striem_ui
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def __init__(self):
         super(striem, self).__init__()
         self.setupUi(self)
+        self.setupConnections()
+
+    def setupConnectins(self):
+        self.actionQuit.activated.connect(self.exit)
+        self.actionStreamStart.toggled.connect(self.stream)
+        self.actionStreamControls.activated(self.open_streamcontrol)
+        self.actionStreamPrefs.activated(self.open_streamprefs)
+
+    def exit(self):
+        print("Bye bye")
+        sys.exit()
+
+    def stream(self, on):
+        print("stream: %s" % (on))
+    def open_streamcontrol(self);
+        self.streamcontrol.show()
+    def open_streamprefs(self);
+        self.streamprefs.show()
 
 
 if __name__ == '__main__':
