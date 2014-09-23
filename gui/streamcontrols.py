@@ -41,10 +41,18 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
 
         self.piece_font.currentFontChanged.connect(self._fontPieceChanged)
         self.piece_fontSize.valueChanged.connect(self._fontPieceChanged)
+        self.piece_posX.valueChanged.connect(self._fontPieceSize)
+        self.piece_posY.valueChanged.connect(self._fontPieceSize)
+
         self.composer_font.currentFontChanged.connect(self._fontComposerChanged)
         self.composer_fontSize.valueChanged.connect(self._fontComposerChanged)
+        self.composer_posX.valueChanged.connect(self._fontComposerSize)
+        self.composer_posY.valueChanged.connect(self._fontComposerSize)
+
         self.interpreter_font.currentFontChanged.connect(self._fontInterpreterChanged)
         self.interpreter_fontSize.valueChanged.connect(self._fontInterpreterChanged)
+        self.interpreter_posX.valueChanged.connect(self._fontInterpreterSize)
+        self.interpreter_posY.valueChanged.connect(self._fontInterpreterSize)
 
     def _setGain(self, value):
         print("gain: %d[dB]" % (value))
