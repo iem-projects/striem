@@ -24,10 +24,10 @@ import streamcontrols, streampreferences
 import striem_ui
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
-    def __init__(self):
+    def __init__(self, streamer=None):
         super(striem, self).__init__()
-        self.streamcontrol = streamcontrols.streamcontrols()
-        self.streamprefs = streampreferences.streampreferences()
+        self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer)
+        self.streamprefs = streampreferences.streampreferences(streamer=streamer)
 
         self.setupUi(self)
         self.setupConnections()

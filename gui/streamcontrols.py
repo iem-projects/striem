@@ -22,7 +22,7 @@ from PySide import QtGui
 import streamcontrols_ui
 
 class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
-    def __init__(self, guiparent=None, closefunction=None):
+    def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streamcontrols, self).__init__(guiparent)
         self.closefunction=closefunction
         self.setupUi(self)

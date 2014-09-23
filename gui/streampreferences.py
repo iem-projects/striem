@@ -22,8 +22,9 @@ from PySide import QtGui
 import streampreferences_ui
 
 class streampreferences(QtGui.QDialog, streampreferences_ui.Ui_streampreferences):
-    def __init__(self, guiparent=None, closefunction=None):
+    def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streampreferences, self).__init__(guiparent)
+        self.streamer=streamer
         self.closefunction=closefunction
         self.setupUi(self)
         self.setupConnections()
