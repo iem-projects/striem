@@ -112,9 +112,11 @@ class configuration:
         self._cfg.write(cfgstring)
         cfgstring.seek(0)
 
-        target.filename=None
         target._cfg=ConfigParser.ConfigParser()
         target._cfg.readfp(cfgstring)
+
+        target.filename=self.filename
+
 
     def dump(self):
         for s in self._cfg.sections():
