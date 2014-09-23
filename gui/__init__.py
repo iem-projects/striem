@@ -17,8 +17,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 __version__ = "0"
 __author__ = "IOhannes m zmölnig, IEM"
