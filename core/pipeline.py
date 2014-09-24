@@ -115,7 +115,7 @@ class pipeline:
         ## get all controllables
         #
     def teardown(self):
-        pass
+        self.EOS()
 
     def _async_handler (self, bus, message):
         try:
