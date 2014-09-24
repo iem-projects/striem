@@ -25,15 +25,17 @@
 ### -
 
 
-import configuration
+import configuration, pipeline
 
 class streamer:
     def __init__(self):
         self.cfgbak=configuration.configuration()
         self.cfg=configuration.configuration(self.cfgbak)
+        self.pip = pipeline.pipeline("core/pipelines/test.gst")
+        self.pip.run(True)
     def teardown(self):
         self.cfg.save()
-        pass
+        self.pip.run(False)
 
     def apply(self):
         self.cfgbak=configuration.configuration(self.cfg)
@@ -56,6 +58,7 @@ class streamer:
     def changeGain(self, value):
         print("gain: %s" % (value))
         self.cfg.set("audio", "gain", value)
+        self.pip.setControl("GAIN", (value+100.)*0.01, 10.)
     def changeDelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)
