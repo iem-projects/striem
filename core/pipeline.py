@@ -175,7 +175,7 @@ if __name__ == '__main__':
 
     pipestring=_pipeRead(filename, d)
     print _pipeParseCtrl(pipestring)
-    sys.exit()
+    #sys.exit()
 
     pip=pipeline(filename, d)
     print("pipeline['%s'] = '%s'" % (filename, pip))
