@@ -73,6 +73,16 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         else:
             self.streamstatusMeter.reset()
 
+    def getWindow(self, name):
+        if self.app:
+            self.app.syncX();
+
+        if "preview" == name:
+            return self.previewWidget.winId()
+        if "live" == name:
+            return self.liveWidget.winId()
+        return None
+
 
 if __name__ == '__main__':
     import sys
