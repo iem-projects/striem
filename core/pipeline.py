@@ -142,6 +142,7 @@ class pipeline:
                     else:
                         setprops+=[p]
                 lmn=self.pipeline.get_by_name(elem)
+                print("element '%s' %s" % (elem, lmn))
                 ## create a controller
                 if ctlprops:
                     tmpctl=gst.Controller(lmn, *ctlprops)
@@ -207,6 +208,7 @@ class pipeline:
                     ctl.set(p, gsttime, value)
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
+                print("lmn[%s] %s:%s" % (name, lmn, props))
                 for p in props:
                     lmn.set_property(p, value)
 
