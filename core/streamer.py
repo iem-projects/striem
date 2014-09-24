@@ -32,6 +32,8 @@ class streamer:
         self.cfgbak=configuration.configuration()
         self.cfg=configuration.configuration(self.cfgbak)
         self.pip = pipeline.pipeline("core/pipelines/test.gst")
+
+        self.setGui = self.pip.setGui
         self.pip.run(True)
     def teardown(self):
         self.cfg.save()
