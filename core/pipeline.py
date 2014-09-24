@@ -130,10 +130,8 @@ class pipeline:
         self.setter={}
         for ctl,elemprop in ctrls.iteritems():
             ## ctl = 'FOO'
-            ## elemprop = {'textoverlay_3': ['xpos']}, {'textoverlay_1': ['ypos', 'xpos']}
-            d_ctl={}
-            d_set={}
-            for elem,props in elemprop:
+            ## elemprop = {'textoverlay_3': ['xpos'], 'textoverlay_1': ['ypos', 'xpos']}
+            for elem,props in elemprop.iteritems():
                 ## elem = 'textoverlay_3'
                 ## prop = ['xpos']
                 ctlprops=[]
@@ -144,7 +142,6 @@ class pipeline:
                     else:
                         setprops+=[p]
                 lmn=self.pipeline.get_by_name(elem)
-
                 ## create a controller
                 if ctlprops:
                     tmpctl=gst.Controller(lmn, *ctlprops)
@@ -202,11 +199,11 @@ class pipeline:
         else:
             self.pipeline.set_state(gst.STATE_READY)
     def setControl(self, name, value, time=0):
-        gsttime=time*gst.SECONDS
+        gsttime=time*gst.SECOND
         if name in self.controller:
             for (ctl,props) in self.controller[name]:
                 for p in props:
-                    ctl.set(props, gsttime, value)
+                    ctl.set(p, gsttime, value)
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
                 for p in props:
