@@ -116,6 +116,8 @@ class pipeline:
         self.bus       = self.pipeline.get_bus()
         self.bus.add_watch(self._async_handler)
 
+        self.previewOut = self.pipeline.get_by_name("preview")
+        self.liveOut = self.pipeline.get_by_name("live")
 
         ## get all controllables
         control_dict={}
@@ -211,6 +213,19 @@ class pipeline:
                 print("lmn[%s] %s:%s" % (name, lmn, props))
                 for p in props:
                     lmn.set_property(p, value)
+    def setGui(self, gui):
+        # http://stackoverflow.com/questions/1873113/how-to-implement-a-video-widget-in-qt-that-builds-upon-gstreamer
+        #gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(sink), widget->winId());
+        if not gui:
+            return
+        if self.previewOut:
+            winid=gui.getWindow("preview")
+            if winid:
+                self.previewOut.set_xwindow_id(winid)
+        if self.liveOut:
+            winid=gui.getWindow("live")
+            if winid:
+                self.liveOut.set_xwindow_id(winid)
 
 
 ######################################################################
