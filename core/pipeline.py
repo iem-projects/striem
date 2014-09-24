@@ -113,7 +113,10 @@ class pipeline:
 
 
         ## get all controllables
-        #
+        for ctl,elemprop in ctrls.iteritems():
+            for elem,prop in elemprop:
+                print("%s : %s.%s" % (ctl, elem,prop))
+
     def teardown(self):
         self.EOS()
 
