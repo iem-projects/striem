@@ -103,7 +103,7 @@ class pipeline:
         self.eventhandlers=dict()
         self.restart   = False
         self.config    =config
-        self.pipestring= _pipeRead(filename, config)
+        (self.pipestring, ctrls) = _pipeParseCtrl(_pipeRead(filename, config))
 
         self.setEventHandlers(None)
 
