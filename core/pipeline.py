@@ -81,9 +81,9 @@ def _pipeParseCtrl(pipestring=""):
         elements+=[element]
 
         for (prop,ctl) in ctls:
-            if not prop in controls:
-                controls[prop]=[]
-            controls[prop]+=[(name,ctl)]
+            if not ctl in controls:
+                controls[ctl]=[]
+            controls[ctl]+=[(name,prop)]
     return (' ! '.join(elements), controls)
 
 def _pipeRead(pipefile=None, mydict=dict()):
