@@ -45,7 +45,8 @@ def _pipeParseCtrl(pipestring=""):
     parse a pipestring to extract all ctl.NAME: properties
     returns a tuple containing:
     - a cleaned up pipestring
-    - a dictionary with {NAME: (elementname, propertyname)} mappings
+    - a dictionary with {NAME: {elementname, [propertyname]}} mappings
+      - listing all properties (propertyname) in element (elementname) that listen to NAME
     CAVEATS:
       - the elementname-resolving code is experimental. use the "name" property to help it
       - cannot handle white-space in property-values
@@ -81,9 +82,13 @@ def _pipeParseCtrl(pipestring=""):
         elements+=[element]
 
         for (prop,ctl) in ctls:
+            # prop: xpos
+            # ctl : FOO
             if not ctl in controls:
-                controls[ctl]=[]
-            controls[ctl]+=[(name,prop)]
+                controls[ctl]={}
+            if not name in controls[ctl]:
+                controls[ctl][name]=[]
+            controls[ctl][name]+=[prop]
     return (' ! '.join(elements), controls)
 
 def _pipeRead(pipefile=None, mydict=dict()):
@@ -113,9 +118,51 @@ class pipeline:
 
 
         ## get all controllables
+        control_dict={}
+        for lmn in self.pipeline.elements():
+            for p in lmn.props:
+                if p.flags & gst.PARAM_CONTROLLABLE:
+                    if not lmn.props.name in control_dict:
+                        control_dict[lmn.props.name]=[]
+                    control_dict[lmn.props.name]+=[p.name]
+
+        self.controller={}
+        self.setter={}
         for ctl,elemprop in ctrls.iteritems():
-            for elem,prop in elemprop:
-                print("%s : %s.%s" % (ctl, elem,prop))
+            ## ctl = 'FOO'
+            ## elemprop = {'textoverlay_3': ['xpos']}, {'textoverlay_1': ['ypos', 'xpos']}
+            d_ctl={}
+            d_set={}
+            for elem,props in elemprop:
+                ## elem = 'textoverlay_3'
+                ## prop = ['xpos']
+                ctlprops=[]
+                setprops=[]
+                for p in props:
+                    if (elem in control_dict) and (p in control_dict[elem]):
+                        ctlprops+=[p]
+                    else:
+                        setprops+=[p]
+                lmn=self.pipeline.get_by_name(elem)
+
+                ## create a controller
+                if ctlprops:
+                    tmpctl=gst.Controller(lmn, *ctlprops)
+                    for cp in ctlprops:
+                        tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
+
+                    if not ctl in self.controller:
+                        self.controller[ctl] = []
+                    self.controller[ctl] += [(tmpctl,ctlprops)]
+                ## create setters
+                ## (this is just a list so we remember)
+                if setprops:
+                    if not ctl in self.setter:
+                        self.setter[ctl] = {}
+                    if not lmn in self.setter[ctl]:
+                        self.setter[ctl][lmn] = []
+                    self.setter[ctl][lmn] += setprops
+
 
     def teardown(self):
         self.EOS()
@@ -154,8 +201,16 @@ class pipeline:
             self.pipeline.set_state(gst.STATE_PLAYING)
         else:
             self.pipeline.set_state(gst.STATE_READY)
-
-
+    def setControl(self, name, value, time=0):
+        gsttime=time*gst.SECONDS
+        if name in self.controller:
+            for (ctl,props) in self.controller[name]:
+                for p in props:
+                    ctl.set(props, gsttime, value)
+        if name in self.setter:
+            for (lmn, props) in self.setter[name].iteritems():
+                for p in props:
+                    lmn.set_property(p, value)
 
 
 ######################################################################
