@@ -24,8 +24,9 @@ import streamcontrols, streampreferences
 import striem_ui
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
-    def __init__(self, streamer=None):
+    def __init__(self, app=None, streamer=None):
         super(striem, self).__init__()
+        self.app=app
         self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer)
         self.streamprefs = streampreferences.streampreferences(streamer=streamer)
 
