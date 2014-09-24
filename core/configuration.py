@@ -61,7 +61,6 @@ class configuration:
         'text.Y'   : float
     }
     def __init__(self, filename=None):
-        print("configuration: %s <- %s" % (self, filename))
         self._cfg = ConfigParser.ConfigParser()
         self.filename=None
         if isinstance(filename, configuration):
