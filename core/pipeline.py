@@ -96,7 +96,7 @@ def _pipeRead(pipefile=None, mydict=dict()):
         print "no pipefile specified for pipe"
         return
     with open(pipefile, 'r') as f:
-        data=f.read()
+        data=f.read().replace('\\\n', '')
     ## replace some macros
     if data:
         for k,v in mydict.items():
