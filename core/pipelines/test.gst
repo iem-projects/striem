@@ -1,2 +1,4 @@
-videotestsrc pattern="snow" ! xvimagesink name=preview
-videotestsrc pattern="smpte100"  horizontal-speed=1 ! xvimagesink name=live
+videotestsrc pattern="snow"
+! ximagesink name=preview
+videotestsrc pattern="smpte100" horizontal-speed=1
+! ximagesink name=live
