@@ -1,12 +1,5 @@
-jackaudiosrc connect=none 	! audio/x-raw-float,channels=2	! deinterleave	name=asplit	\
-asplit.src1			\
-! ladspa-amp-mono  Gain=0.5	\
-! ladspa-delay-5s Delay=1	\
-amerge.sink1			\
-asplit.src2			\
-! ladspa-amp-mono  Gain=0.5	\
-! ladspa-delay-5s Delay=1	\
-amerge.sink2			\
-interleave name=amerge		\
-! jackaudiosink connect=0
-
+jackaudiosrc connect=0 client-name=delay
+! audio/x-raw-float,channels=2
+! audioamplify amplification=0.5
+! audiodelay   delay=500000000
+! jackaudiosink
