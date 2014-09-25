@@ -3,5 +3,5 @@ videotestsrc pattern="snow"
 videotestsrc pattern="smpte100" horizontal-speed=1
 ! ximagesink name=live
 audiotestsrc
-! audioamplify name=amp amplification=0.5
+! audioamplify name=amp amplification=0.1
 ! autoaudiosink
