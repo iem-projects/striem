@@ -113,7 +113,7 @@ def _ctrlRead(conffile=None):
     try:
         with open(conffile, 'r') as f:
             xx=f.readline().split()
-            name=xx[1]
+            name=xx[0]
             if not name in ret:
                 ret[name]={}
             d=ret[name]
