@@ -55,41 +55,41 @@
 GST_DEBUG_CATEGORY_STATIC (GST_CAT_DEFAULT);
 
 enum
-{
-  PROP_0,
-  PROP_DELAY,
-  PROP_MAX_DELAY
-};
+  {
+    PROP_0,
+    PROP_DELAY,
+    PROP_MAX_DELAY
+  };
 
-#define ALLOWED_CAPS \
-    "audio/x-raw-float,"                                              \
-    " width=(int) { 32, 64 }, "                                       \
-    " endianness=(int)BYTE_ORDER,"                                    \
-    " rate=(int)[1,MAX],"                                             \
-    " channels=(int)[1,MAX]"
+#define ALLOWED_CAPS				\
+  "audio/x-raw-float,"				\
+  " width=(int) { 32, 64 }, "			\
+  " endianness=(int)BYTE_ORDER,"		\
+  " rate=(int)[1,MAX],"				\
+  " channels=(int)[1,MAX]"
 
-#define DEBUG_INIT(bla) \
+#define DEBUG_INIT(bla)							\
   GST_DEBUG_CATEGORY_INIT (gst_audio_delay_debug, "audiodelay", 0, "audiodelay element");
 
 GST_BOILERPLATE_FULL (GstAudiodelay, gst_audio_delay, GstAudioFilter,
-    GST_TYPE_AUDIO_FILTER, DEBUG_INIT);
+		      GST_TYPE_AUDIO_FILTER, DEBUG_INIT);
 
 static void gst_audio_delay_set_property (GObject * object, guint prop_id,
-    const GValue * value, GParamSpec * pspec);
+					  const GValue * value, GParamSpec * pspec);
 static void gst_audio_delay_get_property (GObject * object, guint prop_id,
-    GValue * value, GParamSpec * pspec);
+					  GValue * value, GParamSpec * pspec);
 static void gst_audio_delay_finalize (GObject * object);
 
 static gboolean gst_audio_delay_setup (GstAudioFilter * self,
-    GstRingBufferSpec * format);
+				       GstRingBufferSpec * format);
 static gboolean gst_audio_delay_stop (GstBaseTransform * base);
 static GstFlowReturn gst_audio_delay_transform_ip (GstBaseTransform * base,
-    GstBuffer * buf);
+						   GstBuffer * buf);
 
 static void gst_audio_delay_transform_float (GstAudiodelay * self,
-    gfloat * data, guint num_samples);
+					     gfloat * data, guint num_samples);
 static void gst_audio_delay_transform_double (GstAudiodelay * self,
-    gdouble * data, guint num_samples);
+					      gdouble * data, guint num_samples);
 
 /* GObject vmethod implementations */
 
@@ -100,13 +100,13 @@ gst_audio_delay_base_init (gpointer klass)
   GstCaps *caps;
 
   gst_element_class_set_details_simple (element_class, "Audio delay",
-      "Filter/Effect/Audio",
-      "Adds a delay to an audio stream",
-      "IOhannes m zmölnig <zmoelnig@iem.at>");
+					"Filter/Effect/Audio",
+					"Adds a delay to an audio stream",
+					"IOhannes m zmölnig <zmoelnig@iem.at>");
 
   caps = gst_caps_from_string (ALLOWED_CAPS);
   gst_audio_filter_class_add_pad_templates (GST_AUDIO_FILTER_CLASS (klass),
-      caps);
+					    caps);
   gst_caps_unref (caps);
 }
 
@@ -122,22 +122,22 @@ gst_audio_delay_class_init (GstAudiodelayClass * klass)
   gobject_class->finalize = gst_audio_delay_finalize;
 
   g_object_class_install_property (gobject_class, PROP_DELAY,
-      g_param_spec_uint64 ("delay", "Delay",
-          "Delay of the delay in nanoseconds", 1, G_MAXUINT64,
-          1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS
-          | GST_PARAM_CONTROLLABLE));
+				   g_param_spec_uint64 ("delay", "Delay",
+							"Delay of the delay in nanoseconds", 1, G_MAXUINT64,
+							1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS
+							| GST_PARAM_CONTROLLABLE));
 
   g_object_class_install_property (gobject_class, PROP_MAX_DELAY,
-      g_param_spec_uint64 ("max-delay", "Maximum Delay",
-          "Maximum delay of the delay in nanoseconds"
-          " (can't be changed in PLAYING or PAUSED state)",
-          1, G_MAXUINT64, 1,
-          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS |
-          GST_PARAM_MUTABLE_READY));
+				   g_param_spec_uint64 ("max-delay", "Maximum Delay",
+							"Maximum delay of the delay in nanoseconds"
+							" (can't be changed in PLAYING or PAUSED state)",
+							1, G_MAXUINT64, 1,
+							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS |
+							GST_PARAM_MUTABLE_READY));
 
   audioself_class->setup = GST_DEBUG_FUNCPTR (gst_audio_delay_setup);
   basetransform_class->transform_ip =
-      GST_DEBUG_FUNCPTR (gst_audio_delay_transform_ip);
+    GST_DEBUG_FUNCPTR (gst_audio_delay_transform_ip);
   basetransform_class->stop = GST_DEBUG_FUNCPTR (gst_audio_delay_stop);
 }
 
@@ -163,73 +163,73 @@ gst_audio_delay_finalize (GObject * object)
 
 static void
 gst_audio_delay_set_property (GObject * object, guint prop_id,
-    const GValue * value, GParamSpec * pspec)
+			      const GValue * value, GParamSpec * pspec)
 {
   GstAudiodelay *self = GST_AUDIO_DELAY (object);
 
   switch (prop_id) {
-    case PROP_DELAY:{
-      guint64 max_delay, delay;
+  case PROP_DELAY:{
+    guint64 max_delay, delay;
 
-      GST_BASE_TRANSFORM_LOCK (self);
-      delay = g_value_get_uint64 (value);
-      max_delay = self->max_delay;
+    GST_BASE_TRANSFORM_LOCK (self);
+    delay = g_value_get_uint64 (value);
+    max_delay = self->max_delay;
 
-      if (delay > max_delay && GST_STATE (self) > GST_STATE_READY) {
-        GST_WARNING_OBJECT (self, "New delay (%" GST_TIME_FORMAT ") "
-            "is larger than maximum delay (%" GST_TIME_FORMAT ")",
-            GST_TIME_ARGS (delay), GST_TIME_ARGS (max_delay));
-        self->delay = max_delay;
-      } else {
-        self->delay = delay;
-        self->max_delay = MAX (delay, max_delay);
-      }
-      GST_BASE_TRANSFORM_UNLOCK (self);
+    if (delay > max_delay && GST_STATE (self) > GST_STATE_READY) {
+      GST_WARNING_OBJECT (self, "New delay (%" GST_TIME_FORMAT ") "
+			  "is larger than maximum delay (%" GST_TIME_FORMAT ")",
+			  GST_TIME_ARGS (delay), GST_TIME_ARGS (max_delay));
+      self->delay = max_delay;
+    } else {
+      self->delay = delay;
+      self->max_delay = MAX (delay, max_delay);
     }
-      break;
-    case PROP_MAX_DELAY:{
-      guint64 max_delay, delay;
+    GST_BASE_TRANSFORM_UNLOCK (self);
+  }
+    break;
+  case PROP_MAX_DELAY:{
+    guint64 max_delay, delay;
 
-      GST_BASE_TRANSFORM_LOCK (self);
-      max_delay = g_value_get_uint64 (value);
-      delay = self->delay;
+    GST_BASE_TRANSFORM_LOCK (self);
+    max_delay = g_value_get_uint64 (value);
+    delay = self->delay;
 
-      if (GST_STATE (self) > GST_STATE_READY) {
-        GST_ERROR_OBJECT (self, "Can't change maximum delay in"
-            " PLAYING or PAUSED state");
-      } else {
-        self->delay = delay;
-        self->max_delay = max_delay;
-      }
-      GST_BASE_TRANSFORM_UNLOCK (self);
+    if (GST_STATE (self) > GST_STATE_READY) {
+      GST_ERROR_OBJECT (self, "Can't change maximum delay in"
+			" PLAYING or PAUSED state");
+    } else {
+      self->delay = delay;
+      self->max_delay = max_delay;
     }
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
+    GST_BASE_TRANSFORM_UNLOCK (self);
+  }
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
   }
 }
 
 static void
 gst_audio_delay_get_property (GObject * object, guint prop_id,
-    GValue * value, GParamSpec * pspec)
+			      GValue * value, GParamSpec * pspec)
 {
   GstAudiodelay *self = GST_AUDIO_DELAY (object);
 
   switch (prop_id) {
-    case PROP_DELAY:
-      GST_BASE_TRANSFORM_LOCK (self);
-      g_value_set_uint64 (value, self->delay);
-      GST_BASE_TRANSFORM_UNLOCK (self);
-      break;
-    case PROP_MAX_DELAY:
-      GST_BASE_TRANSFORM_LOCK (self);
-      g_value_set_uint64 (value, self->max_delay);
-      GST_BASE_TRANSFORM_UNLOCK (self);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
+  case PROP_DELAY:
+    GST_BASE_TRANSFORM_LOCK (self);
+    g_value_set_uint64 (value, self->delay);
+    GST_BASE_TRANSFORM_UNLOCK (self);
+    break;
+  case PROP_MAX_DELAY:
+    GST_BASE_TRANSFORM_LOCK (self);
+    g_value_set_uint64 (value, self->max_delay);
+    GST_BASE_TRANSFORM_UNLOCK (self);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
   }
 }
 
@@ -243,10 +243,10 @@ gst_audio_delay_setup (GstAudioFilter * base, GstRingBufferSpec * format)
 
   if (format->type == GST_BUFTYPE_FLOAT && format->width == 32)
     self->process = (GstAudiodelayProcessFunc)
-        gst_audio_delay_transform_float;
+      gst_audio_delay_transform_float;
   else if (format->type == GST_BUFTYPE_FLOAT && format->width == 64)
     self->process = (GstAudiodelayProcessFunc)
-        gst_audio_delay_transform_double;
+      gst_audio_delay_transform_double;
   else
     ret = FALSE;
 
@@ -273,41 +273,40 @@ gst_audio_delay_stop (GstBaseTransform * base)
   return TRUE;
 }
 
-#define TRANSFORM_FUNC(name, type) \
-static void \
-gst_audio_delay_transform_##name (GstAudiodelay * self, \
-    type * data, guint num_samples) \
-{ \
-  type *buffer = (type *) self->buffer; \
-  guint channels = GST_AUDIO_FILTER (self)->format.channels; \
-  guint rate = GST_AUDIO_FILTER (self)->format.rate; \
-  guint i, j; \
-  guint delay_index = self->buffer_size_frames - self->delay_frames; \
-  gdouble delay_off = ((((gdouble) self->delay) * rate) / GST_SECOND) - self->delay_frames; \
-  \
-  if (delay_off < 0.0) \
-    delay_off = 0.0; \
-  \
-  num_samples /= channels; \
-  \
-  for (i = 0; i < num_samples; i++) { \
-    guint delay0_index = ((delay_index + self->buffer_pos) % self->buffer_size_frames) * channels; \
-    guint delay1_index = ((delay_index + self->buffer_pos +1) % self->buffer_size_frames) * channels; \
-    guint rbout_index = (self->buffer_pos % self->buffer_size_frames) * channels; \
-    for (j = 0; j < channels; j++) { \
-      gdouble in = data[i*channels + j]; \
-      gdouble delay0 = buffer[delay0_index + j]; \
-      gdouble delay1 = buffer[delay1_index + j]; \
-      gdouble delay = delay0 + (delay1-delay0)*delay_off; \
-      type out = in + self->intensity * delay; \
-      \
-      data[i*channels + j] = out; \
-      \
-      buffer[rbout_index + j] = in + self->feedback * delay; \
-    } \
-    self->buffer_pos = (self->buffer_pos + 1) % self->buffer_size_frames; \
-  } \
-}
+#define TRANSFORM_FUNC(name, type)					\
+  static void								\
+  gst_audio_delay_transform_##name (GstAudiodelay * self,		\
+				    type * data, guint num_samples)	\
+  {									\
+    type *buffer = (type *) self->buffer;				\
+    guint channels = GST_AUDIO_FILTER (self)->format.channels;		\
+    guint rate = GST_AUDIO_FILTER (self)->format.rate;			\
+    guint i, j;								\
+    guint delay_index = self->buffer_size_frames - self->delay_frames;	\
+    gdouble delay_off = ((((gdouble) self->delay) * rate) / GST_SECOND) - self->delay_frames; \
+									\
+    if (delay_off < 0.0)						\
+      delay_off = 0.0;							\
+									\
+    num_samples /= channels;						\
+									\
+    for (i = 0; i < num_samples; i++) {					\
+      guint delay0_index = ((delay_index + self->buffer_pos) % self->buffer_size_frames) * channels; \
+      guint delay1_index = ((delay_index + self->buffer_pos +1) % self->buffer_size_frames) * channels; \
+      guint rbout_index = (self->buffer_pos % self->buffer_size_frames) * channels; \
+      for (j = 0; j < channels; j++) {					\
+	gdouble in = data[i*channels + j];				\
+	gdouble delay0 = buffer[delay0_index + j];			\
+	gdouble delay1 = buffer[delay1_index + j];			\
+	gdouble delay = delay0 + (delay1-delay0)*delay_off;		\
+	type out = delay;						\
+									\
+	data[i*channels + j] = out;					\
+	buffer[rbout_index + j] = in;					\
+      }									\
+      self->buffer_pos = (self->buffer_pos + 1) % self->buffer_size_frames; \
+    }									\
+  }
 
 TRANSFORM_FUNC (float, gfloat);
 TRANSFORM_FUNC (double, gdouble);
@@ -322,16 +321,16 @@ gst_audio_delay_transform_ip (GstBaseTransform * base, GstBuffer * buf)
 
   timestamp = GST_BUFFER_TIMESTAMP (buf);
   stream_time =
-      gst_segment_to_stream_time (&base->segment, GST_FORMAT_TIME, timestamp);
+    gst_segment_to_stream_time (&base->segment, GST_FORMAT_TIME, timestamp);
 
   GST_DEBUG_OBJECT (self, "sync to %" GST_TIME_FORMAT,
-      GST_TIME_ARGS (timestamp));
+		    GST_TIME_ARGS (timestamp));
 
   if (GST_CLOCK_TIME_IS_VALID (stream_time))
     gst_object_sync_values (G_OBJECT (self), stream_time);
 
   num_samples =
-      GST_BUFFER_SIZE (buf) / (GST_AUDIO_FILTER (self)->format.width / 8);
+    GST_BUFFER_SIZE (buf) / (GST_AUDIO_FILTER (self)->format.width / 8);
 
   if (self->buffer == NULL) {
     guint width, rate, channels;
@@ -341,10 +340,9 @@ gst_audio_delay_transform_ip (GstBaseTransform * base, GstBuffer * buf)
     channels = GST_AUDIO_FILTER (self)->format.channels;
 
     self->delay_frames =
-        MAX (gst_util_uint64_scale (self->delay, rate, GST_SECOND), 1);
+      MAX (gst_util_uint64_scale (self->delay, rate, GST_SECOND), 1);
     self->buffer_size_frames =
-        MAX (gst_util_uint64_scale (self->max_delay, rate, GST_SECOND), 1);
-
+      MAX (gst_util_uint64_scale (self->max_delay, rate, GST_SECOND), 1);
     self->buffer_size = self->buffer_size_frames * width * channels;
     self->buffer = g_try_malloc0 (self->buffer_size);
     self->buffer_pos = 0;
@@ -359,3 +357,29 @@ gst_audio_delay_transform_ip (GstBaseTransform * base, GstBuffer * buf)
 
   return GST_FLOW_OK;
 }
+
+
+
+/* entry point to initialize the plug-in
+ * initialize the plug-in itself
+ * register the element factories and pad templates
+ * register the features
+ */
+static gboolean
+plugin_init (GstPlugin * plugin)
+{
+  /* initialize gst controller library */
+  gst_controller_init (NULL, NULL);
+
+  return (gst_element_register (plugin, "audiodelay", GST_RANK_NONE,
+				GST_TYPE_AUDIO_DELAY)
+	  );
+}
+#ifndef PACKAGE
+# define PACKAGE "striem"
+#endif
+GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+		   GST_VERSION_MINOR,
+		   "audiodelay",
+		   "Audio delay plugin",
+		   plugin_init, "0.0", "GPL", "striem", "http://striem.iem.at")

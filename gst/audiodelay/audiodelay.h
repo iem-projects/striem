@@ -64,4 +64,4 @@ GType gst_audio_delay_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GST_AUDIO_DELAY_H__ */
+#endif /* __GST_AUDIO_ECHO_H__ */
