@@ -186,7 +186,9 @@ class pipeline:
                         tmpctl=gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
                             tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
-                            tmpctl.set(cp, 0, lmn.get_property(cp))
+                            v=lmn.get_property(cp)
+                            print("%s: %s" % (ctl, v))
+                            tmpctl.set(cp, 0, v)
 
                         if not ctl in self.controller:
                             self.controller[ctl] = []
