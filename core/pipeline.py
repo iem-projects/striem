@@ -213,6 +213,12 @@ class pipeline:
                 print("lmn[%s] %s:%s" % (name, lmn, props))
                 for p in props:
                     lmn.set_property(p, value)
+    def setProperty(self, element, prop, value):
+        lmn=self.pipeline.get_by_name(element)
+        if not lmn:
+            continue
+        lmn.set_property(prop, value)
+
     def setGui(self, gui):
         # http://stackoverflow.com/questions/1873113/how-to-implement-a-video-widget-in-qt-that-builds-upon-gstreamer
         #gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(sink), widget->winId());
