@@ -57,19 +57,19 @@ class streamer:
             self.changeTextPosition(id, x, y)
 
 
-    def changeGain(self, value):
+    def setGain(self, value):
         print("gain: %s" % (value))
         self.cfg.set("audio", "gain", value)
         self.pip.setControl("GAIN", (value+100.)*0.01, 10.)
-    def changeDelay(self, value):
+    def setDelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)
-    def changeTextFont(self, id, face, size):
+    def setTextFont(self, id, face, size):
         desc=str(face)+ " " + str(size)
         self.cfg.set(id, "text.face", face)
         self.cfg.set(id, "text.size", size)
         print("Font['%s']: %s" %( id, desc))
-    def changeTextPosition(self, id, x, y):
+    def setTextPosition(self, id, x, y):
         self.cfg.set(id, "text.X", x)
         self.cfg.set(id, "text.Y", y)
         print("Font['%s']: %f/%f" %( id, x,y))

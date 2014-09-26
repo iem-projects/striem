@@ -64,20 +64,20 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
     def _setGain(self, value):
         print("gain: %d[dB]" % (value))
     def __setGain(self, value):
-        self.streamer.changeGain(value)
+        self.streamer.setGain(value)
     def _setDelay(self, value):
         print("delay: %d[ms]" % (value))
     def __setDelay(self, value):
-        self.streamer.changeDelay(value)
+        self.streamer.setDelay(value)
     def _fontChanged(self, id, face, size):
         desc=str(face)+ " " + str(size)
         print("font['%s']: %s" %( id, desc))
     def __fontChanged(self, id, face, size):
-        self.streamer.changeTextFont(id, face, size)
+        self.streamer.setTextFont(id, face, size)
     def _fontPos(self, id, x, y):
         print("font['%s']: %f/%f" %( id, x,y))
     def __fontPos(self, id, x, y):
-        self.streamer.changeTextPosition(id, x, y)
+        self.streamer.setTextPosition(id, x, y)
 
     def _fontPieceChanged(self, value):
         fnt=self.piece_font.currentFont().family()
