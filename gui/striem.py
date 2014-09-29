@@ -32,8 +32,12 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
         self.setupUi(self)
         self.setupConnections()
-    def closeEvent(self, event):
+
         # ignore Alt-F4 and window-close events
+        #self.closeEvent=self._closeEvent
+
+    def _closeEvent(self, event):
+        print event
         event.ignore()
     def setupConnections(self):
         self.actionQuit.activated.connect(self.exit)
