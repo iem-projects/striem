@@ -81,13 +81,19 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def getWindow(self, name):
         if self.app:
             self.app.syncX();
-
         if "preview" == name:
             return self.previewWidget.winId()
         if "live" == name:
             return self.liveWidget.winId()
         return None
-
+    def changedText(self, id, txt):
+        self.streamer.setText(id, txt)
+    def _setPiece(self):
+        self.changedText("piece", self.titleEdit.text())
+    def _setComposer(self):
+        self.changedText("composer", self.composerEdit.text())
+    def _setInterpreter(self):
+        self.changedText("interpreter", self.interpretEdit.text())
 
 if __name__ == '__main__':
     import sys
