@@ -38,7 +38,8 @@ class streamer:
         self.pip = pipeline.pipeline("core/pipelines/test.gst")
 
         self.setGui = self.pip.setGui
-        self.pip.run(True)
+        self.run    = self.pip.run
+        #self.pip.run(True)
     def teardown(self):
         self.cfg.save()
         self.pip.run(False)

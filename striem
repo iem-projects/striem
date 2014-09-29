@@ -42,6 +42,7 @@ if __name__ == '__main__':
     form = gui.striem(app=app, streamer=streamer)
 
     streamer.setGui(form)
+    streamer.run(True)
 
     form.show()
     # Run the main Qt loop
