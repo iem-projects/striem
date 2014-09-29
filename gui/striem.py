@@ -48,6 +48,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.actionStreamPrefs.activated.connect(self.open_streamprefs)
         self.showTextButton.clicked.connect(self.runningTick)
         self.hideTextButton.clicked.connect(self._resetTick)
+        self.titleEdit.editingFinished.connect(self._setPiece)
+        self.composerEdit.editingFinished.connect(self._setComposer)
+        self.interpretEdit.editingFinished.connect(self._setInterpreter)
 
     def _resetTick(self):
         self.runningTick(False)
