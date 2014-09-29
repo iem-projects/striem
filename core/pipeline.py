@@ -110,20 +110,24 @@ def _ctrlRead(conffile=None):
     if not conffile:
         return None
     ret={}
+    lines=[]
     try:
         with open(conffile, 'r') as f:
-            xx=f.readline().split()
-            name=xx[0]
-            if not name in ret:
-                ret[name]={}
-            d=ret[name]
-            for lp in xx[1:]:
-                (l,_,p) = lp.partition('.')
-                if not l in ret[name]:
-                    ret[name][l]=[]
-                ret[name][l]+=[p]
+            lines=[x.strip().split() for x in f.readlines()]
     except IOError:
         return None
+
+    for line in lines:
+        name=line[0]
+        if not name in ret:
+            ret[name]={}
+        d=ret[name]
+        for lp in line[1:]:
+            (l,_,p) = lp.partition('.')
+            if not l in ret[name]:
+                ret[name][l]=[]
+            ret[name][l]+=[p]
+
     return ret
 
 class pipeline:
