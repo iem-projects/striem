@@ -254,7 +254,8 @@ class pipeline:
     def setProperty(self, element, prop, value):
         lmn=self.pipeline.get_by_name(element)
         if not lmn:
-            continue
+            #continue
+            return
         lmn.set_property(prop, value)
 
     def setGui(self, gui):
