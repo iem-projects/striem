@@ -27,6 +27,10 @@
 
 import configuration, pipeline
 
+import math
+
+_db=math.log(10)/20
+
 class streamer:
     def __init__(self):
         self.cfgbak=configuration.configuration()
@@ -55,12 +59,13 @@ class streamer:
             y=self.cfg.get(id, "text.Y")
             self.changeTextFont(id, face, size)
             self.changeTextPosition(id, x, y)
-
-
     def setGain(self, value):
         print("gain: %s" % (value))
         self.cfg.set("audio", "gain", value)
-        self.pip.setControl("GAIN", (value+100.)*0.01, 10.)
+        f=0
+        if(value>-100):
+            f=math.exp(_db*value)
+        self.pip.setControl("GAIN", f, 10.)
     def setDelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)

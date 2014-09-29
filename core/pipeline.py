@@ -45,7 +45,7 @@ def _pipeParseCtrl(pipestring=""):
     parse a pipestring to extract all ctl.NAME: properties
     returns a tuple containing:
     - a cleaned up pipestring
-    - a dictionary with {NAME: {elementname, [propertyname]}} mappings
+    - a dictionary with {NAME: {elementname, [propertyname,]}} mappings
       - listing all properties (propertyname) in element (elementname) that listen to NAME
     CAVEATS:
       - the elementname-resolving code is experimental. use the "name" property to help it
@@ -94,21 +94,54 @@ def _pipeParseCtrl(pipestring=""):
 def _pipeRead(pipefile=None, mydict=dict()):
     if not pipefile:
         print "no pipefile specified for pipe"
-        return
-    with open(pipefile, 'r') as f:
-        data=f.read().replace('\\\n', '')
+        return None
+    try:
+        with open(pipefile, 'r') as f:
+            data=f.read().replace('\\\n', '')
+    except IOError:
+        return None
     ## replace some macros
     if data:
         for k,v in mydict.items():
             data=data.replace('@%s@' % k, v)
     return data
 
+def _ctrlRead(conffile=None):
+    if not conffile:
+        return None
+    ret={}
+    try:
+        with open(conffile, 'r') as f:
+            xx=f.readline().split()
+            name=xx[0]
+            if not name in ret:
+                ret[name]={}
+            d=ret[name]
+            for lp in xx[1:]:
+                (l,_,p) = lp.partition('.')
+                if not l in ret[name]:
+                    ret[name][l]=[]
+                ret[name][l]+=[p]
+    except IOError:
+        return None
+    return ret
+
 class pipeline:
     def __init__(self, filename="default.gst", config=dict()):
+        conffile=None
+        extension=".gst"
+        if filename.endswith(extension):
+            conffile=filename[:-len(extension)]+".ctl"
         self.eventhandlers=dict()
         self.restart   = False
         self.config    =config
-        (self.pipestring, ctrls) = _pipeParseCtrl(_pipeRead(filename, config))
+
+        #(self.pipestring, ctrls) = _pipeParseCtrl(_pipeRead(filename, config))
+        self.pipestring = _pipeRead(filename, config)
+        ctrls=_ctrlRead(conffile)
+
+        print("pipeline: %s" % (self.pipestring))
+        print("ctrls: %s" % (ctrls))
 
         self.setEventHandlers(None)
 
@@ -118,6 +151,8 @@ class pipeline:
 
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("live")
+
+        print("OUT: %s\t%s", self.previewOut, self.liveOut)
 
         ## get all controllables
         control_dict={}
@@ -130,39 +165,42 @@ class pipeline:
 
         self.controller={}
         self.setter={}
-        for ctl,elemprop in ctrls.iteritems():
-            ## ctl = 'FOO'
-            ## elemprop = {'textoverlay_3': ['xpos'], 'textoverlay_1': ['ypos', 'xpos']}
-            for elem,props in elemprop.iteritems():
-                ## elem = 'textoverlay_3'
-                ## prop = ['xpos']
-                ctlprops=[]
-                setprops=[]
-                for p in props:
-                    if (elem in control_dict) and (p in control_dict[elem]):
-                        ctlprops+=[p]
-                    else:
-                        setprops+=[p]
-                lmn=self.pipeline.get_by_name(elem)
-                print("element '%s' %s" % (elem, lmn))
-                ## create a controller
-                if ctlprops:
-                    tmpctl=gst.Controller(lmn, *ctlprops)
-                    for cp in ctlprops:
-                        tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
-                        tmpctl.set(cp, 0, lmn.get_property(cp))
+        if ctrls:
+            for ctl,elemprop in ctrls.iteritems():
+                ## ctl = 'FOO'
+                ## elemprop = {'textoverlay_3': ['xpos'], 'textoverlay_1': ['ypos', 'xpos']}
+                for elem,props in elemprop.iteritems():
+                    ## elem = 'textoverlay_3'
+                    ## prop = ['xpos']
+                    ctlprops=[]
+                    setprops=[]
+                    for p in props:
+                        if (elem in control_dict) and (p in control_dict[elem]):
+                            ctlprops+=[p]
+                        else:
+                            setprops+=[p]
+                    lmn=self.pipeline.get_by_name(elem)
+                    print("element '%s' %s" % (elem, lmn))
+                    ## create a controller
+                    if ctlprops:
+                        tmpctl=gst.Controller(lmn, *ctlprops)
+                        for cp in ctlprops:
+                            tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
+                            v=lmn.get_property(cp)
+                            print("%s: %s" % (ctl, v))
+                            tmpctl.set(cp, 0, v)
 
-                    if not ctl in self.controller:
-                        self.controller[ctl] = []
-                    self.controller[ctl] += [(tmpctl,ctlprops)]
-                ## create setters
-                ## (this is just a list so we remember)
-                if setprops:
-                    if not ctl in self.setter:
-                        self.setter[ctl] = {}
-                    if not lmn in self.setter[ctl]:
-                        self.setter[ctl][lmn] = []
-                    self.setter[ctl][lmn] += setprops
+                        if not ctl in self.controller:
+                            self.controller[ctl] = []
+                        self.controller[ctl] += [(tmpctl,ctlprops)]
+                    ## create setters
+                    ## (this is just a list so we remember)
+                    if setprops:
+                        if not ctl in self.setter:
+                            self.setter[ctl] = {}
+                        if not lmn in self.setter[ctl]:
+                            self.setter[ctl][lmn] = []
+                        self.setter[ctl][lmn] += setprops
 
 
     def teardown(self):
@@ -226,10 +264,12 @@ class pipeline:
             return
         if self.previewOut:
             winid=gui.getWindow("preview")
+            print("preview: %s" % (winid))
             if winid:
                 self.previewOut.set_xwindow_id(winid)
         if self.liveOut:
             winid=gui.getWindow("live")
+            print("live: %s" % (winid))
             if winid:
                 self.liveOut.set_xwindow_id(winid)
 
