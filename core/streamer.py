@@ -49,16 +49,16 @@ class streamer:
     def revert(self):
         self.cfg=configuration.configuration(self.cfgbak)
 
-        self.changeGain(self.cfg.get("audio", "gain"))
-        self.changeDelay(self.cfg.get("audio", "delay"))
+        self.setGain(self.cfg.get("audio", "gain"))
+        self.setDelay(self.cfg.get("audio", "delay"))
 
         for id in [ "piece", "composer", "interpreter" ]:
             face=self.cfg.get(id, "text.face")
             size=self.cfg.get(id, "text.size")
             x=self.cfg.get(id, "text.X")
             y=self.cfg.get(id, "text.Y")
-            self.changeTextFont(id, face, size)
-            self.changeTextPosition(id, x, y)
+            self.setTextFont(id, face, size)
+            self.setTextPosition(id, x, y)
     def setGain(self, value):
         print("gain: %s" % (value))
         self.cfg.set("audio", "gain", value)
