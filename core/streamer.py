@@ -74,13 +74,16 @@ class streamer:
         desc=str(face)+ " " + str(size)
         self.cfg.set(id, "text.face", face)
         self.cfg.set(id, "text.size", size)
-        id="font."+id
         #print("Font['%s']: %s" %( id, desc))
-        self.pip.setControl(id, desc)
+        self.pip.setControl("font."+id, desc)
     def setTextPosition(self, id, x, y):
         self.cfg.set(id, "text.X", x)
         self.cfg.set(id, "text.Y", y)
         print("Font['%s']: %f/%f" %( id, x,y))
+        self.pip.setControl("posX."+id, x)
+        self.pip.setControl("posY."+id, y)
+    def setText(self, id, txt):
+        self.pip.setControl("text."+id, txt)
 
     def getGain(self):
         v= self.cfg.get("audio", "gain")
