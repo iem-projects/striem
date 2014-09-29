@@ -162,7 +162,7 @@ class pipeline:
         control_dict={}
         for lmn in self.pipeline.elements():
             for p in lmn.props:
-                if p.flags & gst.PARAM_CONTROLLABLE:
+                if False and p.flags & gst.PARAM_CONTROLLABLE:
                     if not lmn.props.name in control_dict:
                         control_dict[lmn.props.name]=[]
                     control_dict[lmn.props.name]+=[p.name]
@@ -277,7 +277,6 @@ class pipeline:
             print("live: 0x%X" % (winid))
             if winid:
                 self.liveOut.set_xwindow_id(winid)
-
 
 ######################################################################
 if __name__ == '__main__':
