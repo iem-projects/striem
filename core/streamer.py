@@ -73,7 +73,9 @@ class streamer:
         desc=str(face)+ " " + str(size)
         self.cfg.set(id, "text.face", face)
         self.cfg.set(id, "text.size", size)
-        print("Font['%s']: %s" %( id, desc))
+        id="font."+id
+        #print("Font['%s']: %s" %( id, desc))
+        self.pip.setControl(id, desc)
     def setTextPosition(self, id, x, y):
         self.cfg.set(id, "text.X", x)
         self.cfg.set(id, "text.Y", y)
