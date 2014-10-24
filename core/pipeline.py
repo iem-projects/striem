@@ -118,6 +118,8 @@ def _ctrlRead(conffile=None):
         return None
 
     for line in lines:
+        if not line:
+            continue
         name=line[0]
         if not name in ret:
             ret[name]={}
