@@ -76,7 +76,14 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="piece_posX"/>
+                <widget class="QDoubleSpinBox" name="piece_posX">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label">
@@ -101,7 +108,14 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="piece_posY"/>
+                <widget class="QDoubleSpinBox" name="piece_posY">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_2">
@@ -175,7 +189,11 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="composer_posX"/>
+                <widget class="QDoubleSpinBox" name="composer_posX">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_3">
@@ -200,7 +218,14 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="composer_posY"/>
+                <widget class="QDoubleSpinBox" name="composer_posY">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_4">
@@ -274,7 +299,14 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="interpreter_posX"/>
+                <widget class="QDoubleSpinBox" name="interpreter_posX">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_5">
@@ -299,7 +331,14 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QDoubleSpinBox" name="interpreter_posY"/>
+                <widget class="QDoubleSpinBox" name="interpreter_posY">
+                 <property name="minimum">
+                  <double>-1000.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_6">
