@@ -43,7 +43,7 @@ _configpaths=[
 ## (float)delay
 ## (float)gain
 
-# section: piece/composer/interpreter
+# section: piece/composer/interpret
 ## (float)text.X, (float)text.Y
 ## (string)text.face
 ## (int)text.size
