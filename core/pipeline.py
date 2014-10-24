@@ -269,14 +269,18 @@ class pipeline:
             return
         if self.previewOut:
             winid=gui.getWindow("preview")
-            print("preview: 0x%X" % (winid))
             if winid:
+                print("preview: 0x%X" % (winid))
                 self.previewOut.set_xwindow_id(winid)
+            else:
+                print("preview: %s" % (winid))
         if self.liveOut:
             winid=gui.getWindow("live")
-            print("live: 0x%X" % (winid))
             if winid:
+                print("live: 0x%X" % (winid))
                 self.liveOut.set_xwindow_id(winid)
+            else:
+                print("live: %s" % (winid))
 
 ######################################################################
 if __name__ == '__main__':
