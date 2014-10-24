@@ -1,5 +1,15 @@
 GAIN	amp.amplification
-font.composer previewtextcomposer.font-desc livetextcomposer.font-desc
+font.piece previewtextpiece.font-desc
+text.piece previewtextpiece.text
+posX.piece previewtextpiece.deltax
+posY.piece previewtextpiece.deltay
+
+font.composer previewtextcomposer.font-desc
 text.composer previewtextcomposer.text
 posX.composer previewtextcomposer.deltax
 posY.composer previewtextcomposer.deltay
+
+font.interpret previewtextinterpreter.font-desc
+text.interpret previewtextinterpreter.text
+posX.interpret previewtextinterpreter.deltax
+posY.interpret previewtextinterpreter.deltay
