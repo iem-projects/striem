@@ -29,8 +29,10 @@ if __name__ == '__main__':
     #if args.logfile is None:
     #        args.logfile='stderr'
     #l = logger.logger(args.logfile)
-    import gobject
-    gobject.threads_init()
+
+    #import gobject
+    #gobject.threads_init()
+
     # Create the Qt Application
     app = QApplication(sys.argv)
     #translator = Translator(app)
