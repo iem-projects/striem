@@ -53,7 +53,7 @@ class streamer:
         self.setGain(self.cfg.get("audio", "gain"))
         self.setDelay(self.cfg.get("audio", "delay"))
 
-        for id in [ "piece", "composer", "interpreter" ]:
+        for id in [ "piece", "composer", "interpret" ]:
             face=self.cfg.get(id, "text.face")
             size=self.cfg.get(id, "text.size")
             x=self.cfg.get(id, "text.X")

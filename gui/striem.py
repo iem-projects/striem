@@ -108,7 +108,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def _setComposer(self):
         self.changedText("composer", self.composerEdit.text())
     def _setInterpreter(self):
-        self.changedText("interpreter", self.interpretEdit.text())
+        self.changedText("interpret", self.interpretEdit.text())
 
 if __name__ == '__main__':
     import sys
