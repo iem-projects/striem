@@ -14,9 +14,11 @@ all: $(PYFILES)
 
 
 usage:
+	@echo ""
 	@echo "UI: $(UIFILES)"
 	@echo "PY: $(PYFILES)"
 	@echo "run 'make all' to build all UIs"
 	@echo " or 'make <PYfile>' to build specific UIs"
+	@echo ""
 	@echo "for editing an UI-file use"
 	@echo " designer-qt4 $(UIFILES)"
