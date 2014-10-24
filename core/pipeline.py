@@ -18,10 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import GLib, GObject, Gst, GstVideo
 
+
+GObject.threads_init()
+Gst.init(None)
 
 ## build a GStreamer pipeline,
 ### basic configuration: URL,sources,...
@@ -151,9 +154,9 @@ class pipeline:
 
         self.setEventHandlers(None)
 
-        self.pipeline  = gst.parse_launch(self.pipestring)
+        self.pipeline  = Gst.parse_launch(self.pipestring)
         self.bus       = self.pipeline.get_bus()
-        self.bus.add_watch(self._async_handler)
+        self.bus.add_watch(GLib.PRIORITY_DEFAULT, self._async_handler, None)
 
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("live")
@@ -162,7 +165,7 @@ class pipeline:
 
         ## get all controllables
         control_dict={}
-        for lmn in self.pipeline.elements():
+        for lmn in self.pipeline.iterate_elements():
             for p in lmn.props:
                 if False and p.flags & gst.PARAM_CONTROLLABLE:
                     if not lmn.props.name in control_dict:
@@ -212,7 +215,7 @@ class pipeline:
     def teardown(self):
         self.EOS()
 
-    def _async_handler (self, bus, message):
+    def _async_handler (self, bus, message, data):
         try:
             ret=self.eventhandlers[message.type](bus, message)
         except KeyError:
@@ -221,7 +224,7 @@ class pipeline:
             return True
         return bool(ret)
     def _EOS(self, bus, message):
-        self.pipeline.set_state(gst.STATE_NULL)
+        self.pipeline.set_state(Gst.State.NULL)
     def onEvent(self, bus, message):
         """catch all events not handled by more specific handlers"""
         pass
@@ -229,25 +232,25 @@ class pipeline:
     def setEventHandlers(self, handlers=dict()):
         """
         set the event-handlers using a (message.type -> function) mapping.
-        e.g. handlers={gst.MESSAGE_EOS: myEOSfun} will call
+        e.g. handlers={Gst.MESSAGE_EOS: myEOSfun} will call
         myEOSfun(bus, message) for each EOS-msg received on the pipeline.
         handlers are added in cumulative way (calling this functions multiple times
         will add/update the event-handlers for the given msg-types)
         an None handler will reset the event-handlers to the default.
         """
         if handlers is None:
-            self.eventhandlers={gst.MESSAGE_EOS: self._EOS}
+            self.eventhandlers={Gst.MessageType.EOS: self._EOS}
         else:
             self.eventhandlers.update(handlers)
     def EOS(self):
         self.pipeline.send_event(gst.event_new_eos())
     def run(self, state=True):
         if(state):
-            self.pipeline.set_state(gst.STATE_PLAYING)
+            self.pipeline.set_state(Gst.State.PLAYING)
         else:
-            self.pipeline.set_state(gst.STATE_READY)
+            self.pipeline.set_state(Gst.State.READY)
     def setControl(self, name, value, time=0):
-        gsttime=time*gst.SECOND
+        gsttime=time*Gst.SECOND
         if name in self.controller:
             for (ctl,props) in self.controller[name]:
                 for p in props:
@@ -273,14 +276,14 @@ class pipeline:
             winid=gui.getWindow("preview")
             if winid:
                 print("preview: 0x%X" % (winid))
-                self.previewOut.set_xwindow_id(winid)
+                self.previewOut.set_window_handle(winid)
             else:
                 print("preview: %s" % (winid))
         if self.liveOut:
             winid=gui.getWindow("live")
             if winid:
                 print("live: 0x%X" % (winid))
-                self.liveOut.set_xwindow_id(winid)
+                self.liveOut.set_window_handle(winid)
             else:
                 print("live: %s" % (winid))
 
