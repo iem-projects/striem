@@ -30,9 +30,9 @@ class noWidget():
         return None
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
-    def __init__(self, app=None, streamer=None):
+    def __init__(self, app=None, streamer=None, closeable=False):
         super(striem, self).__init__()
-
+        self.allowClose=closeable
         self.previewWidget=noWidget()
         self.liveWidget=noWidget()
         self.app=app
@@ -44,11 +44,14 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.setupConnections()
 
         # ignore Alt-F4 and window-close events
-        #self.closeEvent=self._closeEvent
+        if self.allowClose:
+            self.actionQuit.setShortcut("Ctrl+Q")
+        else:
+            self.closeEvent=self._closeEvent
 
     def _closeEvent(self, event):
-        print event
-        event.ignore()
+        if not self.allowClose:
+            event.ignore()
     def setupConnections(self):
         self.actionQuit.activated.connect(self.exit)
         self.actionStreamStart.toggled.connect(self.stream)
