@@ -23,6 +23,12 @@ import streamcontrols, streampreferences
 
 import striem_ui
 
+class noWidget():
+    def __init__(self):
+        pass
+    def winId(self):
+        return None
+
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def __init__(self, app=None, streamer=None):
         super(striem, self).__init__()
