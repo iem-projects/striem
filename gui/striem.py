@@ -32,6 +32,9 @@ class noWidget():
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def __init__(self, app=None, streamer=None):
         super(striem, self).__init__()
+
+        self.previewWidget=noWidget()
+        self.liveWidget=noWidget()
         self.app=app
         self.streamer=streamer
         self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer)
