@@ -29,17 +29,17 @@
 G_BEGIN_DECLS
 
 #define GST_TYPE_AUDIO_DELAY            (gst_audio_delay_get_type())
-#define GST_AUDIO_DELAY(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_AUDIO_DELAY,GstAudiodelay))
+#define GST_AUDIO_DELAY(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_AUDIO_DELAY,GstAudioDelay))
 #define GST_IS_AUDIO_DELAY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_AUDIO_DELAY))
-#define GST_AUDIO_DELAY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass) ,GST_TYPE_AUDIO_DELAY,GstAudiodelayClass))
+#define GST_AUDIO_DELAY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass) ,GST_TYPE_AUDIO_DELAY,GstAudioDelayClass))
 #define GST_IS_AUDIO_DELAY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass) ,GST_TYPE_AUDIO_DELAY))
-#define GST_AUDIO_DELAY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj) ,GST_TYPE_AUDIO_DELAY,GstAudiodelayClass))
-typedef struct _GstAudiodelay GstAudiodelay;
-typedef struct _GstAudiodelayClass GstAudiodelayClass;
+#define GST_AUDIO_DELAY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj) ,GST_TYPE_AUDIO_DELAY,GstAudioDelayClass))
+typedef struct _GstAudioDelay GstAudioDelay;
+typedef struct _GstAudioDelayClass GstAudioDelayClass;
 
-typedef void (*GstAudiodelayProcessFunc) (GstAudiodelay *, guint8 *, guint);
+typedef void (*GstAudioDelayProcessFunc) (GstAudioDelay *, guint8 *, guint);
 
-struct _GstAudiodelay
+struct _GstAudioDelay
 {
   GstAudioFilter audiofilter;
 
@@ -47,7 +47,7 @@ struct _GstAudiodelay
   guint64 max_delay;
 
   /* < private > */
-  GstAudiodelayProcessFunc process;
+  GstAudioDelayProcessFunc process;
   guint delay_frames;
   guint8 *buffer;
   guint buffer_pos;
@@ -55,7 +55,7 @@ struct _GstAudiodelay
   guint buffer_size_frames;
 };
 
-struct _GstAudiodelayClass
+struct _GstAudioDelayClass
 {
   GstAudioFilterClass parent;
 };
@@ -64,4 +64,4 @@ GType gst_audio_delay_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GST_AUDIO_ECHO_H__ */
+#endif /* __GST_AUDIO_DELAY_H__ */

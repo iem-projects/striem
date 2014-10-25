@@ -71,7 +71,7 @@ enum
 #define DEBUG_INIT(bla)							\
   GST_DEBUG_CATEGORY_INIT (gst_audio_delay_debug, "audiodelay", 0, "audiodelay element");
 
-GST_BOILERPLATE_FULL (GstAudiodelay, gst_audio_delay, GstAudioFilter,
+GST_BOILERPLATE_FULL (GstAudioDelay, gst_audio_delay, GstAudioFilter,
 		      GST_TYPE_AUDIO_FILTER, DEBUG_INIT);
 
 static void gst_audio_delay_set_property (GObject * object, guint prop_id,
@@ -86,9 +86,9 @@ static gboolean gst_audio_delay_stop (GstBaseTransform * base);
 static GstFlowReturn gst_audio_delay_transform_ip (GstBaseTransform * base,
 						   GstBuffer * buf);
 
-static void gst_audio_delay_transform_float (GstAudiodelay * self,
+static void gst_audio_delay_transform_float (GstAudioDelay * self,
 					     gfloat * data, guint num_samples);
-static void gst_audio_delay_transform_double (GstAudiodelay * self,
+static void gst_audio_delay_transform_double (GstAudioDelay * self,
 					      gdouble * data, guint num_samples);
 
 /* GObject vmethod implementations */
@@ -111,7 +111,7 @@ gst_audio_delay_base_init (gpointer klass)
 }
 
 static void
-gst_audio_delay_class_init (GstAudiodelayClass * klass)
+gst_audio_delay_class_init (GstAudioDelayClass * klass)
 {
   GObjectClass *gobject_class = (GObjectClass *) klass;
   GstBaseTransformClass *basetransform_class = (GstBaseTransformClass *) klass;
@@ -142,7 +142,7 @@ gst_audio_delay_class_init (GstAudiodelayClass * klass)
 }
 
 static void
-gst_audio_delay_init (GstAudiodelay * self, GstAudiodelayClass * klass)
+gst_audio_delay_init (GstAudioDelay * self, GstAudioDelayClass * klass)
 {
   self->delay = 1;
   self->max_delay = 1;
@@ -153,7 +153,7 @@ gst_audio_delay_init (GstAudiodelay * self, GstAudiodelayClass * klass)
 static void
 gst_audio_delay_finalize (GObject * object)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (object);
+  GstAudioDelay *self = GST_AUDIO_DELAY (object);
 
   g_free (self->buffer);
   self->buffer = NULL;
@@ -165,7 +165,7 @@ static void
 gst_audio_delay_set_property (GObject * object, guint prop_id,
 			      const GValue * value, GParamSpec * pspec)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (object);
+  GstAudioDelay *self = GST_AUDIO_DELAY (object);
 
   switch (prop_id) {
   case PROP_DELAY:{
@@ -214,7 +214,7 @@ static void
 gst_audio_delay_get_property (GObject * object, guint prop_id,
 			      GValue * value, GParamSpec * pspec)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (object);
+  GstAudioDelay *self = GST_AUDIO_DELAY (object);
 
   switch (prop_id) {
   case PROP_DELAY:
@@ -238,14 +238,14 @@ gst_audio_delay_get_property (GObject * object, guint prop_id,
 static gboolean
 gst_audio_delay_setup (GstAudioFilter * base, GstRingBufferSpec * format)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (base);
+  GstAudioDelay *self = GST_AUDIO_DELAY (base);
   gboolean ret = TRUE;
 
   if (format->type == GST_BUFTYPE_FLOAT && format->width == 32)
-    self->process = (GstAudiodelayProcessFunc)
+    self->process = (GstAudioDelayProcessFunc)
       gst_audio_delay_transform_float;
   else if (format->type == GST_BUFTYPE_FLOAT && format->width == 64)
-    self->process = (GstAudiodelayProcessFunc)
+    self->process = (GstAudioDelayProcessFunc)
       gst_audio_delay_transform_double;
   else
     ret = FALSE;
@@ -262,7 +262,7 @@ gst_audio_delay_setup (GstAudioFilter * base, GstRingBufferSpec * format)
 static gboolean
 gst_audio_delay_stop (GstBaseTransform * base)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (base);
+  GstAudioDelay *self = GST_AUDIO_DELAY (base);
 
   g_free (self->buffer);
   self->buffer = NULL;
@@ -275,7 +275,7 @@ gst_audio_delay_stop (GstBaseTransform * base)
 
 #define TRANSFORM_FUNC(name, type)					\
   static void								\
-  gst_audio_delay_transform_##name (GstAudiodelay * self,		\
+  gst_audio_delay_transform_##name (GstAudioDelay * self,		\
 				    type * data, guint num_samples)	\
   {									\
     type *buffer = (type *) self->buffer;				\
@@ -315,7 +315,7 @@ TRANSFORM_FUNC (double, gdouble);
 static GstFlowReturn
 gst_audio_delay_transform_ip (GstBaseTransform * base, GstBuffer * buf)
 {
-  GstAudiodelay *self = GST_AUDIO_DELAY (base);
+  GstAudioDelay *self = GST_AUDIO_DELAY (base);
   guint num_samples;
   GstClockTime timestamp, stream_time;
 
