@@ -1,7 +1,7 @@
 default: libgstaudiodelay.so
 
-GST_PLUGIN_CFLAGS=$(shell pkg-config --cflags gstreamer-0.10 gstreamer-plugins-base-0.10 gstreamer-audio-0.10 gstreamer-controller-0.10)
-GST_PLUGIN_LDFLAGS=$(shell pkg-config --libs gstreamer-0.10 gstreamer-plugins-base-0.10 gstreamer-audio-0.10 gstreamer-controller-0.10)
+GST_PLUGIN_CFLAGS=$(shell pkg-config --cflags gstreamer-1.0 gstreamer-plugins-base-1.0 gstreamer-audio-1.0 gstreamer-controller-1.0)
+GST_PLUGIN_LDFLAGS=$(shell pkg-config --libs gstreamer-1.0 gstreamer-plugins-base-1.0 gstreamer-audio-1.0 gstreamer-controller-1.0)
 
 .PHONY: default test
 
