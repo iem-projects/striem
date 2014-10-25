@@ -21,7 +21,7 @@
 from PySide import QtGui
 import streamcontrols_ui
 
-class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
+class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streamcontrols, self).__init__(guiparent)
         self.streamer=streamer
