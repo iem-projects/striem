@@ -35,8 +35,11 @@ class streamer:
     def __init__(self):
         self.cfgbak=configuration.configuration()
         self.cfg=configuration.configuration(self.cfgbak)
-        self.pip = pipeline.pipeline("core/pipelines/test.gst")
+        pipefile=self.cfg.get("stream", "pipeline")
+        if not pipefile:
+            pipefile="core/pipelines/test.gst"
 
+        self.pip = pipeline.pipeline(pipefile)
         self.setGui = self.pip.setGui
         self.run    = self.pip.run
         #self.pip.run(True)
