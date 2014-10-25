@@ -53,6 +53,8 @@ struct _GstAudioDelay
   guint buffer_pos;
   guint buffer_size;
   guint buffer_size_frames;
+
+  GMutex lock;
 };
 
 struct _GstAudioDelayClass
