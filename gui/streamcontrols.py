@@ -64,11 +64,11 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
     def _setAGain(self, value):
         print("audio gain: %d[dB]" % (value))
     def __setAGain(self, value):
-        self.streamer.setGain(value)
+        self.streamer.setAGain(value)
     def _setADelay(self, value):
         print("audio delay: %d[ms]" % (value))
     def __setADelay(self, value):
-        self.streamer.setDelay(value)
+        self.streamer.setADelay(value)
     def _fontChanged(self, id, face, size):
         desc=str(face)+ " " + str(size)
         print("font['%s']: %s" %( id, desc))
@@ -109,8 +109,8 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamcontrols):
         if not self.streamer:
             return false
         oldstate = self.blockSignals(True)
-        self.againValue.setValue(self.streamer.getGain())
-        self.adelayValue.setValue(self.streamer.getDelay())
+        self.againValue.setValue(self.streamer.getAGain())
+        self.adelayValue.setValue(self.streamer.getADelay())
         for (id, _font, _size, _x, _y) in [
                 ("piece", self.piece_font, self.piece_fontSize,self.piece_posX, self.piece_posY),
                 ("composer", self.composer_font, self.composer_fontSize, self.composer_posX, self.composer_posY),

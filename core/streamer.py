@@ -50,8 +50,8 @@ class streamer:
     def revert(self):
         self.cfg=configuration.configuration(self.cfgbak)
 
-        self.setGain(self.cfg.get("audio", "gain"))
-        self.setDelay(self.cfg.get("audio", "delay"))
+        self.setAGain (self.cfg.get("audio", "gain"))
+        self.setADelay(self.cfg.get("audio", "delay"))
 
         for id in [ "piece", "composer", "interpret" ]:
             face=self.cfg.get(id, "text.face")
@@ -60,14 +60,14 @@ class streamer:
             y=self.cfg.get(id, "text.Y")
             self.setTextFont(id, face, size)
             self.setTextPosition(id, x, y)
-    def setGain(self, value):
+    def setAGain(self, value):
         print("gain: %s" % (value))
         self.cfg.set("audio", "gain", value)
         f=0
         if(value>-100):
             f=math.exp(_db*value)
         self.pip.setControl("GAIN", f, 10.)
-    def setDelay(self, value):
+    def setADelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)
     def setTextFont(self, id, face, size):
@@ -85,10 +85,10 @@ class streamer:
     def setText(self, id, txt):
         self.pip.setControl("text."+id, txt)
 
-    def getGain(self):
+    def getAGain(self):
         v= self.cfg.get("audio", "gain")
         return v
-    def getDelay(self):
+    def getADelay(self):
         return self.cfg.get("audio", "delay")
     def getTextFont(self, id):
         face=self.cfg.get(id, "text.face")
