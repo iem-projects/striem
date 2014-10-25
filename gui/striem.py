@@ -54,8 +54,13 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
 
     def _closeEvent(self, event):
+        print("close event: %s" % (self.allowClose))
         if not self.allowClose:
             event.ignore()
+        else:
+            print("exit!")
+            self.exit()
+            print("gracefully")
     def setupConnections(self):
         self.actionQuit.activated.connect(self.exit)
         self.actionStreamStart.toggled.connect(self.stream)
