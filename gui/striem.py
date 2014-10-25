@@ -73,6 +73,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def exit(self):
         print("Bye bye")
+        if self.streamer:
+            self.streamer.teardown()
         import sys
         sys.exit()
 
