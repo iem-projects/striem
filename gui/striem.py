@@ -49,6 +49,10 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         else:
             self.closeEvent=self._closeEvent
 
+        self.streamcontrol.reject()
+        self.streamprefs  .reject()
+
+
     def _closeEvent(self, event):
         if not self.allowClose:
             event.ignore()
