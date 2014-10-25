@@ -381,9 +381,6 @@ gst_audio_delay_transform_ip (GstBaseTransform * base, GstBuffer * buf)
 static gboolean
 plugin_init (GstPlugin * plugin)
 {
-  /* initialize gst controller library */
-  gst_controller_init (NULL, NULL);
-
   return (gst_element_register (plugin, "audiodelay", GST_RANK_NONE,
 				GST_TYPE_AUDIO_DELAY)
 	  );
