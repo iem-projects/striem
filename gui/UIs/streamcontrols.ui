@@ -366,7 +366,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="audioControls">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -396,7 +396,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <item>
-          <widget class="QSlider" name="gainSlider">
+          <widget class="QSlider" name="againSlider">
            <property name="minimum">
             <number>-100</number>
            </property>
@@ -409,7 +409,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="gainValue">
+          <widget class="QSpinBox" name="againValue">
            <property name="minimum">
             <number>-100</number>
            </property>
@@ -453,10 +453,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_14">
          <item>
-          <widget class="QSlider" name="delaySlider">
-           <property name="minimum">
-            <number>-999</number>
-           </property>
+          <widget class="QSlider" name="adelaySlider">
            <property name="maximum">
             <number>999</number>
            </property>
@@ -466,10 +463,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="delayValue">
-           <property name="minimum">
-            <number>-999</number>
-           </property>
+          <widget class="QSpinBox" name="adelayValue">
            <property name="maximum">
             <number>999</number>
            </property>
@@ -547,9 +541,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>delaySlider</sender>
+   <sender>adelaySlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>delayValue</receiver>
+   <receiver>adelayValue</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -563,9 +557,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>delayValue</sender>
+   <sender>adelayValue</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>delaySlider</receiver>
+   <receiver>adelaySlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -579,9 +573,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>gainSlider</sender>
+   <sender>againSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>gainValue</receiver>
+   <receiver>againValue</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -595,9 +589,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>gainValue</sender>
+   <sender>againValue</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>gainSlider</receiver>
+   <receiver>againSlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
