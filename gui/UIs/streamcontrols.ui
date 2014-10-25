@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>streamcontrols</class>
- <widget class="QDialog" name="streamcontrols">
+ <class>streamControls</class>
+ <widget class="QDialog" name="streamControls">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>486</height>
+    <height>656</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
-    <widget class="QGroupBox" name="groupBox_13">
+    <widget class="QGroupBox" name="textControls">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -570,7 +570,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>streamcontrols</receiver>
+   <receiver>streamControls</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -586,7 +586,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>streamcontrols</receiver>
+   <receiver>streamControls</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
