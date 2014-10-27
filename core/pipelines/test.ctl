@@ -13,3 +13,5 @@ font.interpret previewtextinterpreter.font-desc
 text.interpret previewtextinterpreter.text
 posX.interpret previewtextinterpreter.deltax
 posY.interpret previewtextinterpreter.deltay
+
+text.hide previewtextpiece.silent previewtextcomposer.silent previewtextinterpreter.silent
