@@ -67,15 +67,18 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.actionStreamControls.activated.connect(self.open_streamcontrol)
         self.actionStreamPrefs.activated.connect(self.open_streamprefs)
         self.actionStreamPrefs.activated.connect(self.open_streamprefs)
-        self.showTextButton.clicked.connect(self.runningTick)
-        self.hideTextButton.clicked.connect(self._resetTick)
+        #self.showTextButton.clicked.connect(self.runningTick)
+        #self.hideTextButton.clicked.connect(self._resetTick)
+        self.showTextButton.toggled.connect(self._showText)
         self.titleEdit.editingFinished.connect(self._setPiece)
         self.composerEdit.editingFinished.connect(self._setComposer)
         self.interpretEdit.editingFinished.connect(self._setInterpreter)
+    def _showText(self, state):
+        if self.streamer:
+            self.streamer.showText(state)
 
     def _resetTick(self):
         self.runningTick(False)
-
     def exit(self):
         print("Bye bye")
         if self.streamer:
@@ -92,6 +95,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.streamprefs.show()
 
     def runningTick(self, on=True):
+        # streamstatus: when streaming this should display a progress-bar in the bottom-line
         if on:
             ## increment by one percent
             v=self.streamstatusMeter.value()+1
