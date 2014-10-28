@@ -89,6 +89,8 @@ class streamer:
         self.pip.setControl("text."+id, txt)
     def showText(self, state):
         self.pip.setControl("text.hide", not state)
+    def showVideo(self, state):
+        print("show video: %s" % (state))
     def getAGain(self):
         v= self.cfg.get("audio", "gain")
         return v
