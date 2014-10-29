@@ -286,6 +286,15 @@ class pipeline:
                 self.liveOut.set_window_handle(winid)
             else:
                 print("live: %s" % (winid))
+    def pause(self, elementname, _state):
+        lmn=self.pipeline.get_by_name(elementname)
+        print("pausing '%s' = %s" % (elementname, lmn))
+        if lmn:
+            state=Gst.State.PAUSED
+            if _state:
+                state=Gst.State.PLAYING
+            print("target state: %s" % (state))
+            return lmn.set_state(state)
 
 ######################################################################
 if __name__ == '__main__':
