@@ -92,6 +92,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def stream(self, on):
         print("stream: %s" % (on))
+        res=self.streamer.streamPause(not on)
+        print("paused: %s" % (res))
         self.actionStreamPrefs.setEnabled(not on)
     def open_streamcontrol(self):
         self.streamcontrol.show()
