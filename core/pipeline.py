@@ -258,6 +258,8 @@ class pipeline:
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
                 print("lmn[%s] %s:%s" % (name, lmn, props))
+                if not lmn:
+                    continue
                 for p in props:
                     lmn.set_property(p, value)
     def setProperty(self, element, prop, value):
