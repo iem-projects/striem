@@ -105,4 +105,4 @@ class streamer:
         size=self.cfg.get(id, "text.Y")
         return (face, size)
     def streamPause(self, state):
-        self.pip.pause("stream", state)
+        return self.pip.pause(state, "stream")
