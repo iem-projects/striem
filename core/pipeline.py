@@ -158,6 +158,9 @@ class pipeline:
         self.bus       = self.pipeline.get_bus()
         self.bus.add_watch(GLib.PRIORITY_DEFAULT, self._async_handler, None)
 
+        self.previewOut = None
+        self.liveOut    = None
+
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("live")
 
