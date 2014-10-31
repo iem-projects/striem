@@ -176,7 +176,7 @@ class pipeline:
         control_dict={}
         for lmn in self.pipeline.iterate_elements():
             for p in lmn.props:
-                if False and p.flags & gst.PARAM_CONTROLLABLE:
+                if False and p.flags & Gst.PARAM_CONTROLLABLE:
                     if not lmn.props.name in control_dict:
                         control_dict[lmn.props.name]=[]
                     control_dict[lmn.props.name]+=[p.name]
@@ -201,9 +201,9 @@ class pipeline:
                     print("element '%s' %s" % (elem, lmn))
                     ## create a controller
                     if ctlprops:
-                        tmpctl=gst.Controller(lmn, *ctlprops)
+                        tmpctl=Gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
-                            tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
+                            tmpctl.set_interpolation_mode(cp, Gst.INTERPOLATE_LINEAR)
                             v=lmn.get_property(cp)
                             print("%s: %s" % (ctl, v))
                             tmpctl.set(cp, 0, v)
