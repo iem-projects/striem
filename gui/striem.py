@@ -117,10 +117,14 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def getWindow(self, name):
         if self.app:
             self.app.syncX();
+        wdg=None
         if "preview" == name:
-            return self.previewWidget.winId()
-        if "live" == name:
-            return self.liveWidget.winId()
+            wdg=self.previewWidget
+        elif "live" == name:
+            wdg=self.liveWidget
+
+        if wdg:
+            return wdg.winId()
         return None
     def changedText(self, id, txt):
         self.streamer.setText(id, txt)
