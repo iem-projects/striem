@@ -12,12 +12,6 @@ videotestsrc
 vout.
 ! queue
 ! videoconvert
-! videoscale
-! video/x-raw,width=320,height=180
-! ximagesink name=live
-vout.
-! queue
-! videoconvert
 ! x264enc bitrate=4000 key-int-max=60 bframes=0 byte-stream=false aud=true tune=zerolatency
 ! h264parse
 ! video/x-h264,level=(string)4.1,profile=main
