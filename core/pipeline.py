@@ -38,6 +38,9 @@ res=reg.scan_path(gst_extra_path)
 ###   - gain, delay, positions
 ### -
 
+# TODO: controllers for gst-1.0
+#         -> http://tangopardo.com.ar/2cf7/2013/07/30/using-the-gstreamer-controller-subsystem-from-python
+
 
 ## pipeline descriptions:
 # "element1 ! element2 prop1=bla prop2=@FUZZ@ ! element3 prop[BAX]=12"
