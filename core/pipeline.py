@@ -162,7 +162,7 @@ class pipeline:
         self.liveOut    = None
 
         self.previewOut = self.pipeline.get_by_name("preview")
-        self.liveOut = self.pipeline.get_by_name("live")
+        self.liveOut = self.pipeline.get_by_name("preview")
 
         print("OUT: %s\t%s", self.previewOut, self.liveOut)
 
