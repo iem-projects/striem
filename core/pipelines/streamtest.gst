@@ -7,7 +7,6 @@ videotestsrc
 ! queue
 ! videoconvert
 ! videoscale
-! video/x-raw,width=320,height=180
 ! xvimagesink name=preview
 vout.
 ! queue
