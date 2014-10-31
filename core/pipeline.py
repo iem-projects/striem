@@ -18,13 +18,19 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
+import os.path
+gst_extra_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gst-1.0')
+
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import GLib, GObject, Gst, GstVideo
 
-
 GObject.threads_init()
 Gst.init(None)
+
+## add path to our own gst-1.0 plugins
+reg=Gst.Registry().get()
+res=reg.scan_path(gst_extra_path)
 
 ## build a GStreamer pipeline,
 ### basic configuration: URL,sources,...
