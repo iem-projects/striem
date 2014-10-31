@@ -390,6 +390,6 @@ plugin_init (GstPlugin * plugin)
 #endif
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
 		   GST_VERSION_MINOR,
-		   "audiodelay",
+		   audiodelay,
 		   "Audio delay plugin",
 		   plugin_init, "0.0", "LGPL", "striem", "http://striem.iem.at")
