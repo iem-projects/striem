@@ -23,7 +23,9 @@ gst_extra_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gst-1.0
 
 import gi
 gi.require_version('Gst', '1.0')
-from gi.repository import GLib, GObject, Gst, GstVideo
+from gi.repository import GLib, GObject
+from gi.repository import Gst
+from gi.repository import GstVideo, GstController
 
 GObject.threads_init()
 Gst.init(None)
