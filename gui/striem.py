@@ -33,6 +33,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def __init__(self, app=None, streamer=None, closeable=False):
         super(striem, self).__init__()
         self.allowClose=closeable
+        self.lockTextEditor=False
         self.previewWidget=noWidget()
         self.liveWidget=noWidget()
         self.app=app
@@ -77,6 +78,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def _showText(self, state):
         if self.streamer:
             self.streamer.showText(state)
+        self._textLock()
     def _showVideo(self, state):
         if self.streamer:
             self.streamer.showVideo(not state)
@@ -134,6 +136,16 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.changedText("composer", self.composerEdit.text())
     def _setInterpreter(self):
         self.changedText("interpret", self.interpretEdit.text())
+    def textLock(self, value):
+        self.lockTextEditor=bool(value)
+        self._textLock()
+    def _textLock(self):
+        dolock=self.lockTextEditor
+        if not dolock:
+            self.textFrame.setEnabled(True)
+            return
+        shown=self.showTextButton.isChecked()
+        self.textFrame.setEnabled(dolock and not shown)
 
 if __name__ == '__main__':
     import sys
