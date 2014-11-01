@@ -37,8 +37,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.liveWidget=noWidget()
         self.app=app
         self.streamer=streamer
-        self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer)
-        self.streamprefs = streampreferences.streampreferences(streamer=streamer)
+        self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer, guiparent=self)
+        self.streamprefs = streampreferences.streampreferences(streamer=streamer, guiparent=self)
 
         self.setupUi(self)
         self.setupConnections()
