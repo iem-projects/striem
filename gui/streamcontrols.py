@@ -25,11 +25,17 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streamcontrols, self).__init__(guiparent)
         self.streamer=streamer
+
         if self.streamer:
             self._setAGain    = self.__setAGain
             self._setADelay   = self.__setADelay
             self._fontChanged = self.__fontChanged
             self._fontPos     = self.__fontPos
+
+        self.striem=guiparent
+        if self.striem:
+            self._textLock = self.__textLock
+
 
         self.closefunction=closefunction
         self.setupUi(self)
@@ -38,6 +44,7 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def setupConnections(self):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
+
         self.againSlider .valueChanged.connect(self.againValue  .setValue)
         self.againValue  .valueChanged.connect(self.againSlider .setValue)
         self.adelaySlider.valueChanged.connect(self.adelayValue .setValue)
@@ -45,6 +52,8 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
 
         self.againValue .valueChanged.connect(self._setAGain)
         self.adelayValue.valueChanged.connect(self._setADelay)
+
+        self.textLock.stateChanged.connect(self._textLock)
 
         self.piece_font.currentFontChanged.connect(self._fontPieceChanged)
         self.piece_fontSize.valueChanged.connect(self._fontPieceChanged)
@@ -69,6 +78,10 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         print("audio delay: %d[ms]" % (value))
     def __setADelay(self, value):
         self.streamer.setADelay(value)
+
+    def __textLock(self, value):
+        self.striem.textLock(value)
+        print("text lock: %s" % (value))
     def _fontChanged(self, id, face, size):
         desc=str(face)+ " " + str(size)
         print("font['%s']: %s" %( id, desc))

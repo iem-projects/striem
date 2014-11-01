@@ -27,6 +27,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
+       <widget class="QCheckBox" name="textLock">
+        <property name="text">
+         <string>lock text while displayed</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="pieceBox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
