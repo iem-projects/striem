@@ -1,4 +1,9 @@
 audio.gain	amp.amplification again.volume
+audio.delay	adelay.delay
+video.delay	vdelay.delaytime
+video.mute	mix.sink_1::alpha
+audio.mute	amute.volume
+
 font.piece previewtextpiece.font-desc
 text.piece previewtextpiece.text
 posX.piece previewtextpiece.deltax
