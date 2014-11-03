@@ -64,14 +64,14 @@ class streamer:
             self.setTextFont(id, face, size)
             self.setTextPosition(id, x, y)
     def setAGain(self, value):
-        print("gain: %s" % (value))
+        print("again: %s" % (value))
         self.cfg.set("audio", "gain", value)
         f=0
         if(value>-100):
             f=math.exp(_db*value)
         self.pip.setControl("audio.gain", f)
     def setADelay(self, value):
-        print("delay: %s" % (value))
+        print("adelay: %s = %s" % (value, f))
         self.cfg.set("audio", "delay", value)
     def setTextFont(self, id, face, size):
         desc=str(face)+ " " + str(size)
