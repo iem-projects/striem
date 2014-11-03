@@ -1,5 +1,6 @@
 videotestsrc pattern=18
 ! video/x-raw,pixel-aspect-ratio=(fraction)1/1, interlace-mode=(string)progressive, framerate=30/1, width=1280, height=720
+! frei0r-filter-delay0r name=vdelay delaytime=0
 ! textoverlay font-desc="Sans 72" shaded-background=True name=previewtextpiece       text="Goldberg Variation #5"
 ! textoverlay font-desc="Sans 72" shaded-background=True name=previewtextcomposer    text="J.S.Bach"
 ! textoverlay font-desc="Sans 72" shaded-background=True name=previewtextinterpreter text="Hanns Müller"
