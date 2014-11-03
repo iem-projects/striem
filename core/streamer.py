@@ -69,7 +69,7 @@ class streamer:
         f=0
         if(value>-100):
             f=math.exp(_db*value)
-        self.pip.setControl("GAIN", f, 10.)
+        self.pip.setControl("audio.gain", f)
     def setADelay(self, value):
         print("delay: %s" % (value))
         self.cfg.set("audio", "delay", value)

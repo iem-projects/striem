@@ -1,4 +1,4 @@
-GAIN	amp.amplification
+audio.gain	amp.amplification again.volume
 font.piece previewtextpiece.font-desc
 text.piece previewtextpiece.text
 posX.piece previewtextpiece.deltax
