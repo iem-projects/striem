@@ -327,6 +327,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionLoadTexts"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -386,6 +387,14 @@
   <action name="actionStreamControls">
    <property name="text">
     <string>Controls</string>
+   </property>
+  </action>
+  <action name="actionLoadTexts">
+   <property name="text">
+    <string>Open Texts...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>
