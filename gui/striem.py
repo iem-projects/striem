@@ -78,7 +78,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         #self.showTextButton.clicked.connect(self.runningTick)
         #self.hideTextButton.clicked.connect(self._resetTick)
         self.showTextButton.toggled.connect(self._showText)
-        self.blackoutButton.toggled.connect(self._showVideo)
+        self.blackoutButton.toggled.connect(self._muteVideo)
         self.titleEdit.editingFinished.connect(self._setPiece)
         self.composerEdit.editingFinished.connect(self._setComposer)
         self.interpretEdit.editingFinished.connect(self._setInterpreter)
@@ -87,7 +87,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         if self.streamer:
             self.streamer.showText(state)
         self._textLock()
-    def _showVideo(self, state):
+    def _muteVideo(self, state):
         if self.streamer:
             self.streamer.showVideo(not state)
 
