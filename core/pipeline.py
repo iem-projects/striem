@@ -203,14 +203,14 @@ class pipeline:
                         else:
                             setprops+=[p]
                     lmn=self.pipeline.get_by_name(elem)
-                    print("element '%s' %s" % (elem, lmn))
+                    #print("element '%s' %s" % (elem, lmn))
                     ## create a controller
                     if ctlprops:
                         tmpctl=Gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
                             tmpctl.set_interpolation_mode(cp, Gst.INTERPOLATE_LINEAR)
                             v=lmn.get_property(cp)
-                            print("%s: %s" % (ctl, v))
+                            #print("%s: %s" % (ctl, v))
                             tmpctl.set(cp, 0, v)
 
                         if not ctl in self.controller:
@@ -271,7 +271,7 @@ class pipeline:
                     ctl.set(p, gsttime, value)
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
-                print("lmn[%s] %s:%s" % (name, lmn, props))
+                #print("lmn[%s] %s:%s" % (name, lmn, props))
                 if not lmn:
                     continue
                 for p in props:
@@ -298,24 +298,26 @@ class pipeline:
         if self.previewOut:
             winid=gui.getWindow("preview")
             if winid:
-                print("preview: 0x%X" % (winid))
+                #print("preview: 0x%X" % (winid))
                 self.previewOut.set_window_handle(winid)
             else:
-                print("preview: %s" % (winid))
+                #print("preview: %s" % (winid))
+                pass
         if self.liveOut:
             winid=gui.getWindow("live")
             if winid:
-                print("live: 0x%X" % (winid))
+                #print("live: 0x%X" % (winid))
                 self.liveOut.set_window_handle(winid)
             else:
-                print("live: %s" % (winid))
+                #print("live: %s" % (winid))
+                pass
     def pause(self, _state, elementname=None):
         if not elementname:
             state=Gst.State.PAUSED
             if _state:
                 state=Gst.State.PLAYING
             self.pipeline.set_state(state)
-            print("pipeline :: %s" % (self.pipeline.get_state(0)))
+            #print("pipeline :: %s" % (self.pipeline.get_state(0)))
             return _state
         lmn=self.pipeline.get_by_name(elementname)
         if lmn:
@@ -323,7 +325,7 @@ class pipeline:
                 lmn.set_state(Gst.State.PAUSED)
             else:
                 lmn.sync_state_with_parent ()
-            print("lmn=%s :: %s" % (lmn, lmn.get_state(0)))
+            #print("lmn=%s :: %s" % (lmn, lmn.get_state(0)))
             return _state
         return False
 
