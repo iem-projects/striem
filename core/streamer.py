@@ -85,8 +85,8 @@ class streamer:
             value=0
         if(value>1000):
             value=1000
-        print("vdelay: %s = %s" % (value, f))
-        self.pip.setControl("video.delay", f)
+        print("vdelay: %s" % (value))
+        self.pip.setControl("video.delay", value)
         self.cfg.set("video", "delay", value)
     def setTextFont(self, id, face, size):
         desc=str(face)+ " " + str(size)
