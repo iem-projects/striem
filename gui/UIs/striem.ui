@@ -358,6 +358,9 @@
     <bool>true</bool>
    </property>
    <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
@@ -365,11 +368,17 @@
    </property>
   </action>
   <action name="actionStreamPrefs">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
