@@ -71,8 +71,24 @@ class streamer:
             f=math.exp(_db*value)
         self.pip.setControl("audio.gain", f)
     def setADelay(self, value):
+        # value in msec, but we need nanosec
+        if(value<0):
+            value=0
+        if(value>1000):
+            value=1000
+        f=value*1000000
         print("adelay: %s = %s" % (value, f))
+        self.pip.setControl("audio.delay", f)
         self.cfg.set("audio", "delay", value)
+    def setVDelay(self, value):
+        # value in msec (which is what we need)
+        if(value<0):
+            value=0
+        if(value>1000):
+            value=1000
+        print("vdelay: %s = %s" % (value, f))
+        self.pip.setControl("video.delay", f)
+        self.cfg.set("video", "delay", value)
     def setTextFont(self, id, face, size):
         desc=str(face)+ " " + str(size)
         self.cfg.set(id, "text.face", face)
