@@ -29,6 +29,7 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         if self.streamer:
             self._setAGain    = self.__setAGain
             self._setADelay   = self.__setADelay
+            self._setVDelay   = self.__setVDelay
             self._fontChanged = self.__fontChanged
             self._fontPos     = self.__fontPos
 
@@ -49,9 +50,13 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         self.againValue  .valueChanged.connect(self.againSlider .setValue)
         self.adelaySlider.valueChanged.connect(self.adelayValue .setValue)
         self.adelayValue .valueChanged.connect(self.adelaySlider.setValue)
+        self.vdelaySlider.valueChanged.connect(self.vdelayValue .setValue)
+        self.vdelayValue .valueChanged.connect(self.vdelaySlider.setValue)
 
         self.againValue .valueChanged.connect(self._setAGain)
         self.adelayValue.valueChanged.connect(self._setADelay)
+
+        self.vdelayValue.valueChanged.connect(self._setVDelay)
 
         self.textLock.stateChanged.connect(self._textLock)
 
@@ -78,6 +83,10 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         print("audio delay: %d[ms]" % (value))
     def __setADelay(self, value):
         self.streamer.setADelay(value)
+    def _setVDelay(self, value):
+        print("video delay: %d[ms]" % (value))
+    def __setVDelay(self, value):
+        self.streamer.setVDelay(value)
 
     def __textLock(self, value):
         self.striem.textLock(value)
