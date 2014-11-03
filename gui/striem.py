@@ -18,7 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide import QtGui
+from PySide import QtGui, QtCore
+import codecs
+import re
+
+
 import streamcontrols, streampreferences
 
 import striem_ui
@@ -32,6 +36,7 @@ class noWidget():
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def __init__(self, app=None, streamer=None, closeable=False):
         super(striem, self).__init__()
+        self.textinserts=[]
         self.allowClose=closeable
         self.lockTextEditor=False
         self.previewWidget=noWidget()
@@ -63,6 +68,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self.exit()
             print("gracefully")
     def setupConnections(self):
+        self.actionLoadTexts.activated.connect(self._loadTextFile)
+
         self.actionQuit.activated.connect(self.exit)
         self.actionStreamStart.toggled.connect(self.stream)
         self.actionStreamControls.activated.connect(self.open_streamcontrol)
@@ -75,6 +82,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.titleEdit.editingFinished.connect(self._setPiece)
         self.composerEdit.editingFinished.connect(self._setComposer)
         self.interpretEdit.editingFinished.connect(self._setInterpreter)
+        self.selectText.activated.connect(self._selectInsert)
     def _showText(self, state):
         if self.streamer:
             self.streamer.showText(state)
@@ -146,6 +154,43 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             return
         shown=self.showTextButton.isChecked()
         self.textFrame.setEnabled(dolock and not shown)
+
+    def _loadTextFile(self):
+        fileName = QtGui.QFileDialog.getOpenFileName(self,
+                                               "Open Textinserts",
+                                               "",
+                                               "TextInsert Files (*.txt)")
+        if fileName:
+            fname=fileName[0]
+            self.loadTextFile(fname)
+    def loadTextFile(self, filename):
+        lines=[]
+        with codecs.open(filename, mode='r', encoding='utf-8') as f:
+            lines=f.readlines()
+        data=[re.split(r'\t+', x.strip(), 2) for x in lines if x] ## array of [composer, piece, interpret] tuples
+        #data=[x.strip().split('\t') for x in lines if x] ## array of [composer, piece, interpret] tuples
+        self.setTextInserts([x for x in data if len(x)==3])
+
+    def setTextInserts(self, composerTitleInterpret=[]):
+        self.selectText.clear()
+        self.textinserts=[]
+        for (c,t,i) in composerTitleInterpret:
+            comboline=('%s: %s (%s)' % (i,t,c))
+            self.selectText.addItem(comboline)
+            self.textinserts+=[[c,t,i]]
+    @QtCore.Slot(int)
+    def _selectInsert(self, index):
+        try:
+            (c,t,i)=self.textinserts[index]
+            self.titleEdit.setText(t)
+            self.composerEdit.setText(c)
+            self.interpretEdit.setText(i)
+            self._setPiece()
+            self._setComposer()
+            self._setInterpreter()
+        except IndexError:
+            print("cannot find index %s in textinserts (size=%s)" % (index, len(self.textinserts)))
+
 
 if __name__ == '__main__':
     import sys
