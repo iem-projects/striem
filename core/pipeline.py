@@ -275,7 +275,14 @@ class pipeline:
                 if not lmn:
                     continue
                 for p in props:
-                    lmn.set_property(p, value)
+                    (ppad, _, prop) = p.partition("::")
+                    if prop:
+                        havepads = [pad for pad in lmn.pads if pad.name == ppad]
+                        if havepads:
+                            lmn=havepads[0]
+                    else:
+                        prop=p
+                    lmn.set_property(prop, value)
     def setProperty(self, element, prop, value):
         lmn=self.pipeline.get_by_name(element)
         if not lmn:
