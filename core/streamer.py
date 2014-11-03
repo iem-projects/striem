@@ -118,6 +118,8 @@ class streamer:
         return v
     def getADelay(self):
         return self.cfg.get("audio", "delay")
+    def getVDelay(self):
+        return self.cfg.get("video", "delay")
     def getTextFont(self, id):
         face=self.cfg.get(id, "text.face")
         size=self.cfg.get(id, "text.size")
