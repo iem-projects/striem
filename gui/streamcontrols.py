@@ -127,6 +127,7 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         oldstate = self.blockSignals(True)
         self.againValue.setValue(self.streamer.getAGain())
         self.adelayValue.setValue(self.streamer.getADelay())
+        self.vdelayValue.setValue(self.streamer.getVDelay())
         for (id, _font, _size, _y) in [
                 ("piece", self.piece_font, self.piece_fontSize,self.piece_posY),
                 ("composer", self.composer_font, self.composer_fontSize, self.composer_posY),
