@@ -24,6 +24,14 @@ from PySide.QtCore import Qt
 import gui, core
 
 
+## cmdline arguments
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--config', type=str,
+                    help="Configuration file to read")
+args = parser.parse_args()
+
+
 if __name__ == '__main__':
     import sys
     #if args.logfile is None:
@@ -37,8 +45,11 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     #translator = Translator(app)
 
+    if not args.config:
+        args.config=None
+
     # create the streamer
-    streamer = core.streamer()
+    streamer = core.streamer(args.config)
 
     # Create and show the form
     form = gui.striem(app=app, streamer=streamer, closeable=True)
