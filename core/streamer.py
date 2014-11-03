@@ -59,10 +59,9 @@ class streamer:
         for id in [ "piece", "composer", "interpret" ]:
             face=self.cfg.get(id, "text.face")
             size=self.cfg.get(id, "text.size")
-            x=self.cfg.get(id, "text.X")
             y=self.cfg.get(id, "text.Y")
             self.setTextFont(id, face, size)
-            self.setTextPosition(id, x, y)
+            self.setTextPosition(id, y)
     def setAGain(self, value):
         print("again: %s" % (value))
         self.cfg.set("audio", "gain", value)
@@ -95,11 +94,9 @@ class streamer:
         self.cfg.set(id, "text.size", size)
         #print("Font['%s']: %s" %( id, desc))
         self.pip.setControl("font."+id, desc)
-    def setTextPosition(self, id, x, y):
-        self.cfg.set(id, "text.X", x)
+    def setTextPosition(self, id, y):
         self.cfg.set(id, "text.Y", y)
-        print("Font['%s']: %f/%f" %( id, x,y))
-        self.pip.setControl("posX."+id, x)
+        print("Font['%s']: %f" %( id, y))
         self.pip.setControl("posY."+id, y)
     def setText(self, id, txt):
         self.pip.setControl("text."+id, txt)
@@ -126,8 +123,7 @@ class streamer:
         size=self.cfg.get(id, "text.size")
         return (face, size)
     def getTextPosition(self, id):
-        face=self.cfg.get(id, "text.X")
-        size=self.cfg.get(id, "text.Y")
-        return (face, size)
+        y=self.cfg.get(id, "text.Y")
+        return y
     def streamPause(self, state):
         return self.pip.pause(state, "stream")

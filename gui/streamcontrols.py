@@ -62,17 +62,14 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
 
         self.piece_font.currentFontChanged.connect(self._fontPieceChanged)
         self.piece_fontSize.valueChanged.connect(self._fontPieceChanged)
-        self.piece_posX.valueChanged.connect(self._fontPieceSize)
         self.piece_posY.valueChanged.connect(self._fontPieceSize)
 
         self.composer_font.currentFontChanged.connect(self._fontComposerChanged)
         self.composer_fontSize.valueChanged.connect(self._fontComposerChanged)
-        self.composer_posX.valueChanged.connect(self._fontComposerSize)
         self.composer_posY.valueChanged.connect(self._fontComposerSize)
 
         self.interpreter_font.currentFontChanged.connect(self._fontInterpreterChanged)
         self.interpreter_fontSize.valueChanged.connect(self._fontInterpreterChanged)
-        self.interpreter_posX.valueChanged.connect(self._fontInterpreterSize)
         self.interpreter_posY.valueChanged.connect(self._fontInterpreterSize)
 
     def _setAGain(self, value):
@@ -96,10 +93,10 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         print("font['%s']: %s" %( id, desc))
     def __fontChanged(self, id, face, size):
         self.streamer.setTextFont(id, face, size)
-    def _fontPos(self, id, x, y):
-        print("font['%s']: %f/%f" %( id, x,y))
-    def __fontPos(self, id, x, y):
-        self.streamer.setTextPosition(id, x, y)
+    def _fontPos(self, id, y):
+        print("font['%s']: %f" %( id, y))
+    def __fontPos(self, id, y):
+        self.streamer.setTextPosition(id, y)
 
     def _fontPieceChanged(self, value):
         fnt=self.piece_font.currentFont().family()
@@ -114,17 +111,14 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         sze=self.interpreter_fontSize.value()
         self._fontChanged("interpret", fnt, sze)
     def _fontPieceSize(self, value):
-        x=self.piece_posX.value()
         y=self.piece_posY.value()
-        self._fontPos("piece", x, y)
+        self._fontPos("piece", y)
     def _fontComposerSize(self, value):
-        x=self.composer_posX.value()
         y=self.composer_posY.value()
-        self._fontPos("composer", x, y)
+        self._fontPos("composer", y)
     def _fontInterpreterSize(self, value):
-        x=self.interpreter_posX.value()
         y=self.interpreter_posY.value()
-        self._fontPos("interpret", x, y)
+        self._fontPos("interpret", y)
 
 
     def updateValues(self):
@@ -133,18 +127,17 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         oldstate = self.blockSignals(True)
         self.againValue.setValue(self.streamer.getAGain())
         self.adelayValue.setValue(self.streamer.getADelay())
-        for (id, _font, _size, _x, _y) in [
-                ("piece", self.piece_font, self.piece_fontSize,self.piece_posX, self.piece_posY),
-                ("composer", self.composer_font, self.composer_fontSize, self.composer_posX, self.composer_posY),
-                ("interpret", self.interpreter_font, self.interpreter_fontSize, self.interpreter_posX, self.interpreter_posY)
+        for (id, _font, _size, _y) in [
+                ("piece", self.piece_font, self.piece_fontSize,self.piece_posY),
+                ("composer", self.composer_font, self.composer_fontSize, self.composer_posY),
+                ("interpret", self.interpreter_font, self.interpreter_fontSize, self.interpreter_posY)
         ]:
 
             (face,size)=self.streamer.getTextFont(id)
-            (x,y)=self.streamer.getTextPosition(id)
+            y=self.streamer.getTextPosition(id)
             font=QtGui.QFont(face)
             _font.setCurrentFont(font)
             _size.setValue(size)
-            _x.setValue(x)
             _y.setValue(y)
 
 
