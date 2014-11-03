@@ -17,7 +17,12 @@ vout.
 ! video/x-h264,level=(string)4.1,profile=main
 ! queue
 ! mux.
-audiotestsrc is-live=true
+jackaudiosrc
+! audio/x-raw,channels=2
+! volume name=again
+! audiodelay name=adelay max-delay=1000000000 delay=0
+! volume name=amute
+! audioconvert
 ! audio/x-raw,format=(string)S16LE,endianness=(int)1234,signed=(boolean)true,width=(int)16,depth=(int)16,rate=(int)44100,channels=(int)2
 ! queue
 ! faac bitrate=128000
