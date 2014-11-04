@@ -104,14 +104,14 @@ class streamer:
     def showText(self, state):
         self.pip.setControl("text.hide", not state)
     def showVideo(self, state):
-        print("show video: %s" % (state))
         mute=not state
         ## audio is inverse (it's just a gain), video is ok (it mixes in a second image)
         v=0.
-        a=1.
+        a=0.
         if not mute:
             v=1.
-            a=0.
+            a=1.
+        print("showVideo(%s): audio=%s video=%s" % (state, a, v))
         self.pip.setControl("video.mute", v)
         self.pip.setControl("audio.mute", a)
     def getAGain(self):
