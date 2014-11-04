@@ -139,9 +139,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
     def changedText(self, id, txt):
         self.streamer.setText(id, txt)
     def _setPiece(self):
-        self.changedText("piece", self.titleEdit.text())
+        self.changedText("piece", u'„'+self.titleEdit.text()+u'“')
     def _setComposer(self):
-        self.changedText("composer", self.composerEdit.text())
+        self.changedText("composer", u'('+self.composerEdit.text()+u')')
     def _setInterpreter(self):
         self.changedText("interpret", self.interpretEdit.text())
     def textLock(self, value):
