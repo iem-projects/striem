@@ -162,6 +162,10 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.textFrame.setEnabled(dolock and not shown)
 
     def _loadTextFile(self):
+        ## hmm, on some machines opening the QFileDialog simply segfaults
+        ## so we load a standard-file instead
+        self.loadTextFile("inserts.txt")
+        return
         fileName = QtGui.QFileDialog.getOpenFileName(self,
                                                "Open Textinserts",
                                                "",
