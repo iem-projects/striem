@@ -45,6 +45,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.streamer=streamer
         self.streamcontrol = streamcontrols.streamcontrols(streamer=streamer, guiparent=self)
         self.streamprefs = streampreferences.streampreferences(streamer=streamer, guiparent=self)
+        self.titleDecoration = None
+        self.composerDecoration = None
+        self.interpretDecoration = None
 
         self.setupUi(self)
         self.setupConnections()
@@ -148,16 +151,19 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self.streamer.setText(id, txt)
     def _setPiece(self):
         t=self.titleEdit.text()
-        if t:
+        if t and self.titleDecoration and self.titleDecoration.isChecked():
             t=u'„' + t + u'“'
         self.changedText("piece", t)
     def _setComposer(self):
         t=self.composerEdit.text()
-        if t:
+        if t and self.composerDecoration and self.composerDecoration.isChecked():
             t=u'(' + t + u')'
         self.changedText("composer", t)
     def _setInterpreter(self):
-        self.changedText("interpret", self.interpretEdit.text())
+        t=self.interpretEdit.text()
+        if t and self.interpretDecoration and self.interpretDecoration.isChecked():
+            pass
+        self.changedText("interpret", t)
     def textLock(self, value):
         self.lockTextEditor=bool(value)
         self._textLock()
