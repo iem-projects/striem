@@ -102,7 +102,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def stream(self, on):
         print("stream: %s" % (on))
-        res=self.streamer.streamPause(not on)
+        res=False
+        if self.streamer:
+            res=self.streamer.streamPause(not on)
         print("paused: %s" % (res))
         self.actionStreamPrefs.setEnabled(not on)
     def open_streamcontrol(self):
@@ -137,7 +139,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             return wdg.winId()
         return None
     def changedText(self, id, txt):
-        self.streamer.setText(id, txt)
+        if self.streamer:
+            self.streamer.setText(id, txt)
     def _setPiece(self):
         t=self.titleEdit.text()
         if t:
