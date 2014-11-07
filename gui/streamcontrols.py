@@ -26,6 +26,8 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         super(streamcontrols, self).__init__(guiparent)
         self.streamer=streamer
 
+        self.aLevel=None
+
         if self.streamer:
             self._setAGain    = self.__setAGain
             self._setADelay   = self.__setADelay
@@ -36,7 +38,6 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         self.striem=guiparent
         if self.striem:
             self._textLock = self.__textLock
-
 
         self.closefunction=closefunction
         self.setupUi(self)
@@ -159,6 +160,11 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
             self.closefunction(ok)
     def reject(self):
         self.accept(False)
+    def setAudioLevels(self, rmsvalues, _):
+        rmsdb=max(rmsvalues)
+        print("level: %s -> %s" % (rmsvalues, rmsdb))
+        if self.aLevel:
+            self.aLevel.setValue(rmsdb+100)
 
 ######################################################################
 if __name__ == '__main__':
