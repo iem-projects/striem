@@ -153,6 +153,7 @@ class pipeline:
         if filename.endswith(extension):
             conffile=filename[:-len(extension)]+".ctl"
         self.eventhandlers=dict()
+        self.eventkeys=dict()
         self.restart   = False
         self.config    = config
 
@@ -163,11 +164,15 @@ class pipeline:
         print("pipeline: %s" % (self.pipestring))
         print("ctrls: %s" % (ctrls))
 
-        self.setEventHandlers(None)
+        self.setEventHandlers({Gst.MessageType.EOS: self._EOS})
+        self.setEventHandlers({Gst.MessageType.ELEMENT: self._handleElementEvent})
+
+        self.setEventKeys(None)
 
         self.pipeline  = Gst.parse_launch(self.pipestring)
         self.bus       = self.pipeline.get_bus()
         self.bus.add_watch(GLib.PRIORITY_DEFAULT, self._async_handler, None)
+        Gst.Bus.add_signal_watch(self.bus)
 
         self.previewOut = None
         self.liveOut    = None
@@ -242,6 +247,11 @@ class pipeline:
     def onEvent(self, bus, message):
         """catch all events not handled by more specific handlers"""
         pass
+    def _handleElementEvent(self, bus, message):
+        struct=message.get_structure()
+        for key,fun in self.eventkeys.iteritems():
+            if struct and struct.has_field(key):
+                fun(struct.get_value(key), key)
 
     def setEventHandlers(self, handlers=dict()):
         """
@@ -256,6 +266,12 @@ class pipeline:
             self.eventhandlers={Gst.MessageType.EOS: self._EOS}
         else:
             self.eventhandlers.update(handlers)
+    def setEventKeys(self, handlers=dict()):
+        if handlers is None:
+            self.eventkeys=dict()
+        else:
+            self.eventkeys.update(handlers)
+
     def EOS(self):
         self.pipeline.send_event(gst.event_new_eos())
     def run(self, state=True):
