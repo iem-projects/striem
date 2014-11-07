@@ -52,10 +52,11 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.setupUi(self)
         self.setupConnections()
 
-        if self.streamer and closeable is None:
-            foo=self.streamer.getConfig("GUI", "allowquit")
-            if foo is not None:
-                self.allowClose=bool(int(foo))
+        if self.streamer:
+            if closeable is None:
+                foo=self.streamer.getConfig("GUI", "allowquit")
+                if foo is not None:
+                    self.allowClose=bool(int(foo))
 
         # ignore Alt-F4 and window-close events
         if self.allowClose:
