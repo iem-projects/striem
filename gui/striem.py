@@ -177,7 +177,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         lines=[]
         with codecs.open(filename, mode='r', encoding='utf-8') as f:
             lines=f.readlines()
-        data=[re.split(r'\t+', x.strip(), 2) for x in lines if x] ## array of [composer, piece, interpret] tuples
+        data=[re.split(r'\t+', x, 2) for x in lines if x] ## array of [composer, piece, interpret] tuples
         #data=[x.strip().split('\t') for x in lines if x] ## array of [composer, piece, interpret] tuples
         self.setTextInserts([x for x in data if len(x)==3])
 
@@ -185,7 +185,16 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.selectText.clear()
         self.textinserts=[]
         for (c,t,i) in composerTitleInterpret:
-            comboline=('%s: %s (%s)' % (i,t,c))
+            c=c.strip()
+            t=t.strip()
+            i=i.strip()
+            comboline=i
+            if t or c:
+                comboline+=': '
+                if t:
+                    comboline+=t+' '
+                if c:
+                    comboline+='('+c+')'
             self.selectText.addItem(comboline)
             self.textinserts+=[[c,t,i]]
     @QtCore.Slot(int)
