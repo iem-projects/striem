@@ -52,7 +52,7 @@ if __name__ == '__main__':
     streamer = core.streamer(args.config)
 
     # Create and show the form
-    form = gui.striem(app=app, streamer=streamer, closeable=False)
+    form = gui.striem(app=app, streamer=streamer)
 
     streamer.setGui(form)
     streamer.run(True)
