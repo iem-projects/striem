@@ -96,7 +96,12 @@ class configuration:
             self._cfg.write(configfile)
         return True
     def get(self, section, option):
-        v=self._cfg.get(section, option)
+        try:
+            v=self._cfg.get(section, option)
+        except ConfigParser.NoSectionError:
+            return None
+        except ConfigParser.NoOptionError:
+            return None
 
         if option in configuration._typefuns:
             return configuration._typefuns[option](v)
