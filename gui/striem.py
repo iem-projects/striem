@@ -34,10 +34,10 @@ class noWidget():
         return None
 
 class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
-    def __init__(self, app=None, streamer=None, closeable=False):
+    def __init__(self, app=None, streamer=None, closeable=None):
         super(striem, self).__init__()
         self.textinserts=[]
-        self.allowClose=closeable
+        self.allowClose=bool(closeable)
         self.lockTextEditor=False
         self.previewWidget=noWidget()
         self.liveWidget=noWidget()
@@ -48,6 +48,11 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
         self.setupUi(self)
         self.setupConnections()
+
+        if self.streamer and closeable is None:
+            foo=self.streamer.getConfig("GUI", "allowquit")
+            if foo is not None:
+                self.allowClose=bool(int(foo))
 
         # ignore Alt-F4 and window-close events
         if self.allowClose:
