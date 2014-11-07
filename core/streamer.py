@@ -130,3 +130,6 @@ class streamer:
         return y
     def streamPause(self, state):
         return self.pip.pause(state, "stream")
+    def getConfig(self, section, property):
+        res=self.cfg.get(section, property)
+        return res
