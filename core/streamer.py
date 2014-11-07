@@ -42,7 +42,7 @@ class streamer:
         self.pip = pipeline.pipeline(pipefile)
         self.setGui = self.pip.setGui
         self.run    = self.pip.run
-        #self.pip.run(True)
+        self.addEventKeyHandlers = self.pip.setEventKeys
     def teardown(self):
         self.cfg.save()
         self.pip.run(False)
