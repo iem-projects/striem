@@ -154,7 +154,7 @@ class pipeline:
             conffile=filename[:-len(extension)]+".ctl"
         self.eventhandlers=dict()
         self.restart   = False
-        self.config    =config
+        self.config    = config
 
         #(self.pipestring, ctrls) = _pipeParseCtrl(_pipeRead(filename, config))
         self.pipestring = _pipeRead(filename, config)
