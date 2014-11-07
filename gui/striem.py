@@ -58,6 +58,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
                 if foo is not None:
                     self.allowClose=bool(int(foo))
 
+            self.streamer.addEventKeyHandlers({'rms': self.streamcontrol.setAudioLevels})
+
         # ignore Alt-F4 and window-close events
         if self.allowClose:
             self.actionQuit.setShortcut("Ctrl+Q")
