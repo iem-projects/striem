@@ -226,7 +226,11 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self._setInterpreter()
         except IndexError:
             print("cannot find index %s in textinserts (size=%s)" % (index, len(self.textinserts)))
-
+    def resizeEvent(self, event):
+        h=self.previewWidget.height()
+        w=int(h*16./9.)
+        self.previewWidget.setMinimumWidth(w)
+        self.previewWidget.setMaximumWidth(w)
 
 if __name__ == '__main__':
     import sys
