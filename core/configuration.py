@@ -60,7 +60,10 @@ class configuration:
         'text.X'   : float,
         'text.Y'   : float
     }
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, defaultvalues={}):
+        ## ATTENTION
+        ## 'defaultvalues' is a dictionary with 'section:option' as the keys
+        ##   it is NOT COMPATIBLE with the ConfigParser's *defaults* (which apply to all sections)
         self._cfg = ConfigParser.ConfigParser()
         self.filename=None
         if isinstance(filename, configuration):
@@ -72,7 +75,18 @@ class configuration:
             if filename is not None:
                 configfiles+=[filename]
             self.load(configfiles)
+        self._applyDefaults(defaultvalues)
         print("bye")
+    def _applyDefaults(self, defaultvalues):
+        print("applying more default values: %s" % (defaultvalues))
+        if not defaultvalues:
+            return
+        for k,v in defaultvalues.iteritems():
+            (section,_,option)= k.partition(":")
+            try:
+                self._cfg.set(section, option,str(v))
+            except ConfigParser.NoSectionError:
+                pass
     def load(self, configfiles=[]):
         if configfiles:
             if len(configfiles)>1:
