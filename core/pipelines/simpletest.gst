@@ -1,4 +1,4 @@
-videotestsrc pattern="snow"
+videotestsrc name=vsrc pattern="snow"
 ! video/x-raw,format=YUY2,width=1920,height=1080
 ! queue
 ! textoverlay name=previewtextpiece text="Goldberg Variation #5" font-desc="Sans 72" shaded-background=True

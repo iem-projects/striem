@@ -1,4 +1,4 @@
-videotestsrc pattern=18
+videotestsrc name=vsrc pattern=18
 ! video/x-raw,pixel-aspect-ratio=(fraction)1/1, interlace-mode=(string)progressive, framerate=30/1, width=1280, height=720
 ! frei0r-filter-delay0r name=vdelay delaytime=0
 ! videomixer name=mix sink_0::alpha=1 sink_1::alpha=0.5
