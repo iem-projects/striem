@@ -43,6 +43,12 @@ class streamer:
         self.setGui = self.pip.setGui
         self.run    = self.pip.run
         self.addEventKeyHandlers = self.pip.setEventKeys
+        if pipedefaults:
+            for k,v in pipedefaults.iteritems():
+                (element,_,property) = k.partition('.')
+                self.pip.setControl(k, v)
+                self.pip.setProperty(element, property, v)
+
     def teardown(self):
         self.cfg.save()
         self.pip.run(False)
