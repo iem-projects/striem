@@ -32,8 +32,8 @@ import math
 _db=math.log(10)/20
 
 class streamer:
-    def __init__(self, configfile=None):
-        self.cfgbak=configuration.configuration(configfile)
+    def __init__(self, configfile=None, configvalues={}, pipedefaults={}):
+        self.cfgbak=configuration.configuration(filename=configfile, defaultvalues=configvalues)
         self.cfg=configuration.configuration(self.cfgbak)
         pipefile=self.cfg.get("stream", "pipeline")
         if not pipefile:
