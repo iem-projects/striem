@@ -304,7 +304,25 @@ class pipeline:
         if not lmn:
             #continue
             return
-        lmn.set_property(prop, value)
+        ## try to guess the correct type for the given property
+        ## we do that by iterating through a few known types, namely:
+        ## - the original type (whatever that was)
+        ## - str
+        ## - float
+        ## - int
+        ## and stop after the first one that doesn't throw an error
+        for fun in [lambda arg:arg, str, float, lambda arg: int(float(arg))]:
+            try:
+                x=fun(value)
+                try:
+                    lmn.set_property(prop, x)
+                    break # success, let's exit the type-guessing loop
+                except TypeError:
+                    ## this happens if set_property doesn't like the given type
+                    continue
+            except ValueError:
+                ## this happens if the conversion to the target type fails
+                continue
 
     def setGui(self, gui):
         # http://stackoverflow.com/questions/1873113/how-to-implement-a-video-widget-in-qt-that-builds-upon-gstreamer
