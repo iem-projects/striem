@@ -25,15 +25,38 @@ import gui, core
 
 
 ## cmdline arguments
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--config', type=str,
-                    help="Configuration file to read")
-args = parser.parse_args()
+def parseCmdlineArgs():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--config', type=str,
+                        help="Configuration file to read")
+    parser.add_argument('--set', type=str,
+                        nargs=2, metavar=('section:option', 'value'),
+                        action='append',
+                        help="set a specific configuration item (e.g. 'GUI:allowquit 0')")
+    parser.add_argument('--property', type=str,
+                        nargs=2, metavar=('element.property', 'value'),
+                        action='append',
+                        help="set the property of a specific pipeline element (e.g. 'audio.gain 0.1')")
 
+
+    args = parser.parse_args()
+    return args
+
+def keyvalues2dict(keyvalues, d=None):
+    if not d:
+        d={}
+    if not keyvalues:
+        return d
+    for (key, value) in keyvalues:
+        d[key]=value
+    return d
 
 if __name__ == '__main__':
+    args=parseCmdlineArgs()
+
     import sys
+
     #if args.logfile is None:
     #        args.logfile='stderr'
     #l = logger.logger(args.logfile)
@@ -49,7 +72,10 @@ if __name__ == '__main__':
         args.config=None
 
     # create the streamer
-    streamer = core.streamer(args.config)
+    streamer = core.streamer(configfile=args.config,
+                             configvalues=keyvalues2dict(args.set),
+                             pipedefaults=keyvalues2dict(args.property)
+                             )
 
     # Create and show the form
     form = gui.striem(app=app, streamer=streamer)
