@@ -19,6 +19,7 @@ vout.
 jackaudiosrc
 ! audio/x-raw,channels=2
 ! volume name=again
+! level
 ! audiodelay name=adelay max-delay=1000000000 delay=0
 ! volume name=amute
 ! audioconvert
