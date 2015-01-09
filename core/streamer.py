@@ -69,7 +69,7 @@ class streamer:
             self.setTextFont(id, face, size)
             self.setTextPosition(id, y)
     def setAGain(self, value):
-        print("again: %s" % (value))
+        #print("again: %s" % (value))
         self.cfg.set("audio", "gain", value)
         f=0
         if(value>-100):
@@ -82,7 +82,7 @@ class streamer:
         if(value>1000):
             value=1000
         f=value*1000000
-        print("adelay: %s = %s" % (value, f))
+        #print("adelay: %s = %s" % (value, f))
         self.pip.setControl("audio.delay", f)
         self.cfg.set("audio", "delay", value)
     def setVDelay(self, value):
@@ -92,7 +92,7 @@ class streamer:
         if(value>1000):
             value=1000
         f=value/1000.
-        print("vdelay: %s = %s" % (value, f))
+        #print("vdelay: %s = %s" % (value, f))
         self.pip.setControl("video.delay", f)
         self.cfg.set("video", "delay", value)
     def setTextFont(self, id, face, size):
@@ -103,7 +103,7 @@ class streamer:
         self.pip.setControl("font."+id, desc)
     def setTextPosition(self, id, y):
         self.cfg.set(id, "text.Y", y)
-        print("Font['%s']: %f" %( id, y))
+        #print("Font['%s']: %f" %( id, y))
         self.pip.setControl("posY."+id, y)
     def setText(self, id, txt):
         self.pip.setControl("text."+id, txt)
@@ -117,7 +117,7 @@ class streamer:
         if not mute:
             v=1.
             a=1.
-        print("showVideo(%s): audio=%s video=%s" % (state, a, v))
+        #print("showVideo(%s): audio=%s video=%s" % (state, a, v))
         self.pip.setControl("video.mute", v)
         self.pip.setControl("audio.mute", a)
     def getAGain(self):

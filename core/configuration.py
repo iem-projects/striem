@@ -67,18 +67,17 @@ class configuration:
         self._cfg = ConfigParser.ConfigParser()
         self.filename=None
         if isinstance(filename, configuration):
-            print("config2Config")
+            #print("config2Config")
             filename.copyTo(self)
         else:
-            print("file2Config")
+            #print("file2Config")
             configfiles=[os.path.join(path, "striem.conf") for path in _configpaths]
             if filename is not None:
                 configfiles+=[filename]
             self.load(configfiles)
         self._applyDefaults(defaultvalues)
-        print("bye")
     def _applyDefaults(self, defaultvalues):
-        print("applying more default values: %s" % (defaultvalues))
+        #print("applying more default values: %s" % (defaultvalues))
         if not defaultvalues:
             return
         for k,v in defaultvalues.iteritems():

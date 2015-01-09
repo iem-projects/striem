@@ -149,6 +149,8 @@ def _ctrlRead(conffile=None):
 class pipeline:
     def __init__(self, filename="default.gst", config=dict()):
         conffile=None
+        #print("pipefile: %s" % (filename))
+
         extension=".gst"
         if filename.endswith(extension):
             conffile=filename[:-len(extension)]+".ctl"
@@ -161,8 +163,8 @@ class pipeline:
         self.pipestring = _pipeRead(filename, config)
         ctrls=_ctrlRead(conffile)
 
-        print("pipeline: %s" % (self.pipestring))
-        print("ctrls: %s" % (ctrls))
+        #print("pipeline: %s" % (self.pipestring))
+        #print("ctrls: %s" % (ctrls))
 
         self.setEventHandlers({Gst.MessageType.EOS: self._EOS})
         self.setEventHandlers({Gst.MessageType.ELEMENT: self._handleElementEvent})
