@@ -83,7 +83,7 @@ class configuration:
         for k,v in defaultvalues.iteritems():
             (section,_,option)= k.partition(":")
             try:
-                self._cfg.set(section, option,str(v))
+                self._cfg.set(section, option, str(v))
             except ConfigParser.NoSectionError:
                 pass
     def load(self, configfiles=[]):
