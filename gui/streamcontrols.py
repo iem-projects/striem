@@ -163,7 +163,7 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def setAudioLevels(self, rmsvalues, _):
         rmsdb=max(rmsvalues)
         vclipped=min(max(rmsdb+100,0),100)
-        print("level: %s -> %s" % (rmsvalues, rmsdb))
+        #print("level(%s): %s -> %s => %s" % (self.aLevel, rmsvalues, rmsdb, vclipped))
         if self.aLevel:
             self.aLevel.setValue(vclipped)
 
