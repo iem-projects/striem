@@ -37,7 +37,7 @@ class streamer:
         self.cfg=configuration.configuration(self.cfgbak)
         pipefile=self.cfg.get("stream", "pipeline")
         if not pipefile:
-            pipefile="core/pipelines/test.gst"
+            pipefile="core/pipelines/striem.gst"
 
         self.pip = pipeline.pipeline(pipefile)
         self.setGui = self.pip.setGui
