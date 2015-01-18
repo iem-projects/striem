@@ -181,6 +181,7 @@ class pipeline:
 
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("preview")
+        self.recorder = self.pipeline.get_by_name("recorder")
 
         print("OUT: %s\t%s", self.previewOut, self.liveOut)
 
@@ -282,6 +283,22 @@ class pipeline:
             self.pipeline.set_state(Gst.State.PLAYING)
         else:
             self.pipeline.set_state(Gst.State.READY)
+    def record(self, filename=None):
+        ## controls the element named 'record'
+        ### if a filename is given, start recording to this name
+        ###   recorder.set_state(gst.STATE_PLAYING)
+        ### if no filename is given, stop recording
+        ###   recorder.send_event(gst.event_new_eos())
+        print("recording in %s: %s" % (self.recorder, filename))
+        if not self.recorder:
+            return False
+        ## TODO: check current state of recorder
+        if filename:
+            self.recorder.set_state(Gst.State.PLAYING)
+        else:
+            self.recorder.send_event(Gst.Event.new_eos())
+            self.recorder.set_state(Gst.State.PAUSED)
+
     def setControl(self, name, value, time=0):
         gsttime=time*Gst.SECOND
         if name in self.controller:
