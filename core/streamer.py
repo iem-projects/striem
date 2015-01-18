@@ -139,3 +139,5 @@ class streamer:
     def getConfig(self, section, property):
         res=self.cfg.get(section, property)
         return res
+    def record(self, filename=None):
+        self.pip.record(filename)
