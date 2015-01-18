@@ -275,7 +275,8 @@ class pipeline:
             self.eventkeys.update(handlers)
 
     def EOS(self):
-        self.pipeline.send_event(gst.event_new_eos())
+        print("EOS")
+        self.pipeline.send_event(gst.Event.new_eos())
     def run(self, state=True):
         if(state):
             self.pipeline.set_state(Gst.State.PLAYING)
