@@ -18,8 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
-import ConfigParser
 import os.path
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 
 
 # files listed LATER can overwrite values from earlier files
