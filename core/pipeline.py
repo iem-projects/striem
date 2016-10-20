@@ -193,7 +193,7 @@ class pipeline:
         self.pipeline = Gst.parse_launch(self.pipestring)
         self.bus = self.pipeline.get_bus()
         self.bus.add_watch(GLib.PRIORITY_DEFAULT, self._async_handler, None)
-        Gst.Bus.add_signal_watch(self.bus)
+        #Gst.Bus.add_signal_watch(self.bus)
 
         self.previewOut = None
         self.liveOut = None
