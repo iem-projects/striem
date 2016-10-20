@@ -396,7 +396,10 @@ class pipeline:
             winid = gui.getWindow("preview")
             if winid:
                 log.debug("preview: 0x%X" % (winid))
-                self.previewOut.set_window_handle(winid)
+                try:
+                    self.previewOut.set_window_handle(winid)
+                except AttributeError:
+                    log.exception("Unable to set PREVIEW window:")
             else:
                 log.debug("preview: %s" % (winid))
                 pass
@@ -404,7 +407,10 @@ class pipeline:
             winid = gui.getWindow("live")
             if winid:
                 log.debug("live: 0x%X" % (winid))
-                self.liveOut.set_window_handle(winid)
+                try:
+                    self.liveOut.set_window_handle(winid)
+                except AttributeError:
+                    log.exception("Unable to set LIVE window:")
             else:
                 log.debug("live: %s" % (winid))
                 pass
