@@ -27,6 +27,9 @@ import streampreferences
 
 import striem_ui
 
+import logging
+log = logging.getLogger(__name__)
+
 ESCAPE_SEQUENCE_RE = re.compile(r'''
     ( \\U........      # 8-digit hex escapes
     | \\u....          # 4-digit hex escapes
@@ -99,13 +102,13 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.streamprefs  .reject()
 
     def _closeEvent(self, event):
-        print("close event: %s" % (self.allowClose))
+        log.info("close event: %s" % (self.allowClose))
         if not self.allowClose:
             event.ignore()
         else:
-            print("exit!")
+            log.warn("exit!")
             self.exit()
-            print("gracefully")
+            log.info("gracefully")
 
     def setupConnections(self):
         self.actionLoadTexts.activated.connect(self._loadTextFile)
@@ -137,18 +140,18 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.runningTick(False)
 
     def exit(self):
-        print("Bye bye")
+        log.info("Bye bye")
         if self.streamer:
             self.streamer.teardown()
         import sys
         sys.exit()
 
     def stream(self, on):
-        print("stream: %s" % (on))
+        log.info("stream: %s" % (on))
         res = False
         if self.streamer:
             res = self.streamer.streamPause(not on)
-        print("paused: %s" % (res))
+        log.info("paused: %s" % (res))
         self.actionStreamPrefs.setEnabled(not on)
 
     def open_streamcontrol(self):
@@ -284,8 +287,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self._setComposer()
             self._setInterpreter()
         except IndexError:
-            print("cannot find index %s in textinserts (size = %s)"
-                  % (index, len(self.textinserts)))
+            log.exception("cannot find index %s in textinserts (size = %s)"
+                    % (index, len(self.textinserts)))
 
     def resizeEvent(self, event):
         h = self.previewWidget.height()

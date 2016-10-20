@@ -29,6 +29,9 @@ import math
 import configuration
 import pipeline
 
+import logging
+log = logging.getLogger(__name__)
+
 _db = math.log(10)/20
 
 
@@ -72,7 +75,7 @@ class streamer:
             self.setTextPosition(id, y)
 
     def setAGain(self, value):
-        # print("again: %s" % (value))
+        log.debug("again: %s" % (value))
         self.cfg.set("audio", "gain", value)
         f = 0
         if(value > -100):
@@ -86,7 +89,7 @@ class streamer:
         if(value > 1000):
             value = 1000
         f = value*1000000
-        # print("adelay: %s = %s" % (value, f))
+        log.debug("adelay: %s = %s" % (value, f))
         self.pip.setControl("audio.delay", f)
         self.cfg.set("audio", "delay", value)
 
@@ -97,7 +100,7 @@ class streamer:
         if(value > 1000):
             value = 1000
         f = value*10000
-        print("vdelay: %s = %s" % (value, f))
+        log.info("vdelay: %s = %s" % (value, f))
         self.pip.setControl("video.delay", f)
         self.cfg.set("video", "delay", value)
 
@@ -105,12 +108,12 @@ class streamer:
         desc = str(face) + " " + str(size)
         self.cfg.set(id, "text.face", face)
         self.cfg.set(id, "text.size", size)
-        # print("Font['%s']: %s" %( id, desc))
+        log.debug("Font['%s']: %s" %( id, desc))
         self.pip.setControl("font."+id, desc)
 
     def setTextPosition(self, id, y):
         self.cfg.set(id, "text.Y", y)
-        # print("Font['%s']: %f" %( id, y))
+        log.debug("Font['%s']: %f" %( id, y))
         self.pip.setControl("posY."+id, y)
 
     def setText(self, id, txt):
@@ -128,7 +131,7 @@ class streamer:
         if not mute:
             v = 1.
             a = 1.
-        # print("showVideo(%s): audio = %s video = %s" % (state, a, v))
+        log.debug("showVideo(%s): audio = %s video = %s" % (state, a, v))
         self.pip.setControl("video.mute", v)
         self.pip.setControl("audio.mute", a)
 

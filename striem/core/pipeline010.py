@@ -21,7 +21,8 @@
 import pygst
 pygst.require("0.10")
 import gst
-
+import logging
+log = logging.getLogger(__name__)
 
 # build a GStreamer pipeline,
 #  basic configuration: URL, sources, ...
@@ -94,7 +95,7 @@ def _pipeParseCtrl(pipestring=""):
 
 def _pipeRead(pipefile=None, mydict=dict()):
     if not pipefile:
-        print "no pipefile specified for pipe"
+        log.error("no pipefile specified for pipe")
         return None
     try:
         with open(pipefile, 'r') as f:
@@ -149,8 +150,8 @@ class pipeline:
         self.pipestring = _pipeRead(filename, config)
         ctrls = _ctrlRead(conffile)
 
-        print("pipeline: %s" % (self.pipestring))
-        print("ctrls: %s" % (ctrls))
+        log.info("pipeline: %s" % (self.pipestring))
+        log.info("ctrls: %s" % (ctrls))
 
         self.setEventHandlers(None)
 
@@ -161,7 +162,7 @@ class pipeline:
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("live")
 
-        print("OUT: %s\t%s", self.previewOut, self.liveOut)
+        log.info("OUT: %s\t%s", self.previewOut, self.liveOut)
 
         # get all controllables
         control_dict = {}
@@ -189,14 +190,14 @@ class pipeline:
                         else:
                             setprops += [p]
                     lmn = self.pipeline.get_by_name(elem)
-                    print("element '%s' %s" % (elem, lmn))
+                    log.info("element '%s' %s" % (elem, lmn))
                     # create a controller
                     if ctlprops:
                         tmpctl = gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
                             tmpctl.set_interpolation_mode(cp, gst.INTERPOLATE_LINEAR)
                             v = lmn.get_property(cp)
-                            print("%s: %s" % (ctl, v))
+                            log.debug("%s: %s" % (ctl, v))
                             tmpctl.set(cp, 0, v)
 
                         if ctl not in self.controller:
@@ -261,7 +262,7 @@ class pipeline:
                     ctl.set(p, gsttime, value)
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
-                print("lmn[%s] %s:%s" % (name, lmn, props))
+                log.debug("lmn[%s] %s:%s" % (name, lmn, props))
                 for p in props:
                     lmn.set_property(p, value)
 
@@ -280,17 +281,17 @@ class pipeline:
         if self.previewOut:
             winid = gui.getWindow("preview")
             if winid:
-                print("preview: 0x%X" % (winid))
+                log.debug("preview: 0x%X" % (winid))
                 self.previewOut.set_xwindow_id(winid)
             else:
-                print("preview: %s" % (winid))
+                log.debug("preview: %s" % (winid))
         if self.liveOut:
             winid = gui.getWindow("live")
             if winid:
-                print("live: 0x%X" % (winid))
+                log.debug("live: 0x%X" % (winid))
                 self.liveOut.set_xwindow_id(winid)
             else:
-                print("live: %s" % (winid))
+                log.debug("live: %s" % (winid))
 
 # #####################################################################
 if __name__ == '__main__':
@@ -311,7 +312,7 @@ if __name__ == '__main__':
     d['BAX'] = "bax"
 
     pipestring = _pipeRead(filename, d)
-    print _pipeParseCtrl(pipestring)
+    print(_pipeParseCtrl(pipestring))
     # sys.exit()
 
     pip = pipeline(filename, d)

@@ -24,6 +24,8 @@ try:
 except ImportError:
     import configparser as ConfigParser
 
+import logging
+log = logging.getLogger(__name__)
 
 # files listed LATER can overwrite values from earlier files
 _configpaths = [
@@ -78,10 +80,10 @@ class configuration:
         self._cfg = ConfigParser.ConfigParser()
         self.filename = None
         if isinstance(filename, configuration):
-            # print("config2Config")
+            log.debug("config2Config")
             filename.copyTo(self)
         else:
-            # print("file2Config")
+            log.debug("file2Config")
             configfiles = [os.path.join(path, "striem.conf")
                            for path in _configpaths]
             if filename is not None:
@@ -90,7 +92,7 @@ class configuration:
         self._applyDefaults(defaultvalues)
 
     def _applyDefaults(self, defaultvalues):
-        # print("applying more default values: %s" % (defaultvalues))
+        log.debug("applying more default values: %s" % (defaultvalues))
         if not defaultvalues:
             return
         for k, v in defaultvalues.iteritems():

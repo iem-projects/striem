@@ -124,7 +124,7 @@ def _pipeParseCtrl(pipestring=""):
 
 def _pipeRead(pipefile=None, mydict=dict()):
     if not pipefile:
-        print "no pipefile specified for pipe"
+        log.fatal("no pipefile specified for pipe")
         return None
     try:
         with open(pipefile, 'r') as f:
@@ -205,7 +205,7 @@ class pipeline:
         self.liveOut = self.pipeline.get_by_name("preview")
         self.recorder = self.pipeline.get_by_name("recorder")
 
-        print("OUT: %s\t%s", self.previewOut, self.liveOut)
+        log.info("OUT: %s\t%s", self.previewOut, self.liveOut)
 
         # get all controllables
         control_dict = {}
@@ -237,7 +237,7 @@ class pipeline:
                         else:
                             setprops += [p]
                     lmn = self.pipeline.get_by_name(elem)
-                    # print("element '%s' %s" % (elem, lmn))
+                    log.debug("element '%s' %s" % (elem, lmn))
                     # create a controller
                     if ctlprops:
                         tmpctl = Gst.Controller(lmn, *ctlprops)
@@ -246,7 +246,7 @@ class pipeline:
                                 cp,
                                 Gst.INTERPOLATE_LINEAR)
                             v = lmn.get_property(cp)
-                            # print("%s: %s" % (ctl, v))
+                            log.debug("%s: %s" % (ctl, v))
                             tmpctl.set(cp, 0, v)
 
                         if ctl not in self.controller:
@@ -307,7 +307,7 @@ class pipeline:
             self.eventkeys.update(handlers)
 
     def EOS(self):
-        print("EOS")
+        log.info("EOS")
         self.pipeline.send_event(gst.Event.new_eos())
 
     def run(self, state=True):
@@ -322,7 +322,7 @@ class pipeline:
         #    recorder.set_state(gst.STATE_PLAYING)
         #  if no filename is given, stop recording
         #    recorder.send_event(gst.event_new_eos())
-        print("recording in %s: %s" % (self.recorder, filename))
+        log.info("recording in %s: %s" % (self.recorder, filename))
         if not self.recorder:
             return False
         # TODO: check current state of recorder
@@ -340,7 +340,7 @@ class pipeline:
                     ctl.set(p, gsttime, value)
         if name in self.setter:
             for (lmn, props) in self.setter[name].iteritems():
-                # print("lmn[%s] %s:%s" % (name, lmn, props))
+                log.debug("lmn[%s] %s:%s" % (name, lmn, props))
                 if not lmn:
                     continue
                 for p in props:
@@ -389,18 +389,18 @@ class pipeline:
         if self.previewOut:
             winid = gui.getWindow("preview")
             if winid:
-                # print("preview: 0x%X" % (winid))
+                log.debug("preview: 0x%X" % (winid))
                 self.previewOut.set_window_handle(winid)
             else:
-                # print("preview: %s" % (winid))
+                log.debug("preview: %s" % (winid))
                 pass
         if self.liveOut:
             winid = gui.getWindow("live")
             if winid:
-                # print("live: 0x%X" % (winid))
+                log.debug("live: 0x%X" % (winid))
                 self.liveOut.set_window_handle(winid)
             else:
-                # print("live: %s" % (winid))
+                log.debug("live: %s" % (winid))
                 pass
 
     def pause(self, _state, elementname=None):
@@ -409,7 +409,7 @@ class pipeline:
             if _state:
                 state = Gst.State.PLAYING
             self.pipeline.set_state(state)
-            # print("pipeline :: %s" % (self.pipeline.get_state(0)))
+            log.debug("pipeline :: %s" % (self.pipeline.get_state(0)))
             return _state
         lmn = self.pipeline.get_by_name(elementname)
         if lmn:
@@ -417,7 +417,7 @@ class pipeline:
                 lmn.set_state(Gst.State.PAUSED)
             else:
                 lmn.sync_state_with_parent()
-            # print("lmn = %s :: %s" % (lmn, lmn.get_state(0)))
+            log.debug("lmn = %s :: %s" % (lmn, lmn.get_state(0)))
             return _state
         return False
 
@@ -441,7 +441,7 @@ if __name__ == '__main__':
     d['BAX'] = "bax"
 
     pipestring = _pipeRead(filename, d)
-    print _pipeParseCtrl(pipestring)
+    print(_pipeParseCtrl(pipestring))
     # sys.exit()
 
     pip = pipeline(filename, d)

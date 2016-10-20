@@ -20,7 +20,8 @@
 
 from PySide import QtGui
 import streamcontrols_ui
-
+import logging
+log = logging.getLogger(__name__)
 
 class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def __init__(self, streamer=None, guiparent=None, closefunction=None):
@@ -78,36 +79,36 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         self.interpreter_posY.valueChanged.connect(self._fontInterpreterSize)
 
     def _setAGain(self, value):
-        print("audio gain: %d[dB]" % (value))
+        log.info("audio gain: %d[dB]" % (value))
 
     def __setAGain(self, value):
         self.streamer.setAGain(value)
 
     def _setADelay(self, value):
-        print("audio delay: %d[ms]" % (value))
+        log.info("audio delay: %d[ms]" % (value))
 
     def __setADelay(self, value):
         self.streamer.setADelay(value)
 
     def _setVDelay(self, value):
-        print("video delay: %d[ms]" % (value))
+        log.info("video delay: %d[ms]" % (value))
 
     def __setVDelay(self, value):
         self.streamer.setVDelay(value)
 
     def __textLock(self, value):
         self.striem.textLock(value)
-        print("text lock: %s" % (value))
+        log.info("text lock: %s" % (value))
 
     def _fontChanged(self, id, face, size):
         desc = str(face) + " " + str(size)
-        print("font['%s']: %s" % (id, desc))
+        log.info("font['%s']: %s" % (id, desc))
 
     def __fontChanged(self, id, face, size):
         self.streamer.setTextFont(id, face, size)
 
     def _fontPos(self, id, y):
-        print("font['%s']: %f" % (id, y))
+        log.info("font['%s']: %f" % (id, y))
 
     def __fontPos(self, id, y):
         self.streamer.setTextPosition(id, y)
@@ -193,8 +194,8 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def setAudioLevels(self, rmsvalues, _):
         rmsdb = max(rmsvalues)
         vclipped = min(max(rmsdb + 100, 0), 100)
-        # print("level(%s): %s -> %s = > %s" %
-        #       (self.aLevel, rmsvalues, rmsdb, vclipped))
+        log.debug("level(%s): %s -> %s = > %s" %
+                    (self.aLevel, rmsvalues, rmsdb, vclipped))
         if self.aLevel:
             self.aLevel.setValue(vclipped)
 
