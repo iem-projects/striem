@@ -141,7 +141,7 @@ class pipeline:
         conffile = None
         extension = ".gst"
         if filename.endswith(extension):
-            conffile = filename[:-len(extension)]+".ctl"
+            conffile = filename[:-len(extension)] + ".ctl"
         self.eventhandlers = dict()
         self.restart = False
         self.config = config
@@ -255,7 +255,7 @@ class pipeline:
             self.pipeline.set_state(gst.STATE_READY)
 
     def setControl(self, name, value, time=0):
-        gsttime = time*gst.SECOND
+        gsttime = time * gst.SECOND
         if name in self.controller:
             for (ctl, props) in self.controller[name]:
                 for p in props:

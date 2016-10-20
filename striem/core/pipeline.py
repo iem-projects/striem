@@ -172,7 +172,7 @@ class pipeline:
 
         extension = ".gst"
         if filename.endswith(extension):
-            conffile = filename[:-len(extension)]+".ctl"
+            conffile = filename[:-len(extension)] + ".ctl"
         self.eventhandlers = dict()
         self.eventkeys = dict()
         self.restart = False
@@ -189,14 +189,15 @@ class pipeline:
         self.setEventHandlers({Gst.MessageType.EOS: self._EOS})
         self.setEventHandlers(
             {Gst.MessageType.ELEMENT: self._handleElementEvent}
-            )
+        )
 
         self.setEventKeys(None)
 
         self.pipeline = Gst.parse_launch(self.pipestring)
         self.bus = self.pipeline.get_bus()
         self.bus.add_watch(GLib.PRIORITY_DEFAULT, self._async_handler, None)
-        #Gst.Bus.add_signal_watch(self.bus)
+        # # enabling the following triggers an assertion (and exists)
+        # Gst.Bus.add_signal_watch(self.bus)
 
         self.previewOut = None
         self.liveOut = None
@@ -236,8 +237,8 @@ class pipeline:
                     ctlprops = []
                     setprops = []
                     for p in props:
-                        if ((elem in control_dict
-                             and p in control_dict[elem])):
+                        if ((elem in control_dict and
+                             p in control_dict[elem])):
                             ctlprops += [p]
                         else:
                             setprops += [p]
@@ -338,7 +339,7 @@ class pipeline:
             self.recorder.set_state(Gst.State.PAUSED)
 
     def setControl(self, name, value, time=0):
-        gsttime = time*Gst.SECOND
+        gsttime = time * Gst.SECOND
         if name in self.controller:
             for (ctl, props) in self.controller[name]:
                 for p in props:

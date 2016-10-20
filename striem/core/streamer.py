@@ -32,7 +32,7 @@ from . import pipeline
 import logging
 log = logging.getLogger(__name__)
 
-_db = math.log(10)/20
+_db = math.log(10) / 20
 
 
 class streamer:
@@ -79,7 +79,7 @@ class streamer:
         self.cfg.set("audio", "gain", value)
         f = 0
         if(value > -100):
-            f = math.exp(_db*value)
+            f = math.exp(_db * value)
         self.pip.setControl("audio.gain", f)
 
     def setADelay(self, value):
@@ -88,7 +88,7 @@ class streamer:
             value = 0
         if(value > 1000):
             value = 1000
-        f = value*1000000
+        f = value * 1000000
         log.debug("adelay: %s = %s" % (value, f))
         self.pip.setControl("audio.delay", f)
         self.cfg.set("audio", "delay", value)
@@ -99,25 +99,25 @@ class streamer:
             value = 0
         if(value > 1000):
             value = 1000
-        f = value*10000
+        f = value * 10000
         log.info("vdelay: %s = %s" % (value, f))
         self.pip.setControl("video.delay", f)
         self.cfg.set("video", "delay", value)
 
-    def setTextFont(self, id, face, size):
+    def setTextFont(self, ID, face, size):
         desc = str(face) + " " + str(size)
-        self.cfg.set(id, "text.face", face)
-        self.cfg.set(id, "text.size", size)
-        log.debug("Font['%s']: %s" %( id, desc))
-        self.pip.setControl("font."+id, desc)
+        self.cfg.set(ID, "text.face", face)
+        self.cfg.set(ID, "text.size", size)
+        log.debug("Font['%s']: %s" % (ID, desc))
+        self.pip.setControl("font." + ID, desc)
 
-    def setTextPosition(self, id, y):
-        self.cfg.set(id, "text.Y", y)
-        log.debug("Font['%s']: %f" %( id, y))
-        self.pip.setControl("posY."+id, y)
+    def setTextPosition(self, ID, y):
+        self.cfg.set(ID, "text.Y", y)
+        log.debug("Font['%s']: %f" % (ID, y))
+        self.pip.setControl("posY." + ID, y)
 
-    def setText(self, id, txt):
-        self.pip.setControl("text."+id, txt)
+    def setText(self, ID, txt):
+        self.pip.setControl("text." + ID, txt)
 
     def showText(self, state):
         self.pip.setControl("text.hide", not state)

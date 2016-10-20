@@ -38,7 +38,7 @@ _configpaths = [
                  'stream.iem.at'),
     # local
     '.',
-    ]
+]
 
 
 # ##### configuration
