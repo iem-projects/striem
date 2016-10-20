@@ -41,16 +41,15 @@ class streamer:
         pipefile = self.cfg.get("stream", "pipeline")
         if not pipefile:
             pipefile = "core/pipelines/striem.gst"
-
         self.pip = pipeline.pipeline(pipefile)
         self.setGui = self.pip.setGui
         self.run = self.pip.run
         self.addEventKeyHandlers = self.pip.setEventKeys
         if pipedefaults:
             for k, v in pipedefaults.iteritems():
-                (element, _, property) = k.partition('.')
+                (element, _, prop) = k.partition('.')
                 self.pip.setControl(k, v)
-                self.pip.setProperty(element, property, v)
+                self.pip.setProperty(element, prop, v)
 
     def teardown(self):
         self.cfg.save()
