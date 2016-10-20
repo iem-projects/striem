@@ -160,6 +160,7 @@ class streamer:
 
     def getConfig(self, section, property):
         res = self.cfg.get(section, property)
+        log.debug("config[%s][%s]=%s" % (section, property, res))
         return res
 
     def record(self, filename=None):
