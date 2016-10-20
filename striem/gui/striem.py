@@ -123,8 +123,14 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.showTextButton.toggled.connect(self._showText)
         self.blackoutButton.toggled.connect(self._muteVideo)
         self.titleEdit.editingFinished.connect(self._setPiece)
+        if self.titleDecoration:
+            self.titleDecoration.toggled.connect(self._setPiece)
         self.composerEdit.editingFinished.connect(self._setComposer)
+        if self.composerDecoration:
+            self.composerDecoration.toggled.connect(self._setComposer)
         self.interpretEdit.editingFinished.connect(self._setInterpreter)
+        if self.interpretDecoration:
+            self.interpretDecoration.toggled.connect(self._setInterpreter)
         self.selectText.activated.connect(self._selectInsert)
 
     def _showText(self, state):
