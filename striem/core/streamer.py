@@ -53,6 +53,7 @@ class streamer:
                 (element, _, prop) = k.partition('.')
                 self.pip.setControl(k, v)
                 self.pip.setProperty(element, prop, v)
+        self.showText(False)
 
     def teardown(self):
         self.cfg.save()
