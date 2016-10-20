@@ -21,7 +21,7 @@
 
 from PySide.QtGui import QDialog, QApplication, QVBoxLayout, QIcon
 from PySide.QtCore import Qt
-import gui, core
+import striem
 import logging
 
 log = logging.getLogger("striem")
@@ -79,13 +79,13 @@ if __name__ == '__main__':
         args.config=None
 
     # create the streamer
-    streamer = core.streamer(configfile=args.config,
+    streamer = striem.core.streamer(configfile=args.config,
                              configvalues=keyvalues2dict(args.set),
                              pipedefaults=keyvalues2dict(args.property)
                              )
 
     # Create and show the form
-    form = gui.striem(app=app, streamer=streamer)
+    form = striem.gui.striem(app=app, streamer=streamer)
 
     streamer.setGui(form)
     streamer.run(True)
