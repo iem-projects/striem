@@ -80,13 +80,16 @@ def create_streamer(app, args):
 if __name__ == '__main__':
     import sys
     args = parseCmdlineArgs()
+    loglevel = logging.WARN - 10 * args.verbosity
     logconfig = dict()
-    logconfig['level'] = logging.WARN - 10 * args.verbosity
-    logconfig['format'] = '%(asctime)s %(levelname)s:%(name)s:%(message)s'
+    logconfig['level'] = logging.INFO
+    logconfig['format'] = '%(asctime)s %(levelname)s:%(name)s: %(message)s'
     logconfig['datefmt'] = '%Y-%m-%dT%H:%M:%S'
     if args.logfile:
         logconfig['filename'] = args.logfile
     logging.basicConfig(**logconfig)
+    log.info("IEM streamfeader started.")
+    log.setLevel(loglevel)
     log.debug("%s" % (args,))
 
     # Create the Qt Application
@@ -98,4 +101,7 @@ if __name__ == '__main__':
     create_streamer(app, args)
 
     # Run the main Qt loop
-    sys.exit(app.exec_())
+    ret = app.exec_()
+    log.setLevel(logging.INFO)
+    log.info("IEM streamfeader stopped.")
+    sys.exit(ret)
