@@ -44,6 +44,10 @@ def parseCmdlineArgs():
                         nargs=2, metavar=('element.property', 'value'),
                         action='append',
                         help="set the property of a specific pipeline element (e.g. 'audio.gain 0.1')")
+    parser.add_argument('--pipekey', type=str,
+                        nargs=2, metavar=('KEY', 'VALUE'),
+                        action='append',
+                        help="textually replace '@KEY@' in the pipeline with 'VALUE' (e.g. 'STREAMKEY tops-ecre-t012-3456')")
 
     args = parser.parse_args()
     args.verbosity = int(args.verbose) - int(args.quiet)
@@ -52,7 +56,7 @@ def parseCmdlineArgs():
 
 def keyvalues2dict(keyvalues, d=None):
     if not d:
-        d = {}
+        d = dict()
     if not keyvalues:
         return d
     for (key, value) in keyvalues:
@@ -66,6 +70,7 @@ def create_streamer(app, args):
     streamer = striem.core.streamer(configfile=args.config,
                                     configvalues=keyvalues2dict(args.set),
                                     pipedefaults=keyvalues2dict(args.property),
+                                    pipekeys=keyvalues2dict(args.pipekey)
                                     )
 
     # Create and show the form
