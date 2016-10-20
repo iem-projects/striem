@@ -122,9 +122,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         # self.hideTextButton.clicked.connect(self._resetTick)
         self.showTextButton.toggled.connect(self._showText)
         self.blackoutButton.toggled.connect(self._muteVideo)
-        self.titleEdit.editingFinished.connect(self._setPiece)
+        self.titleEdit.editingFinished.connect(self._setTitle)
         if self.titleDecoration:
-            self.titleDecoration.toggled.connect(self._setPiece)
+            self.titleDecoration.toggled.connect(self._setTitle)
         self.composerEdit.editingFinished.connect(self._setComposer)
         if self.composerDecoration:
             self.composerDecoration.toggled.connect(self._setComposer)
@@ -199,7 +199,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         if self.streamer:
             self.streamer.setText(id, decode_escapes(txt))
 
-    def _setPiece(self):
+    def _setTitle(self):
         t = self.titleEdit.text()
         if ((t and
              self.titleDecoration and
@@ -289,7 +289,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self.titleEdit.setText(t)
             self.composerEdit.setText(c)
             self.interpreterEdit.setText(i)
-            self._setPiece()
+            self._setTitle()
             self._setComposer()
             self._setInterpreter()
         except IndexError:
