@@ -209,7 +209,12 @@ class pipeline:
 
         # get all controllables
         control_dict = {}
-        for lmn in self.pipeline.iterate_elements():
+        try:
+            pipelements = iter(self.pipeline.iterate_elements())
+        except TypeError:
+            log.exception("'python3-gst-1.0' required?")
+            return
+        for lmn in pipelements:
             for p in lmn.props:
                 if False and p.flags & Gst.PARAM_CONTROLLABLE:
                     if lmn.props.name not in control_dict:
