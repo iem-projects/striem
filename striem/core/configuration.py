@@ -140,8 +140,12 @@ class configuration:
         self._cfg.set(section, option, v)
 
     def copyTo(self, target):
-        import StringIO
-        cfgstring = StringIO.StringIO()
+        try:
+            from StringIO import StringIO
+        except ImportError:
+            from io import StringIO
+
+        cfgstring = StringIO()
         self._cfg.write(cfgstring)
         cfgstring.seek(0)
 
