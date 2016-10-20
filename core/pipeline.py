@@ -18,8 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os.path
 import gi
+
+log = logging.getLogger(__name__)
+
 
 gst_extra_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -161,7 +165,7 @@ def _ctrlRead(conffile=None):
 class pipeline:
     def __init__(self, filename="default.gst", config=dict()):
         conffile = None
-        # print("pipefile: %s" % (filename))
+        log.info("pipefile: %s" % (filename))
 
         extension = ".gst"
         if filename.endswith(extension):
@@ -176,8 +180,8 @@ class pipeline:
         self.pipestring = _pipeRead(filename, config)
         ctrls = _ctrlRead(conffile)
 
-        # print("pipeline: %s" % (self.pipestring))
-        # print("ctrls: %s" % (ctrls))
+        log.info("pipeline: %s" % (self.pipestring))
+        log.info("ctrls: %s" % (ctrls))
 
         self.setEventHandlers({Gst.MessageType.EOS: self._EOS})
         self.setEventHandlers(
