@@ -26,8 +26,8 @@
 
 import math
 
-import configuration
-import pipeline
+from . import configuration
+from . import pipeline
 
 import logging
 log = logging.getLogger(__name__)

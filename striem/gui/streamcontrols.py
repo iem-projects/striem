@@ -19,7 +19,7 @@
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide import QtGui
-import streamcontrols_ui
+from . import streamcontrols_ui
 import logging
 log = logging.getLogger(__name__)
 

@@ -19,7 +19,7 @@
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide import QtGui
-import streampreferences_ui
+from . import streampreferences_ui
 
 
 class streampreferences(QtGui.QDialog,

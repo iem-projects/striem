@@ -22,10 +22,10 @@ from PySide import QtGui, QtCore
 import codecs
 import re
 
-import streamcontrols
-import streampreferences
+from . import streamcontrols
+from . import streampreferences
 
-import striem_ui
+from . import striem_ui
 
 import logging
 log = logging.getLogger(__name__)
