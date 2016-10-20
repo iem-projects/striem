@@ -32,6 +32,8 @@ def parseCmdlineArgs():
                         help="raise verbosity")
     parser.add_argument('-q', '--quiet', action='count', default=0,
                         help="lower verbosity")
+    parser.add_argument('--logfile',type=str,
+                        help="logfile for messages (default: STDERR)")
     parser.add_argument('-c', '--config', type=str,
                         help="Configuration file to read")
     parser.add_argument('--set', type=str,
@@ -78,8 +80,11 @@ def create_streamer(app, args):
 if __name__ == '__main__':
     import sys
     args = parseCmdlineArgs()
-    loglevel = 10 * (3 - args.verbosity)
-    logging.basicConfig(level=loglevel)
+    logconfig = dict()
+    logconfig['level'] = logging.WARN - 10 * args.verbosity
+    if args.logfile:
+        logconfig['filename'] = args.logfile
+    logging.basicConfig(**logconfig)
     log.debug("%s" % (args,))
 
     # Create the Qt Application
