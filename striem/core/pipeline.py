@@ -217,7 +217,7 @@ class pipeline:
             return
         for lmn in pipelements:
             for p in lmn.props:
-                if False and p.flags & Gst.PARAM_CONTROLLABLE:
+                if True and p.flags & Gst.PARAM_CONTROLLABLE:
                     if lmn.props.name not in control_dict:
                         control_dict[lmn.props.name] = []
                     control_dict[lmn.props.name] += [p.name]
@@ -240,24 +240,28 @@ class pipeline:
                         if ((elem in control_dict and
                              p in control_dict[elem])):
                             ctlprops += [p]
-                        else:
-                            setprops += [p]
+                        setprops += [p]
                     lmn = self.pipeline.get_by_name(elem)
                     log.debug("element '%s' %s" % (elem, lmn))
                     # create a controller
                     if ctlprops:
-                        tmpctl = Gst.Controller(lmn, *ctlprops)
+                        log.info("ctlprops: %s@%s : %s" % (elem,ctlprops,ctl))
+                        # tmpctl = Gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
-                            tmpctl.set_interpolation_mode(
-                                cp,
-                                Gst.INTERPOLATE_LINEAR)
                             v = lmn.get_property(cp)
-                            log.debug("%s: %s" % (ctl, v))
-                            tmpctl.set(cp, 0, v)
+                            if not isinstance(v, float):
+                                continue
+                            tmpctl = GstController.InterpolationControlSource()
+                            tmpctl.set_property('mode', GstController.InterpolationMode.LINEAR)
+                            cb = GstController.DirectControlBinding.new(lmn, cp, tmpctl)
+                            lmn.add_control_binding(cb)
 
-                        if ctl not in self.controller:
-                            self.controller[ctl] = []
-                        self.controller[ctl] += [(tmpctl, ctlprops)]
+                            log.debug("%s: %s" % (ctl, v))
+                            tmpctl.set(0, v)
+
+                            if ctl not in self.controller:
+                                self.controller[ctl] = []
+                            self.controller[ctl] += [(tmpctl, ctlprops)]
                     # create setters
                     # (this is just a list so we remember)
                     if setprops:
@@ -266,6 +270,9 @@ class pipeline:
                         if lmn not in self.setter[ctl]:
                             self.setter[ctl][lmn] = []
                         self.setter[ctl][lmn] += setprops
+
+        log.warn("controller: %s" % (self.controller,))
+        log.warn("setter: %s" % (self.setter,))
 
     def teardown(self):
         self.EOS()
@@ -338,12 +345,28 @@ class pipeline:
             self.recorder.send_event(Gst.Event.new_eos())
             self.recorder.set_state(Gst.State.PAUSED)
 
-    def setControl(self, name, value, time=0):
-        gsttime = time * Gst.SECOND
+    def _setControlTime(self, name, value, time):
+        if not isinstance(value, float):
+            return False
+        print("setControlTime(%s,%s,%s)" % (name,value,time))
+        success = False
         if name in self.controller:
+            success = True
+            gsttime = time * Gst.SECOND
+            clock=self.pipeline.get_clock()
+            if clock:
+                gsttime += clock.get_time()
             for (ctl, props) in self.controller[name]:
-                for p in props:
-                    ctl.set(p, gsttime, value)
+                try:
+                    log.debug("%s.set(%s,%s)" % (ctl, gsttime, value))
+                    ctl.set(gsttime, value)
+                except TypeError:
+                    log.exception("timedcontroller failed")
+                    success = False
+        return success
+
+    def _setControl(self, name, value):
+        print("setControl(%s,%s)" % (name,value))
         if name in self.setter:
             for (lmn, props) in self.setter[name].items():
                 log.debug("lmn[%s] %s:%s" % (name, lmn, props))
@@ -359,7 +382,13 @@ class pipeline:
                             lmn = havepads[0]
                     else:
                         prop = p
+                    log.debug("%s.set_property(%s,%s)" % (lmn, prop, value))
                     lmn.set_property(prop, value)
+
+    def setControl(self, name, value, time=0):
+        if self._setControlTime(name, value, time):
+            return
+        self._setControl(name, value)
 
     def setProperty(self, element, prop, value):
         lmn = self.pipeline.get_by_name(element)
