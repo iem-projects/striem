@@ -20,7 +20,7 @@ jackaudiosrc
 ! audio/x-raw,channels=2
 ! volume name=again
 ! level
-! audiodelay name=adelay max-delay=1000000000 delay=0
+! audiodelay name=adelay max-delay=1000000000 delay=1
 ! volume name=amute
 ! audioconvert
 ! audio/x-raw,format=(string)S16LE,endianness=(int)1234,signed=(boolean)true,width=(int)16,depth=(int)16,rate=(int)44100,channels=(int)2
