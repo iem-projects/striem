@@ -23,7 +23,8 @@ import logging
 
 log = logging.getLogger("striem")
 
-## cmdline arguments
+
+# cmdline arguments
 def parseCmdlineArgs():
     import argparse
     parser = argparse.ArgumentParser()
@@ -46,14 +47,16 @@ def parseCmdlineArgs():
     args.verbosity = int(args.verbose) - int(args.quiet)
     return args
 
+
 def keyvalues2dict(keyvalues, d=None):
     if not d:
-        d={}
+        d = {}
     if not keyvalues:
         return d
     for (key, value) in keyvalues:
-        d[key]=value
+        d[key] = value
     return d
+
 
 def create_streamer(app, args):
     import striem
@@ -74,23 +77,16 @@ def create_streamer(app, args):
 
 if __name__ == '__main__':
     import sys
-    args=parseCmdlineArgs()
+    args = parseCmdlineArgs()
     loglevel = 10 * (3 - args.verbosity)
     logging.basicConfig(level=loglevel)
     log.debug("%s" % (args,))
-    #if args.logfile is None:
-    #        args.logfile='stderr'
-    #l = logger.logger(args.logfile)
-
-    #import gobject
-    #gobject.threads_init()
 
     # Create the Qt Application
     app = QApplication(sys.argv)
-    #translator = Translator(app)
 
     if not args.config:
-        args.config=None
+        args.config = None
 
     create_streamer(app, args)
 
