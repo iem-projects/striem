@@ -252,7 +252,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QFrame" name="interpretEditFrame">
+              <widget class="QFrame" name="interpreterEditFrame">
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -267,7 +267,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="interpretEdit">
+                 <widget class="QLineEdit" name="interpreterEdit">
                   <property name="text">
                    <string/>
                   </property>
@@ -277,7 +277,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QCheckBox" name="interpretDecoration">
+                 <widget class="QCheckBox" name="interpreterDecoration">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>

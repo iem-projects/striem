@@ -77,7 +77,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             guiparent=self)
         self.titleDecoration = None
         self.composerDecoration = None
-        self.interpretDecoration = None
+        self.interpreterDecoration = None
 
         self.setupUi(self)
         self.setupConnections()
@@ -128,9 +128,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.composerEdit.editingFinished.connect(self._setComposer)
         if self.composerDecoration:
             self.composerDecoration.toggled.connect(self._setComposer)
-        self.interpretEdit.editingFinished.connect(self._setInterpreter)
-        if self.interpretDecoration:
-            self.interpretDecoration.toggled.connect(self._setInterpreter)
+        self.interpreterEdit.editingFinished.connect(self._setInterpreter)
+        if self.interpreterDecoration:
+            self.interpreterDecoration.toggled.connect(self._setInterpreter)
         self.selectText.activated.connect(self._selectInsert)
 
     def _showText(self, state):
@@ -218,10 +218,10 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.changedText("composer", t)
 
     def _setInterpreter(self):
-        t = self.interpretEdit.text()
+        t = self.interpreterEdit.text()
         if ((t and
-             self.interpretDecoration and
-             self.interpretDecoration.isChecked())):
+             self.interpreterDecoration and
+             self.interpreterDecoration.isChecked())):
             # no decoration for interpreter
             pass
         self.changedText("interpret", t)
@@ -288,7 +288,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             (c, t, i) = self.textinserts[index]
             self.titleEdit.setText(t)
             self.composerEdit.setText(c)
-            self.interpretEdit.setText(i)
+            self.interpreterEdit.setText(i)
             self._setPiece()
             self._setComposer()
             self._setInterpreter()
