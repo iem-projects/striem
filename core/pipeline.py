@@ -19,11 +19,12 @@
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
 import os.path
+import gi
+
 gst_extra_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'gst-1.0')
 
-import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import GLib, GObject
 from gi.repository import Gst
