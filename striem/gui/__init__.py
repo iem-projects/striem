@@ -18,9 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
+from .striem import striem
+
 __version__ = "0"
 __author__ = "IOhannes m zmölnig, IEM"
 __license__ = "GNU General Public License"
 __all__ = ["striem"]
-
-from .striem import striem
