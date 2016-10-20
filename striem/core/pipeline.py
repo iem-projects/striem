@@ -219,13 +219,13 @@ class pipeline:
         self.controller = {}
         self.setter = {}
         if ctrls:
-            for ctl, elemprop in ctrls.iteritems():
+            for ctl, elemprop in ctrls.items():
                 # ctl = 'FOO'
                 # elemprop = {
                 #     'textoverlay_3': ['xpos'],
                 #     'textoverlay_1': ['ypos', 'xpos']
                 #     }
-                for elem, props in elemprop.iteritems():
+                for elem, props in elemprop.items():
                     # elem = 'textoverlay_3'
                     # prop = ['xpos']
                     ctlprops = []
@@ -282,7 +282,7 @@ class pipeline:
 
     def _handleElementEvent(self, bus, message):
         struct = message.get_structure()
-        for key, fun in self.eventkeys.iteritems():
+        for key, fun in self.eventkeys.items():
             if struct and struct.has_field(key):
                 fun(struct.get_value(key), key)
 
@@ -339,7 +339,7 @@ class pipeline:
                 for p in props:
                     ctl.set(p, gsttime, value)
         if name in self.setter:
-            for (lmn, props) in self.setter[name].iteritems():
+            for (lmn, props) in self.setter[name].items():
                 log.debug("lmn[%s] %s:%s" % (name, lmn, props))
                 if not lmn:
                     continue
