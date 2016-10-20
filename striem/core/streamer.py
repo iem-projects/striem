@@ -133,7 +133,7 @@ class streamer:
             v = 1.
             a = 1.
         log.debug("showVideo(%s): audio = %s video = %s" % (state, a, v))
-        self.pip.setControl("video.mute", v)
+        self.pip.setControl("video.mute", v, 1)
         self.pip.setControl("audio.mute", a)
 
     def getAGain(self):
