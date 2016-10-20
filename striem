@@ -22,7 +22,9 @@
 from PySide.QtGui import QDialog, QApplication, QVBoxLayout, QIcon
 from PySide.QtCore import Qt
 import gui, core
+import logging
 
+log = logging.getLogger("striem")
 
 ## cmdline arguments
 def parseCmdlineArgs():
@@ -57,10 +59,11 @@ def keyvalues2dict(keyvalues, d=None):
     return d
 
 if __name__ == '__main__':
-    args=parseCmdlineArgs()
-
     import sys
-
+    args=parseCmdlineArgs()
+    loglevel = 10 * (3 - args.verbosity)
+    logging.basicConfig(level=loglevel)
+    log.debug("%s" % (args,))
     #if args.logfile is None:
     #        args.logfile='stderr'
     #l = logger.logger(args.logfile)
