@@ -166,7 +166,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         #   in the bottom-line
         if on:
             # increment by one percent
-            v = self.streamstatusMeter.value()+1
+            v = self.streamstatusMeter.value() + 1
             if(v > self.streamstatusMeter.maximum()):
                 v = self.streamstatusMeter.minimum()
                 inverted = self.streamstatusMeter.invertedAppearance()
@@ -195,27 +195,27 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def _setPiece(self):
         t = self.titleEdit.text()
-        if ((t
-             and self.titleDecoration
-             and self.titleDecoration.isChecked())):
+        if ((t and
+             self.titleDecoration and
+             self.titleDecoration.isChecked())):
             # decoration: put piece in quotes
             t = u'„' + t + u'“'
         self.changedText("piece", t)
 
     def _setComposer(self):
         t = self.composerEdit.text()
-        if ((t
-             and self.composerDecoration
-             and self.composerDecoration.isChecked())):
+        if ((t and
+             self.composerDecoration and
+             self.composerDecoration.isChecked())):
             # decoration: put composer in parantheses
             t = u'(' + t + u')'
         self.changedText("composer", t)
 
     def _setInterpreter(self):
         t = self.interpretEdit.text()
-        if ((t
-             and self.interpretDecoration
-             and self.interpretDecoration.isChecked())):
+        if ((t and
+             self.interpretDecoration and
+             self.interpretDecoration.isChecked())):
             # no decoration for interpreter
             pass
         self.changedText("interpret", t)
@@ -244,7 +244,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
                     "Open Textinserts",
                     "",
                     "TextInsert Files (*.txt)")
-                )
+            )
             if fileName:
                 fname = fileName[0]
                 self.loadTextFile(fname)
@@ -270,9 +270,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             if t or c:
                 comboline += ': '
                 if t:
-                    comboline += t+' '
+                    comboline += t + ' '
                 if c:
-                    comboline += '('+c+')'
+                    comboline += '(' + c + ')'
             self.selectText.addItem(comboline)
             self.textinserts += [[c, t, i]]
 
@@ -288,11 +288,11 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             self._setInterpreter()
         except IndexError:
             log.exception("cannot find index %s in textinserts (size = %s)"
-                    % (index, len(self.textinserts)))
+                          % (index, len(self.textinserts)))
 
     def resizeEvent(self, event):
         h = self.previewWidget.height()
-        w = int(h*16./9.)
+        w = int(h * 16. / 9.)
         self.previewWidget.setMinimumWidth(w)
         self.previewWidget.setMaximumWidth(w)
 

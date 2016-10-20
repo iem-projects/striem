@@ -23,6 +23,7 @@ from . import streamcontrols_ui
 import logging
 log = logging.getLogger(__name__)
 
+
 class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
     def __init__(self, streamer=None, guiparent=None, closefunction=None):
         super(streamcontrols, self).__init__(guiparent)
@@ -195,7 +196,7 @@ class streamcontrols(QtGui.QDialog, streamcontrols_ui.Ui_streamControls):
         rmsdb = max(rmsvalues)
         vclipped = min(max(rmsdb + 100, 0), 100)
         log.debug("level(%s): %s -> %s = > %s" %
-                    (self.aLevel, rmsvalues, rmsdb, vclipped))
+                  (self.aLevel, rmsvalues, rmsdb, vclipped))
         if self.aLevel:
             self.aLevel.setValue(vclipped)
 
