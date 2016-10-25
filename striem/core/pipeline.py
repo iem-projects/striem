@@ -53,6 +53,18 @@ res = reg.scan_path(gst_extra_path)
 # TODO: controllers for gst-1.0
 #         -> http://tangopardo.com.ar/2cf7/2013/07/30/
 
+
+class _defdict(object):
+    def __init__(self, data, default=None):
+        self.data = dict(data)
+        self.default = default
+
+    def __getitem__(self, key):
+        try:
+            return self.data[key]
+        except KeyError:
+            return self.default
+
 # pipeline descriptions:
 #
 # "element1 ! element2 prop1 = bla prop2 = @FUZZ@ ! element3 prop[BAX] = 12"
