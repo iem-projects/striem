@@ -245,7 +245,7 @@ class pipeline:
                     log.debug("element '%s' %s" % (elem, lmn))
                     # create a controller
                     if ctlprops:
-                        log.info("ctlprops: %s@%s : %s" % (elem,ctlprops,ctl))
+                        log.info("ctlprops: %s@%s : %s" % (elem, ctlprops, ctl))
                         # tmpctl = Gst.Controller(lmn, *ctlprops)
                         for cp in ctlprops:
                             v = lmn.get_property(cp)
@@ -348,12 +348,12 @@ class pipeline:
     def _setControlTime(self, name, value, time):
         if not isinstance(value, float):
             return False
-        print("setControlTime(%s,%s,%s)" % (name,value,time))
+        print("setControlTime(%s,%s,%s)" % (name, value, time))
         success = False
         if name in self.controller:
             success = True
             gsttime = time * Gst.SECOND
-            clock=self.pipeline.get_clock()
+            clock = self.pipeline.get_clock()
             if clock:
                 gsttime += clock.get_time()
             for (ctl, props) in self.controller[name]:
@@ -366,7 +366,7 @@ class pipeline:
         return success
 
     def _setControl(self, name, value):
-        print("setControl(%s,%s)" % (name,value))
+        print("setControl(%s,%s)" % (name, value))
         if name in self.setter:
             for (lmn, props) in self.setter[name].items():
                 log.debug("lmn[%s] %s:%s" % (name, lmn, props))
