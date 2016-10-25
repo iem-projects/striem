@@ -65,6 +65,14 @@ class _defdict(object):
         except KeyError:
             return self.default
 
+def _replace_pipeline_macros(pipestring, data={}):
+    # FIXXME: re.replace the @XXX@ with %(XXX)s
+    # and apply the data-values with default=''
+    if pipestring:
+        for k, v in data.items():
+            pipestring = pipestring.replace('@%s@' % k, v)
+    return pipestring
+
 # pipeline descriptions:
 #
 # "element1 ! element2 prop1 = bla prop2 = @FUZZ@ ! element3 prop[BAX] = 12"
@@ -144,10 +152,7 @@ def _pipeRead(pipefile=None, mydict=dict()):
     except IOError:
         return None
     # replace some macros
-    if data:
-        for k, v in mydict.items():
-            data = data.replace('@%s@' % k, v)
-    return data
+    return _replace_pipeline_macros(data, mydict)
 
 
 def _ctrlRead(conffile=None):
