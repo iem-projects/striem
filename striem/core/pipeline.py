@@ -57,7 +57,7 @@ res = reg.scan_path(gst_extra_path)
 
 class _dict_with_default(object):
     def __init__(self, data, default=None):
-        self.data = dict(data)
+        self.data = data.copy()
         self.default = default
 
     def __getitem__(self, key):
