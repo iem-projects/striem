@@ -135,6 +135,12 @@ class configuration:
             return configuration._typefuns[option](v)
         return v
 
+    def getSectionDict(self, section):
+        d=dict()
+        for (k, v) in self._cfg.items(section):
+            d[k] = v
+        return d
+
     def set(self, section, option, value):
         v = str(value)
         self._cfg.set(section, option, v)
