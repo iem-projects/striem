@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import logging
 import os.path
 import gi
@@ -65,12 +66,14 @@ class _dict_with_default(object):
         except KeyError:
             return self.default
 
+patternmacro = re.compile('@([\w]*)@')
+
 def _replace_pipeline_macros(pipestring, data={}):
-    # FIXXME: re.replace the @XXX@ with %(XXX)s
-    # and apply the data-values with default=''
+    # replace all @XXX@ with %(XXX)s and then
+    # do a dictionary replacement (with unknown keys defaulting to '')
     if pipestring:
-        for k, v in data.items():
-            pipestring = pipestring.replace('@%s@' % k, v)
+        mydata = _dict_with_default(data, default='')
+        return patternmacro.sub(r'%(\1)s', pipestring) % mydata
     return pipestring
 
 # pipeline descriptions:
