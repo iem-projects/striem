@@ -54,7 +54,7 @@ res = reg.scan_path(gst_extra_path)
 #         -> http://tangopardo.com.ar/2cf7/2013/07/30/
 
 
-class _defdict(object):
+class _dict_with_default(object):
     def __init__(self, data, default=None):
         self.data = dict(data)
         self.default = default
