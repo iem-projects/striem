@@ -36,21 +36,20 @@ _db = math.log(10) / 20
 
 
 class streamer:
-    def __init__(self, configfile=None, configvalues={}, pipedefaults={}, pipekeys={}):
+    def __init__(self, configfile=None, configvalues={}, pipedefaults={}):
         self.cfgbak = configuration.configuration(
             filename=configfile,
             defaultvalues=configvalues)
         self.cfg = configuration.configuration(self.cfgbak)
         cpk = self.cfg.getSectionDict('pipeline')
-        cfgpipekeys = dict()
+        pipekeys = dict()
         for k in cpk:
-            cfgpipekeys[k.upper()] = cpk[k]
-        cfgpipekeys.update(pipekeys)
+            pipekeys[k.upper()] = cpk[k]
 
         pipefile = self.cfg.get("stream", "pipeline")
         if not pipefile:
             pipefile = "core/pipelines/striem.gst"
-        self.pip = pipeline.pipeline(pipefile, cfgpipekeys)
+        self.pip = pipeline.pipeline(pipefile, pipekeys)
         self.setGui = self.pip.setGui
         self.run = self.pip.run
         self.addEventKeyHandlers = self.pip.setEventKeys
