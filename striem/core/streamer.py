@@ -41,10 +41,16 @@ class streamer:
             filename=configfile,
             defaultvalues=configvalues)
         self.cfg = configuration.configuration(self.cfgbak)
+        cpk = self.cfg.getSectionDict('pipeline')
+        cfgpipekeys = dict()
+        for k in cpk:
+            cfgpipekeys[k.upper()] = cpk[k]
+        cfgpipekeys.update(pipekeys)
+
         pipefile = self.cfg.get("stream", "pipeline")
         if not pipefile:
             pipefile = "core/pipelines/striem.gst"
-        self.pip = pipeline.pipeline(pipefile, pipekeys)
+        self.pip = pipeline.pipeline(pipefile, cfgpipekeys)
         self.setGui = self.pip.setGui
         self.run = self.pip.run
         self.addEventKeyHandlers = self.pip.setEventKeys
