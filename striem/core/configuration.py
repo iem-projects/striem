@@ -59,6 +59,10 @@ _configpaths = [
 # - (string)text.face
 # - (int)text.size
 
+# section: pipeline
+# - (string)<KEY>
+# replaces all @KEY@ in the pipeline with the corresponding <VALUE>
+
 
 class configuration:
     _typefuns = {
