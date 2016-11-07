@@ -237,7 +237,7 @@ class pipeline:
             return
         for lmn in pipelements:
             for p in lmn.props:
-                if True and p.flags & Gst.PARAM_CONTROLLABLE:
+                if False and p.flags & Gst.PARAM_CONTROLLABLE:
                     if lmn.props.name not in control_dict:
                         control_dict[lmn.props.name] = []
                     control_dict[lmn.props.name] += [p.name]
