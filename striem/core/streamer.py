@@ -41,8 +41,8 @@ class streamer:
             filename=configfile,
             defaultvalues=configvalues)
         self.cfg = configuration.configuration(self.cfgbak)
-        cpk = self.cfg.getSectionDict('pipeline')
         pipekeys = dict()
+        cpk = self.cfg.getSectionDict('pipeline')
         for k in cpk:
             pipekeys[k.upper()] = cpk[k]
 

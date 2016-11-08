@@ -187,16 +187,27 @@ def _ctrlRead(conffile=None):
 
 class pipeline:
     def __init__(self, filename="default.gst", config=dict()):
+        self.eventhandlers = dict()
+        self.eventkeys = dict()
+        self.restart = False
+        self.controller = dict()
+        self.setter = dict()
+        self.pipestring = ""
+
+        self.pipeline = None
+        self.bus = None
+        self.previewOut = None
+        self.liveOut = None
+        self.recorder = None
+
+        self.config = config
+
         conffile = None
         log.info("pipefile: %s" % (filename))
 
         extension = ".gst"
         if filename.endswith(extension):
             conffile = filename[:-len(extension)] + ".ctl"
-        self.eventhandlers = dict()
-        self.eventkeys = dict()
-        self.restart = False
-        self.config = config
 
         # (self.pipestring, ctrls) =
         #     _pipeParseCtrl(_pipeRead(filename, config))
@@ -219,9 +230,6 @@ class pipeline:
         # # enabling the following triggers an assertion (and exists)
         # Gst.Bus.add_signal_watch(self.bus)
 
-        self.previewOut = None
-        self.liveOut = None
-
         self.previewOut = self.pipeline.get_by_name("preview")
         self.liveOut = self.pipeline.get_by_name("preview")
         self.recorder = self.pipeline.get_by_name("recorder")
@@ -242,8 +250,6 @@ class pipeline:
                         control_dict[lmn.props.name] = []
                     control_dict[lmn.props.name] += [p.name]
 
-        self.controller = {}
-        self.setter = {}
         if ctrls:
             for ctl, elemprop in ctrls.items():
                 # ctl = 'FOO'

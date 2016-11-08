@@ -141,6 +141,8 @@ class configuration:
 
     def getSectionDict(self, section):
         d=dict()
+        if not self._cfg.has_section(section):
+            return d
         for (k, v) in self._cfg.items(section):
             d[k] = v
         return d
