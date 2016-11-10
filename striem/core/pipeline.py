@@ -374,7 +374,7 @@ class pipeline:
     def _setControlTime(self, name, value, time):
         if not isinstance(value, float):
             return False
-        print("setControlTime(%s,%s,%s)" % (name, value, time))
+        log.info("setControlTime(%s,%s,%s)" % (name, value, time))
         success = False
         if name in self.controller:
             success = True
@@ -392,7 +392,7 @@ class pipeline:
         return success
 
     def _setControl(self, name, value):
-        print("setControl(%s,%s)" % (name, value))
+        log.info("setControl(%s,%s)" % (name, value))
         if name in self.setter:
             for (lmn, props) in self.setter[name].items():
                 log.debug("lmn[%s] %s:%s" % (name, lmn, props))
