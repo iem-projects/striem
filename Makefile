@@ -3,7 +3,7 @@
 all: gui audiodelay
 
 gui:
-	make -C gui/UIs all
+	make -C striem/gui/UIs all
 
 audiodelay:
 	make -C gst/audiodelay-1.0
