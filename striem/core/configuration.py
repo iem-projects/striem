@@ -122,7 +122,7 @@ class configuration:
             filename = self.filename
         if filename is None:
             return False
-        with open(filename, 'wb') as configfile:
+        with open(filename, 'w') as configfile:
             self.filename = filename
             self._cfg.write(configfile)
         return True
