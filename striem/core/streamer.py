@@ -54,7 +54,7 @@ class streamer:
         self.run = self.pip.run
         self.addEventKeyHandlers = self.pip.setEventKeys
         if pipedefaults:
-            for k, v in pipedefaults.iteritems():
+            for k, v in pipedefaults.items():
                 (element, _, prop) = k.partition('.')
                 self.pip.setControl(k, v)
                 self.pip.setProperty(element, prop, v)

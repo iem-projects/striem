@@ -99,7 +99,7 @@ class configuration:
         log.debug("applying more default values: %s" % (defaultvalues))
         if not defaultvalues:
             return
-        for k, v in defaultvalues.iteritems():
+        for k, v in defaultvalues.items():
             (section, _, option) = k.partition(":")
             try:
                 self._cfg.set(section, option, str(v))
