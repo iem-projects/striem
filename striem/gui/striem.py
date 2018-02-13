@@ -196,31 +196,22 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         return self.changedText(id, t, d)
 
     def _setTitle(self):
-        t = self.titleEdit.text()
-        if ((t and
-             self.titleDecoration and
-             self.titleDecoration.isChecked())):
-            # decoration: put piece in quotes
-            t = u'„' + t + u'“'
-        self.changedText("piece", t)
+        # decoration: put piece in quotes
+        return self._setDecoratedText(
+            "piece", (u'„', u'“'),
+            self.titleEdit, self.titleDecoration)
 
     def _setComposer(self):
-        t = self.composerEdit.text()
-        if ((t and
-             self.composerDecoration and
-             self.composerDecoration.isChecked())):
-            # decoration: put composer in parantheses
-            t = u'(' + t + u')'
-        self.changedText("composer", t)
+        # decoration: put composer in parantheses
+        return self._setDecoratedText(
+            "composer", (u'(', u')'),
+            self.composerEdit, self.composerDecoration)
 
     def _setInterpreter(self):
-        t = self.interpreterEdit.text()
-        if ((t and
-             self.interpreterDecoration and
-             self.interpreterDecoration.isChecked())):
-            # no decoration for interpreter
-            pass
-        self.changedText("interpret", t)
+        # no decoration for interpreter
+        return self._setDecoratedText(
+            "interpret", None,
+            self.interpreterEdit, self.interpreterDecoration)
 
     def textLock(self, value):
         self.lockTextEditor = bool(value)
