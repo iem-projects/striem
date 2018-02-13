@@ -190,6 +190,11 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         if self.streamer:
             self.streamer.setText(id, txt, decos)
 
+    def _setDecoratedText(self, id, decos, textwidget, decowidget):
+        t = textwidget and textwidget.text() or None
+        d = decos if decowidget and decowidget.isChecked() else None
+        return self.changedText(id, t, d)
+
     def _setTitle(self):
         t = self.titleEdit.text()
         if ((t and
