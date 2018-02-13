@@ -73,7 +73,8 @@ class configuration:
         'text.face': str,
         'text.size': float,
         'text.X': float,
-        'text.Y': float
+        'text.Y': float,
+        'text.decoration': (lambda v: bool(int(float(v)))),
     }
 
     def __init__(self, filename=None, defaultvalues={}):
