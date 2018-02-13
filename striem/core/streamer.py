@@ -147,6 +147,7 @@ class streamer:
         self.cfg.set(ID, "text.decoration", int(bool(deco)))
 
     def setText(self, ID, txt, decorations=None):
+        self.setTextDecoration(ID, bool(decorations))
         if txt and decorations:
             try:
                 txt = "%s%s%s" % (decorations[0], txt, decorations[1])
