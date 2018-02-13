@@ -186,9 +186,9 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             return wdg.winId()
         return None
 
-    def changedText(self, id, txt):
+    def changedText(self, id, txt, decos=None):
         if self.streamer:
-            self.streamer.setText(id, txt)
+            self.streamer.setText(id, txt, decos)
 
     def _setTitle(self):
         t = self.titleEdit.text()
