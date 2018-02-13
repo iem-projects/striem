@@ -122,6 +122,9 @@ class streamer:
         log.debug("Font['%s']: %f" % (ID, y))
         self.pip.setControl("posY." + ID, y)
 
+    def setTextDecoration(self, ID, deco):
+        self.cfg.set(ID, "text.decoration", int(bool(deco)))
+
     def setText(self, ID, txt):
         self.pip.setControl("text." + ID, txt)
 
@@ -159,6 +162,10 @@ class streamer:
     def getTextPosition(self, id):
         y = self.cfg.get(id, "text.Y")
         return y
+
+    def getTextDecoration(self, id):
+        deco = self.cfg.get(id, "text.decoration")
+        return deco
 
     def streamPause(self, state):
         return self.pip.pause(state, "stream")
