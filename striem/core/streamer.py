@@ -147,12 +147,15 @@ class streamer:
         self.cfg.set(ID, "text.decoration", int(bool(deco)))
 
     def setText(self, ID, txt, decorations=None):
-        if decorations:
+        if txt and decorations:
             try:
                 txt = "%s%s%s" % (decorations[0], txt, decorations[1])
             except:
                 log.exception("failed setting decoration %s" % (decorations))
-        txt = decode_escapes(txt)
+        if txt:
+            txt = decode_escapes(txt)
+        else:
+            txt = ""
         self.pip.setControl("text." + ID, txt)
 
     def showText(self, state):
