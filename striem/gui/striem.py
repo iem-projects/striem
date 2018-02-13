@@ -30,26 +30,6 @@ from . import striem_ui
 import logging
 log = logging.getLogger(__name__)
 
-ESCAPE_SEQUENCE_RE = re.compile(r'''
-    ( \\U........      # 8-digit hex escapes
-    | \\u....          # 4-digit hex escapes
-    | \\x..            # 2-digit hex escapes
-    | \\[0-7]{1,3}     # Octal escapes
-    | \\N\{[^}]+\}     # Unicode characters by name
-    | \\[\\'"abfnrtv]  # Single-character escapes
-    )''', re.UNICODE | re.VERBOSE)
-
-
-def decode_escapes(s):
-    """decodes escape-sequences"""
-    def decode_match(match):
-        return codecs.decode(match.group(0), 'unicode-escape')
-
-    try:
-        return ESCAPE_SEQUENCE_RE.sub(decode_match, s)
-    except UnicodeDecodeError:
-        return s.decode('string_escape')
-
 
 class noWidget():
     def __init__(self):
@@ -208,7 +188,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
 
     def changedText(self, id, txt):
         if self.streamer:
-            self.streamer.setText(id, decode_escapes(txt))
+            self.streamer.setText(id, txt)
 
     def _setTitle(self):
         t = self.titleEdit.text()

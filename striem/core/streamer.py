@@ -25,6 +25,8 @@
 # -
 
 import math
+import codecs
+import re
 
 from . import configuration
 from . import pipeline
@@ -34,6 +36,25 @@ log = logging.getLogger(__name__)
 
 _db = math.log(10) / 20
 
+ESCAPE_SEQUENCE_RE = re.compile(r'''
+    ( \\U........      # 8-digit hex escapes
+    | \\u....          # 4-digit hex escapes
+    | \\x..            # 2-digit hex escapes
+    | \\[0-7]{1,3}     # Octal escapes
+    | \\N\{[^}]+\}     # Unicode characters by name
+    | \\[\\'"abfnrtv]  # Single-character escapes
+    )''', re.UNICODE | re.VERBOSE)
+
+
+def decode_escapes(s):
+    """decodes escape-sequences"""
+    def decode_match(match):
+        return codecs.decode(match.group(0), 'unicode-escape')
+
+    try:
+        return ESCAPE_SEQUENCE_RE.sub(decode_match, s)
+    except UnicodeDecodeError:
+        return s.decode('string_escape')
 
 class streamer:
     def __init__(self, configfile=None, configvalues={}, pipedefaults={}):
@@ -126,6 +147,7 @@ class streamer:
         self.cfg.set(ID, "text.decoration", int(bool(deco)))
 
     def setText(self, ID, txt):
+        txt = decode_escapes(txt)
         self.pip.setControl("text." + ID, txt)
 
     def showText(self, state):
