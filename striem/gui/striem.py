@@ -82,6 +82,17 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         self.setupUi(self)
         self.setupConnections()
 
+        for decorator, name in [
+                (self.titleDecoration, "piece"),
+                (self.composerDecoration, "composer"),
+                (self.interpreterDecoration, "interpret"),
+        ]:
+            if not decorator:
+                continue
+            doit = streamer.getTextDecoration(name)
+            if doit is not None:
+                decorator.setChecked(bool(doit))
+
         if self.streamer:
             if closeable is None:
                 foo = self.streamer.getConfig(
