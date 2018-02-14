@@ -19,10 +19,93 @@
 # along with striem.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide.QtGui import QApplication
+from PySide.QtCore import Qt, Signal, QTextStream
 import logging
 
 log = logging.getLogger("striem")
 
+# uuid.uuid3(uuid.NAMESPACE_DNS, 'striem.iem.at')
+uid = 'cac31e48-fa6d-3cc1-bbbe-795f72b1c131'
+
+try: unicode
+except NameError: unicode = str
+
+# singleton application https://stackoverflow.com/q/12712360/1169096
+class QSingleApplication(QApplication):
+
+    messageReceived = Signal(unicode)
+
+    def __init__(self, id, *argv):
+        from PySide.QtNetwork import QLocalSocket, QLocalServer
+        super(QSingleApplication, self).__init__(*argv)
+        self._id = id
+        self._activationWindow = None
+        self._activateOnMessage = False
+
+        # Is there another instance running?
+        self._outSocket = QLocalSocket()
+        self._outSocket.connectToServer(self._id)
+        self._isRunning = self._outSocket.waitForConnected()
+
+        if self._isRunning:
+            # Yes, there is.
+            self._outStream = QTextStream(self._outSocket)
+            self._outStream.setCodec('UTF-8')
+        else:
+            # No, there isn't.
+            self._outSocket = None
+            self._outStream = None
+            self._inSocket = None
+            self._inStream = None
+            self._server = QLocalServer()
+            self._server.listen(self._id)
+            self._server.newConnection.connect(self._onNewConnection)
+
+    def isRunning(self):
+        return self._isRunning
+
+    def id(self):
+        return self._id
+
+    def activationWindow(self):
+        return self._activationWindow
+
+    def setActivationWindow(self, activationWindow, activateOnMessage = True):
+        self._activationWindow = activationWindow
+        self._activateOnMessage = activateOnMessage
+
+    def activateWindow(self):
+        if not self._activationWindow:
+            return
+        self._activationWindow.setWindowState(
+            self._activationWindow.windowState() & ~Qt.WindowMinimized)
+        self._activationWindow.raise_()
+        self._activationWindow.activateWindow()
+
+    def sendMessage(self, msg):
+        if not self._outStream:
+            return False
+        self._outStream << msg << '\n'
+        self._outStream.flush()
+        return self._outSocket.waitForBytesWritten()
+
+    def _onNewConnection(self):
+        if self._inSocket:
+            self._inSocket.readyRead.disconnect(self._onReadyRead)
+        self._inSocket = self._server.nextPendingConnection()
+        if not self._inSocket:
+            return
+        self._inStream = QTextStream(self._inSocket)
+        self._inStream.setCodec('UTF-8')
+        self._inSocket.readyRead.connect(self._onReadyRead)
+        if self._activateOnMessage:
+            self.activateWindow()
+
+    def _onReadyRead(self):
+        while True:
+            msg = self._inStream.readLine()
+            if not msg: break
+            self.messageReceived.emit(msg)
 
 # cmdline arguments
 def parseCmdlineArgs():
@@ -70,7 +153,7 @@ def create_streamer(app, args):
 
     # Create and show the form
     form = striem.gui.striem(app=app, streamer=streamer)
-
+    app.setActivationWindow(form)
     streamer.setGui(form)
     streamer.run(True)
 
@@ -93,7 +176,10 @@ if __name__ == '__main__':
     log.debug("%s" % (args,))
 
     # Create the Qt Application
-    app = QApplication(sys.argv)
+    app = QSingleApplication(uid, sys.argv)
+    if app.isRunning():
+        log.warn("IEM streamfeader already running")
+        sys.exit(0)
 
     if not args.config:
         args.config = None
