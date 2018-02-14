@@ -102,7 +102,8 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
             log.info("gracefully")
 
     def setupConnections(self):
-        self.actionLoadTexts.activated.connect(self._loadTextFile)
+        self.actionLoadFixedInserts.activated.connect(lambda: self._loadTextFile('inserts.txt'))
+        self.actionLoadInserts.activated.connect(self._loadTextFile)
 
         self.actionQuit.activated.connect(self.exit)
         self.actionStreamStart.toggled.connect(self.stream)

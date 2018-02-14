@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>striem</class>
  <widget class="QMainWindow" name="striem">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>378</width>
+    <height>485</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>striem - the IEM streamer</string>
   </property>
@@ -378,15 +386,16 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>698</width>
-     <height>19</height>
+     <width>378</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoadTexts"/>
+    <addaction name="actionLoadFixedInserts"/>
+    <addaction name="actionLoadInserts"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -448,12 +457,20 @@
     <string>Controls</string>
    </property>
   </action>
-  <action name="actionLoadTexts">
+  <action name="actionLoadFixedInserts">
    <property name="text">
-    <string>Open Texts...</string>
+    <string>Load 'inserts.txt'</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionLoadInserts">
+   <property name="text">
+    <string>Open Inserts...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
    </property>
   </action>
  </widget>
