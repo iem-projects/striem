@@ -117,6 +117,8 @@ def parseCmdlineArgs():
                         help="lower verbosity")
     parser.add_argument('--logfile',type=str,
                         help="logfile for messages (default: STDERR)")
+    parser.add_argument('--no-single-app', action='store_true',
+                        help="Allow this application to run multiple times simulatenously")
     parser.add_argument('-c', '--config', type=str,
                         help="Configuration file to read")
     parser.add_argument('--set', type=str,
@@ -177,7 +179,7 @@ if __name__ == '__main__':
 
     # Create the Qt Application
     app = QSingleApplication(uid, sys.argv)
-    if app.isRunning():
+    if not args.no_single_app and app.isRunning():
         log.warn("IEM streamfeader already running")
         sys.exit(0)
 
