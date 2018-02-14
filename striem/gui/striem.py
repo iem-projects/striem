@@ -229,7 +229,7 @@ class striem(QtGui.QMainWindow, striem_ui.Ui_striem):
         # hmm, on some machines opening the QFileDialog simply segfaults
         # so we load a standard-file instead
         if filename:
-            self.loadTextFile("inserts.txt")
+            self.loadTextFile(filename)
         else:
             fileName = (
                 QtGui.QFileDialog.getOpenFileName(
